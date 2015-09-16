@@ -1,1 +1,1 @@
-# eventsManualPlugin
+# textPlugin
