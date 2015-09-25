@@ -4,7 +4,7 @@
   angular.module('eventsManualPluginContent')
     .constant('TAG_NAMES', {
       EVENTS_MANUAL_INFO: 'eventsManualInfo',
-      EVENT_MANUAL: "eventsManual"
+      EVENTS_MANUAL: "eventsManual"
     })
     .constant('STATUS_CODE', {
       INSERTED: 'inserted',

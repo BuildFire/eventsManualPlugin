@@ -1,75 +1,13 @@
 <div id="eventsManualPluginContent">
-  <div class="item clearfix row margin-top-thirty">
-    <div class="labels col-md-3 padding-right-zero pull-left">
-      <span>Image Carousel</span>
-    </div>
-    <div class="main col-md-9 pull-right">
-      <div class="clearfix">
-        <a class="btn btn-success pull-left" onclick="alert('Open Media Library');">Add Image</a>
-      </div>
-      <div class="carousel-items draggable-list-view margin-top-twenty border-radius-four border-grey">
-        <div class="d-item">
-          <span class="icon icon-menu pull-left"></span>
-          <div class="media-holder pull-left">
-            <img src="http://www.placehold.it/80x50">
-          </div>
-          <div class="copy pull-right">
-            <span class="title ellipsis">Image Title</span>
-            <div class="pull-right">
-              <a class="text-primary text">Add Action</a>
-										<span class="btn-icon btn-delete-icon btn-danger transition-third"><span>
-            </div>
-          </div>
-        </div>
-        <div class="d-item">
-          <span class="icon icon-menu pull-left"></span>
-          <div class="media-holder pull-left">
-            <img src="http://www.placehold.it/80x50">
-          </div>
-          <div class="copy pull-right">
-            <span class="title ellipsis">Image Title</span>
-            <div class="pull-right">
-              <a class="text-primary text">Add Action</a>
-										<span class="btn-icon btn-delete-icon btn-danger transition-third"><span>
-            </div>
-          </div>
-        </div>
-        <div class="d-item">
-          <span class="icon icon-menu pull-left"></span>
-          <div class="media-holder pull-left">
-            <img src="http://www.placehold.it/80x50">
-          </div>
-          <div class="copy pull-right">
-            <span class="title ellipsis">Image Title</span>
-            <div class="pull-right">
-              <a class="text-primary text">Add Action</a>
-										<span class="btn-icon btn-delete-icon btn-danger transition-third"><span>
-            </div>
-          </div>
-        </div>
-        <div class="d-item">
-          <span class="icon icon-menu pull-left"></span>
-          <div class="media-holder pull-left">
-            <img src="http://www.placehold.it/80x50">
-          </div>
-          <div class="copy pull-right">
-            <span class="title ellipsis">Image Title</span>
-            <div class="pull-right">
-              <a class="text-primary text">Add Action</a>
-										<span class="btn-icon btn-delete-icon btn-danger transition-third"><span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div id="carousel"></div>
   <hr class="none">
   <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
       <span>Start Date</span>
     </div>
     <div class="main col-md-9 pull-right">
-      <input type="text" placeholder="Start Date" class="form-control">
+      <input type="date" placeholder="Start Date" class="form-control"
+             ng-model="ContentEvent.event.startDate">
     </div>
   </div>
   <hr class="none">
@@ -78,7 +16,8 @@
       <span>Start Time</span>
     </div>
     <div class="main col-md-9 pull-right">
-      <input type="text" placeholder="Start Time" class="form-control">
+      <input type="time" placeholder="Start Time" class="form-control"
+             ng-model="ContentEvent.event.startTime">
     </div>
   </div>
   <hr class="none">
@@ -87,7 +26,8 @@
       <span>End Date</span>
     </div>
     <div class="main col-md-9 pull-right">
-      <input type="text" placeholder="End Date" class="form-control">
+      <input type="date" placeholder="End Date" class="form-control"
+             ng-model="ContentEvent.event.endDate">
     </div>
   </div>
   <hr class="none">
@@ -97,7 +37,8 @@
     </div>
     <div class="main col-md-9 pull-right">
       <div class="checkbox checkbox-primary margin-zero no-label">
-        <input type="checkbox" id="allday">
+        <input type="checkbox" id="allday"
+               ng-model="ContentEvent.event.isAllDay" ng-checked="ContentEvent.event.isAllDay">
         <label for="allday"></label>
       </div>
     </div>
@@ -108,7 +49,8 @@
       <span>End Time</span>
     </div>
     <div class="main col-md-9 pull-right">
-      <input type="text" class="form-control" placeholder="End Time">
+      <input type="time" class="form-control" placeholder="End Time"
+             ng-model="ContentEvent.event.endTime">
     </div>
   </div>
   <hr class="none">
@@ -117,23 +59,39 @@
       <span>Time Zone</span>
     </div>
     <div class="main col-md-9 pull-right">
-      <div class="dropdown pull-left col-md-12 padding-zero" dropdown>
-        <button class="btn btn-default text-left dropdown-toggle" data-toggle="dropdown" dropdown-toggle aria-expanded="true">
-          <span class="pull-left">UTC - Universal Coordinates Time - UTC +0:00</span>
-          <span class="chevron icon-chevron-down pull-right"></span>
-        </button>
-        <ul class="dropdown-menu extended" role="menu">
-          <li>
-            <a tabindex="-1" class="transition-third">Option 1</a>
-          </li>
-          <li>
-            <a tabindex="-1" class="transition-third">Option 2</a>
-          </li>
-          <li>
-            <a tabindex="-1" class="transition-third">Option 3</a>
-          </li>
-        </ul>
-      </div>
+      <select name="DropDownTimezone" id="DropDownTimezone">
+        <option value="-12.0">(GMT -12:00) Eniwetok, Kwajalein</option>
+        <option value="-11.0">(GMT -11:00) Midway Island, Samoa</option>
+        <option value="-10.0">(GMT -10:00) Hawaii</option>
+        <option value="-9.0">(GMT -9:00) Alaska</option>
+        <option value="-8.0">(GMT -8:00) Pacific Time (US &amp; Canada)</option>
+        <option value="-7.0">(GMT -7:00) Mountain Time (US &amp; Canada)</option>
+        <option value="-6.0">(GMT -6:00) Central Time (US &amp; Canada), Mexico City</option>
+        <option value="-5.0">(GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima</option>
+        <option value="-4.0">(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz</option>
+        <option value="-3.5">(GMT -3:30) Newfoundland</option>
+        <option value="-3.0">(GMT -3:00) Brazil, Buenos Aires, Georgetown</option>
+        <option value="-2.0">(GMT -2:00) Mid-Atlantic</option>
+        <option value="-1.0">(GMT -1:00 hour) Azores, Cape Verde Islands</option>
+        <option value="0.0">(GMT) Western Europe Time, London, Lisbon, Casablanca</option>
+        <option value="1.0">(GMT +1:00 hour) Brussels, Copenhagen, Madrid, Paris</option>
+        <option value="2.0">(GMT +2:00) Kaliningrad, South Africa</option>
+        <option value="3.0">(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg</option>
+        <option value="3.5">(GMT +3:30) Tehran</option>
+        <option value="4.0">(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi</option>
+        <option value="4.5">(GMT +4:30) Kabul</option>
+        <option value="5.0">(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent</option>
+        <option value="5.5">(GMT +5:30) Bombay, Calcutta, Madras, New Delhi</option>
+        <option value="5.75">(GMT +5:45) Kathmandu</option>
+        <option value="6.0">(GMT +6:00) Almaty, Dhaka, Colombo</option>
+        <option value="7.0">(GMT +7:00) Bangkok, Hanoi, Jakarta</option>
+        <option value="8.0">(GMT +8:00) Beijing, Perth, Singapore, Hong Kong</option>
+        <option value="9.0">(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk</option>
+        <option value="9.5">(GMT +9:30) Adelaide, Darwin</option>
+        <option value="10.0">(GMT +10:00) Eastern Australia, Guam, Vladivostok</option>
+        <option value="11.0">(GMT +11:00) Magadan, Solomon Islands, New Caledonia</option>
+        <option value="12.0">(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka</option>
+      </select>
     </div>
   </div>
   <hr class="none">
@@ -144,7 +102,8 @@
     <div class="main col-md-9 pull-right">
       <div class="radio radio-primary radio-inline">
         <input id="selectedtimezone" type="radio" name="timedisplay" checked>
-        <label for="selectedtimezone" name="timedisplay">Selected Time Zone</label>
+        <label for="selectedtimezone" name="timedisplay">Selected Time
+          Zone</label>
       </div>
       <div class="radio radio-primary radio-inline">
         <input id="usertimezone" type="radio" name="timedisplay">
@@ -170,23 +129,12 @@
       <span>Repeats</span>
     </div>
     <div class="main col-md-9 pull-right">
-      <div class="dropdown pull-left col-md-12 padding-zero" dropdown>
-        <button class="btn btn-default text-left dropdown-toggle" data-toggle="dropdown" dropdown-toggle aria-expanded="true">
-          <span class="pull-left">Daily</span>
-          <span class="chevron icon-chevron-down pull-right"></span>
-        </button>
-        <ul class="dropdown-menu extended" role="menu">
-          <li>
-            <a tabindex="-1" class="transition-third">Option 1</a>
-          </li>
-          <li>
-            <a tabindex="-1" class="transition-third">Option 2</a>
-          </li>
-          <li>
-            <a tabindex="-1" class="transition-third">Option 3</a>
-          </li>
-        </ul>
-      </div>
+      <select name="DropDownRepeat" id="DropDownRepeat">
+        <option value="DAILY">Daily</option>
+        <option value="WEEKLY">Weekly</option>
+        <option value="MONTHLY">Monthly</option>
+        <option value="YEARLY">Yearly</option>
+      </select>
     </div>
   </div>
   <hr class="none">
@@ -233,7 +181,8 @@
   <div class="item clearfix row">
     <div class="main col-md-9 pull-right">
       <div class="col-md-3 padding-left-zero pull-left">
-        <div class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
+        <div
+            class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
           <input type="radio" id="endsAfterDaily" name="endsRadioDaily">
           <label for="endsAfterDaily">After</label>
         </div>
@@ -252,7 +201,8 @@
   <div class="item clearfix row">
     <div class="main col-md-9 pull-right">
       <div class="col-md-3 padding-left-zero pull-left">
-        <div class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
+        <div
+            class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
           <input type="radio" id="endsOnDaily" name="endsRadioDaily">
           <label for="endsOnDaily">On</label>
         </div>
@@ -341,7 +291,8 @@
   <div class="item clearfix row">
     <div class="main col-md-9 pull-right">
       <div class="col-md-3 padding-left-zero pull-left">
-        <div class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
+        <div
+            class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
           <input type="radio" id="endsAfterWeekly" name="endsRadioWeekly">
           <label for="endsAfterWeekly">After</label>
         </div>
@@ -360,7 +311,8 @@
   <div class="item clearfix row">
     <div class="main col-md-9 pull-right">
       <div class="col-md-3 padding-left-zero pull-left">
-        <div class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
+        <div
+            class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
           <input type="radio" id="endsOnWeekly" name="endsRadioWeekly">
           <label for="endsOnWeekly">On</label>
         </div>
@@ -404,7 +356,8 @@
     </div>
     <div class="main col-md-9 pull-right">
       <div class="radio radio-primary margin-zero">
-        <input type="radio" id="endsNeverMonthly" name="endsRadioMonthly" checked>
+        <input type="radio" id="endsNeverMonthly" name="endsRadioMonthly"
+               checked>
         <label for="endsNeverMonthly">Never</label>
       </div>
     </div>
@@ -413,7 +366,8 @@
   <div class="item clearfix row">
     <div class="main col-md-9 pull-right">
       <div class="col-md-3 padding-left-zero pull-left">
-        <div class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
+        <div
+            class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
           <input type="radio" id="endsAfterMonthly" name="endsRadioMonthly">
           <label for="endsAfterMonthly">After</label>
         </div>
@@ -432,7 +386,8 @@
   <div class="item clearfix row">
     <div class="main col-md-9 pull-right">
       <div class="col-md-3 padding-left-zero pull-left">
-        <div class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
+        <div
+            class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
           <input type="radio" id="endsOnMonthly" name="endsRadioMonthly">
           <label for="endsOnMonthly">On</label>
         </div>
@@ -485,7 +440,8 @@
   <div class="item clearfix row">
     <div class="main col-md-9 pull-right">
       <div class="col-md-3 padding-left-zero pull-left">
-        <div class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
+        <div
+            class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
           <input type="radio" id="endsAfterYearly" name="endsRadioYearly">
           <label for="endsAfterYearly">After</label>
         </div>
@@ -504,7 +460,8 @@
   <div class="item clearfix row">
     <div class="main col-md-9 pull-right">
       <div class="col-md-3 padding-left-zero pull-left">
-        <div class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
+        <div
+            class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
           <input type="radio" id="endsOnYearly" name="endsRadioYearly">
           <label for="endsOnYearly">On</label>
         </div>
@@ -534,7 +491,8 @@
       <span>Address</span>
     </div>
     <div class="main col-md-9 pull-right">
-      <input type="text" class="form-control" placeholder="Enter Street Address or Lat/Long Coordinates">
+      <input type="text" class="form-control"
+             placeholder="Enter Street Address or Lat/Long Coordinates">
     </div>
   </div>
   <hr class="none">
@@ -568,7 +526,8 @@
         <a class="btn btn-danger pull-right stretch">Delete</a>
       </div>
       <div class="col-md-6 pull-right padding-right-zero padding-left-ten">
-        <a class="btn btn-primary pull-right stretch" href="javaScript:void(0);">Done</a>
+        <a class="btn btn-primary pull-right stretch"
+           href="javaScript:void(0);">Done</a>
       </div>
     </div>
   </div>
