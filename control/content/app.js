@@ -1,7 +1,7 @@
 'use strict';
 
 (function (angular) {
-  angular.module('eventsManualPluginContent', ['ngRoute','ui.bootstrap'])
+  angular.module('eventsManualPluginContent', ['ngRoute', 'ui.bootstrap'])
     //injected ngRoute for routing
     .config(['$routeProvider', function ($routeProvider) {
       $routeProvider
@@ -9,6 +9,16 @@
           templateUrl: 'templates/home.html',
           controllerAs: 'ContentHome',
           controller: 'ContentHomeCtrl'
+        })
+        .when('/event', {
+          templateUrl: 'templates/event.html',
+          controllerAs: 'ContentEvent',
+          controller: 'ContentEventCtrl'
+        })
+        .when('/event/:id', {
+          templateUrl: 'templates/event.html',
+          controllerAs: 'ContentEvent',
+          controller: 'ContentEventCtrl'
         })
         .otherwise('/');
     }])
