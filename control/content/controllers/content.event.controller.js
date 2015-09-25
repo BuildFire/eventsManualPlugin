@@ -130,9 +130,9 @@
         };
 
         ContentEvent.changeRepeatType = function (type) {
-          if (!ContentEvent.event.repeating)
-            ContentEvent.event.repeating = {};
-          ContentEvent.event.repeating.repeatType = type;
+          if (!ContentEvent.event.repeat)
+            ContentEvent.event.repeat = {};
+          ContentEvent.event.repeat.repeatType = type;
         };
 
         $scope.$watch(function () {

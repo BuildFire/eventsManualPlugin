@@ -101,8 +101,10 @@
     </div>
     <div class="main col-md-9 pull-right">
       <div class="checkbox checkbox-primary margin-zero no-label">
-        <input type="checkbox" id="repeat">
-        <label for="allday"></label>
+        <input type="checkbox" id="repeat"
+               ng-model="ContentEvent.event.repeat.isRepeating"
+               ng-checked="ContentEvent.event.repeat.isRepeating">
+        <label for="repeat"></label>
       </div>
     </div>
   </div>
@@ -115,7 +117,7 @@
       <div class="dropdown pull-left col-md-12 padding-zero" dropdown>
         <button class="btn btn-default text-left dropdown-toggle"
                 data-toggle="dropdown" dropdown-toggle aria-expanded="true">
-          <span class="pull-left">{{ContentEvent.event.repeating.repeatType
+          <span class="pull-left">{{ContentEvent.event.repeat.repeatType
             || "Choose repeat duration"}}</span>
           <span class="chevron icon-chevron-down pull-right"></span>
         </button>
