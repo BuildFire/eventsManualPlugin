@@ -85,12 +85,16 @@
     </div>
     <div class="main col-md-9 pull-right">
       <div class="radio radio-primary radio-inline">
-        <input id="selectedtimezone" type="radio" name="timedisplay" checked>
+        <input id="selectedtimezone" type="radio" name="timedisplay"
+               ng-model="ContentEvent.displayTiming" value="SELECTED"
+               ng-change="ContentEvent.event.timeDisplay = 'SELECTED'">
         <label for="selectedtimezone" name="timedisplay">Selected Time
           Zone</label>
       </div>
       <div class="radio radio-primary radio-inline">
-        <input id="usertimezone" type="radio" name="timedisplay">
+        <input id="usertimezone" type="radio" name="timedisplay"
+               ng-model="ContentEvent.displayTiming" value="USER"
+               ng-change="ContentEvent.event.timeDisplay = 'USER'">
         <label for="usertimezone" name="timedisplay">User's Time Zone</label>
       </div>
     </div>

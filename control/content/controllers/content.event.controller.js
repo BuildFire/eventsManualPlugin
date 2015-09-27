@@ -6,6 +6,7 @@
       function ($scope, $routeParams, Buildfire, DataStore, TAG_NAMES) {
         var ContentEvent = this;
         ContentEvent.event = {};
+        ContentEvent.displayTiming = "SELECTED";
 
         ContentEvent.TimeZoneDropdownOptions = [
           {name: "(GMT -12:00) Eniwetok, Kwajalein", value: "-12.0"},
