@@ -38,13 +38,14 @@
     <div class="main col-md-9 pull-right">
       <div class="checkbox checkbox-primary margin-zero no-label">
         <input type="checkbox" id="allday"
-               ng-model="ContentEvent.event.isAllDay" ng-checked="ContentEvent.event.isAllDay">
+               ng-model="ContentEvent.event.isAllDay"
+               ng-checked="ContentEvent.event.isAllDay">
         <label for="allday"></label>
       </div>
     </div>
   </div>
   <hr class="none">
-  <div class="item clearfix row">
+  <div class="item clearfix row" ng-if="!ContentEvent.event.isAllDay">
     <div class="labels col-md-3 padding-right-zero pull-left">
       <span>End Time</span>
     </div>
@@ -84,12 +85,16 @@
     </div>
     <div class="main col-md-9 pull-right">
       <div class="radio radio-primary radio-inline">
-        <input id="selectedtimezone" type="radio" name="timedisplay" checked>
+        <input id="selectedtimezone" type="radio" name="timedisplay"
+               ng-model="ContentEvent.displayTiming" value="SELECTED"
+               ng-change="ContentEvent.event.timeDisplay = 'SELECTED'">
         <label for="selectedtimezone" name="timedisplay">Selected Time
           Zone</label>
       </div>
       <div class="radio radio-primary radio-inline">
-        <input id="usertimezone" type="radio" name="timedisplay">
+        <input id="usertimezone" type="radio" name="timedisplay"
+               ng-model="ContentEvent.displayTiming" value="USER"
+               ng-change="ContentEvent.event.timeDisplay = 'USER'">
         <label for="usertimezone" name="timedisplay">User's Time Zone</label>
       </div>
     </div>
@@ -109,7 +114,7 @@
     </div>
   </div>
   <hr class="none">
-  <div class="item clearfix row">
+  <div class="item clearfix row" ng-if="ContentEvent.event.repeat.isRepeating">
     <div class="labels col-md-3 padding-right-zero pull-left">
       <span>Repeats</span>
     </div>
@@ -140,8 +145,8 @@
   </div>
   <hr class="none">
   <hr>
-  <hr>
-  <hr>
+  <span
+      ng-if="ContentEvent.event.repeat.isRepeating && ContentEvent.event.repeat.repeatType == 'Daily'">
   <h4>Repeats Daily</h4>
   <hr class="none">
   <div class="item clearfix row">
@@ -215,8 +220,11 @@
       </div>
     </div>
   </div>
+  </span>
   <hr class="none">
-  <h4>Repeats Weekly</h4>
+  <span
+      ng-if="ContentEvent.event.repeat.isRepeating && ContentEvent.event.repeat.repeatType == 'Weekly'">
+    <h4>Repeats Weekly</h4>
   <hr class="none">
   <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
@@ -325,8 +333,11 @@
       </div>
     </div>
   </div>
+  </span>
   <hr class="none">
-  <h4>Repeats Monthly</h4>
+  <span
+      ng-if="ContentEvent.event.repeat.isRepeating && ContentEvent.event.repeat.repeatType == 'Monthly'">
+    <h4>Repeats Monthly</h4>
   <hr class="none">
   <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
@@ -400,8 +411,11 @@
       </div>
     </div>
   </div>
+  </span>
   <hr class="none">
-  <h4>Repeats Yearly</h4>
+  <span
+      ng-if="ContentEvent.event.repeat.isRepeating && ContentEvent.event.repeat.repeatType == 'Yearly'">
+    <h4>Repeats Yearly</h4>
   <hr class="none">
   <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
@@ -474,8 +488,7 @@
       </div>
     </div>
   </div>
-  <hr>
-  <hr>
+  </span>
   <hr>
   <hr class="none">
   <div class="item clearfix row">
