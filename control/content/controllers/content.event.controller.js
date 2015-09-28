@@ -92,6 +92,15 @@
           theme: 'modern'
         };
 
+        /**
+         * link and sortable options
+         */
+        var linkOptions = {"icon": "true"};
+        ContentEvent.linksSortableOptions = {
+          handle: '> .cursor-grab'
+        };
+
+
         // create a new instance of the buildfire carousel editor
         var editor = new Buildfire.components.carousel.editor("#carousel");
         // this method will be called when a new item added to the list
@@ -142,6 +151,55 @@
             ContentEvent.event.repeat = {};
           ContentEvent.event.repeat.repeatType = type;
         };
+
+        /**
+         * Add dynamic link
+         */
+
+        ContentEvent.addLink = function () {
+          var options = {showIcons: false};
+          var callback = function (error, result) {
+            if (error) {
+              return console.error('Error:', error);
+            }
+            if (!ContentEvent.event.links)
+              ContentEvent.event.links = [];
+            ContentEvent.event.links.push(result);
+            $scope.$digest();
+          };
+          Buildfire.actionItems.showDialog(null, options, callback);
+        };
+
+        /**
+         * Remove dynamic link
+         */
+
+        ContentEvent.removeLink = function (index) {
+          if (ContentEvent.event && ContentEvent.event.links) {
+            ContentEvent.event.links.splice(index, 1);
+          }
+        };
+
+        /**
+         * Edit dynamic link
+         */
+
+        ContentEvent.editLink = function (link, index) {
+          Buildfire.actionItems.showDialog(link, linkOptions, function editLinkCallback(error, result) {
+            if (error) {
+              return console.error('Error:', error);
+            }
+            if (!ContentEvent.event.links) {
+              ContentEvent.event.links = [];
+            }
+            if (result === null) {
+              return console.error('Error:Can not save data, Null record found.');
+            }
+            ContentEvent.event.links.splice(index, 1, result);
+            $scope.$digest();
+          });
+        };
+
 
         $scope.$watch(function () {
           return ContentEvent.event;
