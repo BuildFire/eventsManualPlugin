@@ -85,6 +85,13 @@
 
         ];
 
+        ContentEvent.descriptionWYSIWYGOptions = {
+          plugins: 'advlist autolink link image lists charmap print preview',
+          skin: 'lightgray',
+          trusted: true,
+          theme: 'modern'
+        };
+
         // create a new instance of the buildfire carousel editor
         var editor = new Buildfire.components.carousel.editor("#carousel");
         // this method will be called when a new item added to the list
