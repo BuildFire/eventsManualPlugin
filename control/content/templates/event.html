@@ -565,8 +565,13 @@
       <input type="text" class="form-control"
              placeholder="Enter Street Address or Long/Lat Coordinates"
              ng-model="ContentEvent.currentAddress" google-location-search
-             callback-fn="ContentEvent.setLocation(data)"
+             callback-fn="ContentEvent.setLocation(data)" ng-enter="ContentEvent.setCoordinates()"
              ng-change="ContentEvent.clearAddress()">
+      <br>
+      <div class="alert alert-danger alert-sm text-center"
+           ng-show="ContentEvent.validCoordinatesFailure">Please enter valid
+        coordinates
+      </div>
     </div>
   </div>
   <hr class="none">

@@ -2,8 +2,8 @@
 (function (angular) {
   angular
     .module('eventsManualPluginContent')
-    .controller('ContentEventCtrl', ['$scope', '$routeParams', 'Buildfire', 'DataStore', 'TAG_NAMES', 'ADDRESS_TYPE', '$location',
-      function ($scope, $routeParams, Buildfire, DataStore, TAG_NAMES, ADDRESS_TYPE, $location) {
+    .controller('ContentEventCtrl', ['$scope', '$routeParams', 'Buildfire', 'DataStore', 'TAG_NAMES', 'ADDRESS_TYPE', '$location', 'Utils','$timeout',
+      function ($scope, $routeParams, Buildfire, DataStore, TAG_NAMES, ADDRESS_TYPE, $location, Utils,$timeout) {
         var ContentEvent = this;
         ContentEvent.event = {};
         ContentEvent.displayTiming = "SELECTED";
@@ -100,6 +100,7 @@
           handle: '> .cursor-grab'
         };
 
+        ContentEvent.validCoordinatesFailure = false;
 
         // create a new instance of the buildfire carousel editor
         var editor = new Buildfire.components.carousel.editor("#carousel");
@@ -268,6 +269,31 @@
             ContentEvent.event.address = null;
             ContentEvent.currentCoordinates = null;
           }
+        };
+
+        ContentEvent.setCoordinates = function () {
+          function successCallback(resp) {
+            if (resp) {
+              ContentEvent.event.address = {
+                type: ADDRESS_TYPE.COORDINATES,
+                location: resp.formatted_address || ContentEvent.currentAddress,
+                location_coordinates: [ContentEvent.currentAddress.split(",")[0].trim(), ContentEvent.currentAddress.split(",")[1].trim()]
+              };
+              ContentEvent.currentAddress = ContentEvent.event.address.location;
+              ContentEvent.currentCoordinates = ContentEvent.event.address.location_coordinates;
+            } else {
+              errorCallback();
+            }
+          }
+
+          function errorCallback(err) {
+            ContentEvent.validCoordinatesFailure = true;
+            $timeout(function () {
+              ContentEvent.validCoordinatesFailure = false;
+            }, 5000);
+          }
+
+          Utils.validLongLats(ContentEvent.currentAddress).then(successCallback, errorCallback);
         };
 
 
