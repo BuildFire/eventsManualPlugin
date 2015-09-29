@@ -1,6 +1,27 @@
 <div id="eventsManualPluginContent">
   <div id="carousel"></div>
   <hr class="none">
+  <div id="listImage"></div>
+  <hr class="none">
+  <div class="item clearfix row">
+    <div class="labels col-md-3 padding-right-zero pull-left">
+      <span>Event Title</span>
+    </div>
+    <div class="main col-md-9 pull-right">
+      <input type="text" placeholder="Event Title" class="form-control"
+             ng-model="ContentEvent.event.title">
+    </div>
+  </div>
+  <hr class="none">
+  <div class="item clearfix row">
+    <div class="labels col-md-3 padding-right-zero pull-left">
+      <span>Deep Link URL</span>
+    </div>
+    <div class="main col-md-9 pull-right">
+      <span>{{ContentEvent.event.deepLinkUrl}}</span>
+    </div>
+  </div>
+  <hr class="none">
   <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
       <span>Start Date</span>
@@ -531,7 +552,8 @@
       <span>Address Title</span>
     </div>
     <div class="main col-md-9 pull-right">
-      <input type="text" class="form-control" placeholder="Address Title">
+      <input type="text" class="form-control" placeholder="Address Title"
+             ng-model="ContentEvent.event.addressTitle">
     </div>
   </div>
   <hr class="none">
@@ -541,7 +563,9 @@
     </div>
     <div class="main col-md-9 pull-right">
       <input type="text" class="form-control"
-             placeholder="Enter Street Address or Lat/Long Coordinates">
+             placeholder="Enter Street Address or Long/Lat Coordinates"
+             ng-model="ContentEvent.currentAddress" google-location-search
+             callback-fn="ContentEvent.setLocation(data)">
     </div>
   </div>
   <hr class="none">
@@ -619,7 +643,8 @@
   <div class="item clearfix row">
     <div class="main col-md-9 pull-right">
       <div class="col-md-6 pull-left padding-left-zero padding-right-ten">
-        <a class="btn btn-danger pull-right stretch">Delete</a>
+        <a class="btn btn-danger pull-right stretch"
+           ng-click="ContentEvent.deleteEvent()">Delete</a>
       </div>
       <div class="col-md-6 pull-right padding-right-zero padding-left-ten">
         <a class="btn btn-primary pull-right stretch"

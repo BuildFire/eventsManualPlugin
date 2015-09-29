@@ -2,8 +2,8 @@
 (function (angular) {
   angular
     .module('eventsManualPluginContent')
-    .controller('ContentEventCtrl', ['$scope', '$routeParams', 'Buildfire', 'DataStore', 'TAG_NAMES',
-      function ($scope, $routeParams, Buildfire, DataStore, TAG_NAMES) {
+    .controller('ContentEventCtrl', ['$scope', '$routeParams', 'Buildfire', 'DataStore', 'TAG_NAMES', 'ADDRESS_TYPE', '$location',
+      function ($scope, $routeParams, Buildfire, DataStore, TAG_NAMES, ADDRESS_TYPE, $location) {
         var ContentEvent = this;
         ContentEvent.event = {};
         ContentEvent.displayTiming = "SELECTED";
@@ -130,7 +130,7 @@
 
         var tmrDelayForEvent = null;
         var updateItemsWithDelay = function () {
-          if(tmrDelayForEvent) {
+          if (tmrDelayForEvent) {
             clearTimeout(tmrDelayForEvent);
           }
           var success = function (result) {
@@ -140,9 +140,9 @@
             , error = function (err) {
 
             };
-          tmrDelayForEvent = setTimeout(function() {
+          tmrDelayForEvent = setTimeout(function () {
             DataStore.insert(ContentEvent.event, TAG_NAMES.EVENTS_MANUAL).then(success, error);
-          },500);
+          }, 500);
         };
 
 
@@ -202,6 +202,48 @@
             ContentEvent.event.links.splice(index, 1, result);
             $scope.$digest();
           });
+        };
+
+        /**
+         * Save selected place from google autocomplete as address
+         */
+
+        ContentEvent.setLocation = function (data) {
+          ContentEvent.event.address = {
+            type: ADDRESS_TYPE.LOCATION,
+            location: data.location,
+            location_coordinates: data.coordinates
+          };
+          ContentEvent.currentAddress = ContentEvent.event.address.location;
+          ContentEvent.currentCoordinates = ContentEvent.event.address.location_coordinates;
+          $scope.$digest();
+        };
+
+        /* Build fire thumbnail component to add thumbnail image*/
+        var listImage = new Buildfire.components.images.thumbnail("#listImage", {title: "List Image"});
+        listImage.onChange = function (url) {
+          ContentEvent.event.listImage = url;
+          if (!$scope.$$phase && !$scope.$root.$$phase) {
+            $scope.$apply();
+          }
+        };
+
+        listImage.onDelete = function (url) {
+          ContentEvent.event.listImage = "";
+          if (!$scope.$$phase && !$scope.$root.$$phase) {
+            $scope.$apply();
+          }
+        };
+
+        ContentEvent.deleteEvent = function () {
+          var item = ContentEvent.event;
+          if (item.id) {
+            Buildfire.datastore.delete(item.id, TAG_NAMES.EVENTS_MANUAL, function (err, result) {
+              if (err)
+                return;
+              $location.path('/');
+            });
+          }
         };
 
 
