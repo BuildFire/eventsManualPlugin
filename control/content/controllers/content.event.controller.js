@@ -130,7 +130,9 @@
 
         var tmrDelayForEvent = null;
         var updateItemsWithDelay = function () {
-          clearTimeout(tmrDelayForEvent);
+          if(tmrDelayForEvent) {
+            clearTimeout(tmrDelayForEvent);
+          }
           var success = function (result) {
               console.info('Init success result:', result);
               if (tmrDelayForEvent)clearTimeout(tmrDelayForEvent);
@@ -138,7 +140,9 @@
             , error = function (err) {
 
             };
-          DataStore.insert(ContentEvent.event, TAG_NAMES.EVENTS_MANUAL).then(success, error);
+          tmrDelayForEvent = setTimeout(function() {
+            DataStore.insert(ContentEvent.event, TAG_NAMES.EVENTS_MANUAL).then(success, error);
+          },500);
         };
 
 
