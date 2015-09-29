@@ -3,8 +3,8 @@
 (function (angular) {
   angular
     .module('eventsManualPluginContent')
-    .controller('ContentHomeCtrl', ['$scope', 'TAG_NAMES', 'STATUS_CODE', 'DataStore', 'LAYOUTS',
-      function ($scope, TAG_NAMES, STATUS_CODE, DataStore, LAYOUTS) {
+    .controller('ContentHomeCtrl', ['$scope', 'TAG_NAMES', 'STATUS_CODE', 'DataStore', 'LAYOUTS','$sce',
+      function ($scope, TAG_NAMES, STATUS_CODE, DataStore, LAYOUTS,$sce) {
         var _data = {
           "content": {},
           "design": {
@@ -58,7 +58,8 @@
             };
 
           var successEvents = function (result) {
-            ContentHome.events = result.data;
+            ContentHome.events = result;
+            console.log("ddddd",ContentHome.events)
           }, errorEvents = function () {
 
           };
@@ -66,7 +67,20 @@
           DataStore.search({}, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
         init();
+        ContentHome.safeHtml = function (html) {
+          if (html)
+            return $sce.trustAsHtml(html);
+        };
+        ContentHome.searchEvents = function()
+        {
+          var successEvents = function (result) {
+            ContentHome.events = result;
+            console.log("eeeee",ContentHome.events)
+          }, errorEvents = function () {
 
+          };
+          DataStore.search({filter:{"$json.data.title":{"$eq":ContentHome.searchEvent}}}, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
+        }
         /*
          * Call the datastore to save the data object
          */
