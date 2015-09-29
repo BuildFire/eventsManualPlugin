@@ -134,6 +134,8 @@
             clearTimeout(tmrDelayForEvent);
           }
           var success = function (result) {
+              if (!ContentEvent.event.id)
+                ContentEvent.event.id = result.id;
               console.info('Init success result:', result);
               if (tmrDelayForEvent)clearTimeout(tmrDelayForEvent);
             }
@@ -223,7 +225,7 @@
          * Change the address and map to dragged marker location
          */
 
-        ContentEvent.setDraggedLocation= function(data){
+        ContentEvent.setDraggedLocation = function (data) {
           ContentEvent.event.address = {
             type: ADDRESS_TYPE.LOCATION,
             location: data.location,
@@ -258,6 +260,13 @@
                 return;
               $location.path('/');
             });
+          }
+        };
+
+        ContentEvent.clearAddress = function () {
+          if (!ContentEvent.currentAddress) {
+            ContentEvent.event.address = null;
+            ContentEvent.currentCoordinates = null;
           }
         };
 
