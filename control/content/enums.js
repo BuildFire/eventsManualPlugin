@@ -30,5 +30,9 @@
         {name: "Event_Item_3"},
         {name: "Event_Item_4"}
       ]
+    })
+    .constant('ADDRESS_TYPE', {
+      LOCATION: 'Location',
+      COORDINATES: "Coordinates"
     });
 })(window.angular);

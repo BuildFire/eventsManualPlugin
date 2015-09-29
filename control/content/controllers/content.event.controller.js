@@ -2,8 +2,8 @@
 (function (angular) {
   angular
     .module('eventsManualPluginContent')
-    .controller('ContentEventCtrl', ['$scope', '$routeParams', 'Buildfire', 'DataStore', 'TAG_NAMES',
-      function ($scope, $routeParams, Buildfire, DataStore, TAG_NAMES) {
+    .controller('ContentEventCtrl', ['$scope', '$routeParams', 'Buildfire', 'DataStore', 'TAG_NAMES', 'ADDRESS_TYPE',
+      function ($scope, $routeParams, Buildfire, DataStore, TAG_NAMES, ADDRESS_TYPE) {
         var ContentEvent = this;
         ContentEvent.event = {};
         ContentEvent.displayTiming = "SELECTED";
@@ -198,6 +198,21 @@
             ContentEvent.event.links.splice(index, 1, result);
             $scope.$digest();
           });
+        };
+
+        /**
+         * Save selected place from google autocomplete as address
+         */
+
+        ContentEvent.setLocation = function (data) {
+          ContentEvent.event.address = {
+            type: ADDRESS_TYPE.LOCATION,
+            location: data.location,
+            location_coordinates: data.coordinates
+          };
+          ContentEvent.currentAddress = ContentEvent.event.address.location;
+          ContentEvent.currentCoordinates = ContentEvent.event.address.location_coordinates;
+          $scope.$digest();
         };
 
 
