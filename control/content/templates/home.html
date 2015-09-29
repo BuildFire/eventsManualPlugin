@@ -6,7 +6,7 @@
     <input type="text" class="form-control" placeholder="Enter Item Name">
   </div>
   <div class="col-md-3 pull-left">
-    <a class="btn btn-primary stretch">Search</a>
+    <a class="btn btn-primary stretch" ng-click="ContentHome.searchEvents()" ng-model="ContentHome.searchEvent">Search</a>
   </div>
 </div>
 <hr class="none">
@@ -17,7 +17,7 @@
         <img src="http://www.placehold.it/40x30">
       </div>
       <div class="copy pull-right">
-        <a class="text-primary"><span class="title ellipsis pull-left text-primary" ng-bind-html="ContentHome.safeHtml(events.data.description)"></span></a>
+        <a class="text-primary"><span class="title ellipsis pull-left text-primary" ng-bind-html="ContentHome.safeHtml(events.data.title)"></span></a>
         <span class="title ellipsis pull-left">{{events.data.startDate}}</span>
         <div class="pull-right">
           <span class="btn-icon btn-edit-icon btn-primary"></span>

@@ -59,7 +59,7 @@
 
           var successEvents = function (result) {
             ContentHome.events = result;
-            console.log("dddddd",ContentHome.events)
+            console.log("ddddd",ContentHome.events)
           }, errorEvents = function () {
 
           };
@@ -71,6 +71,16 @@
           if (html)
             return $sce.trustAsHtml(html);
         };
+        ContentHome.searchEvents = function()
+        {
+          var successEvents = function (result) {
+            ContentHome.events = result;
+            console.log("eeeee",ContentHome.events)
+          }, errorEvents = function () {
+
+          };
+          DataStore.search({filter:{"$json.data.title":{"$eq":ContentHome.searchEvent}}}, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
+        }
         /*
          * Call the datastore to save the data object
          */
