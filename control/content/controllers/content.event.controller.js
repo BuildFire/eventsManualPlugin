@@ -2,8 +2,8 @@
 (function (angular) {
   angular
     .module('eventsManualPluginContent')
-    .controller('ContentEventCtrl', ['$scope', '$routeParams', 'Buildfire', 'DataStore', 'TAG_NAMES', 'ADDRESS_TYPE',
-      function ($scope, $routeParams, Buildfire, DataStore, TAG_NAMES, ADDRESS_TYPE) {
+    .controller('ContentEventCtrl', ['$scope', '$routeParams', 'Buildfire', 'DataStore', 'TAG_NAMES', 'ADDRESS_TYPE', '$location',
+      function ($scope, $routeParams, Buildfire, DataStore, TAG_NAMES, ADDRESS_TYPE, $location) {
         var ContentEvent = this;
         ContentEvent.event = {};
         ContentEvent.displayTiming = "SELECTED";
@@ -130,7 +130,7 @@
 
         var tmrDelayForEvent = null;
         var updateItemsWithDelay = function () {
-          if(tmrDelayForEvent) {
+          if (tmrDelayForEvent) {
             clearTimeout(tmrDelayForEvent);
           }
           var success = function (result) {
@@ -140,9 +140,9 @@
             , error = function (err) {
 
             };
-          tmrDelayForEvent = setTimeout(function() {
+          tmrDelayForEvent = setTimeout(function () {
             DataStore.insert(ContentEvent.event, TAG_NAMES.EVENTS_MANUAL).then(success, error);
-          },500);
+          }, 500);
         };
 
 
@@ -232,6 +232,17 @@
           ContentEvent.event.listImage = "";
           if (!$scope.$$phase && !$scope.$root.$$phase) {
             $scope.$apply();
+          }
+        };
+
+        ContentEvent.deleteEvent = function () {
+          var item = ContentEvent.event;
+          if (item.id) {
+            Buildfire.datastore.delete(item.id, TAG_NAMES.EVENTS_MANUAL, function (err, result) {
+              if (err)
+                return;
+              $location.path('/');
+            });
           }
         };
 
