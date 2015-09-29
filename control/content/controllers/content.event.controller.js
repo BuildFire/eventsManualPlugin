@@ -2,8 +2,8 @@
 (function (angular) {
   angular
     .module('eventsManualPluginContent')
-    .controller('ContentEventCtrl', ['$scope', '$routeParams', 'Buildfire', 'DataStore', 'TAG_NAMES', 'ADDRESS_TYPE', '$location',
-      function ($scope, $routeParams, Buildfire, DataStore, TAG_NAMES, ADDRESS_TYPE, $location) {
+    .controller('ContentEventCtrl', ['$scope', '$routeParams', 'Buildfire', 'DataStore', 'TAG_NAMES', 'ADDRESS_TYPE', '$location', 'Utils','$timeout',
+      function ($scope, $routeParams, Buildfire, DataStore, TAG_NAMES, ADDRESS_TYPE, $location, Utils,$timeout) {
         var ContentEvent = this;
         ContentEvent.event = {};
         ContentEvent.displayTiming = "SELECTED";
@@ -100,6 +100,7 @@
           handle: '> .cursor-grab'
         };
 
+        ContentEvent.validCoordinatesFailure = false;
 
         // create a new instance of the buildfire carousel editor
         var editor = new Buildfire.components.carousel.editor("#carousel");
@@ -134,6 +135,8 @@
             clearTimeout(tmrDelayForEvent);
           }
           var success = function (result) {
+              if (!ContentEvent.event.id)
+                ContentEvent.event.id = result.id;
               console.info('Init success result:', result);
               if (tmrDelayForEvent)clearTimeout(tmrDelayForEvent);
             }
@@ -151,8 +154,8 @@
         };
 
         ContentEvent.changeRepeatType = function (type) {
-          if (!ContentEvent.event.repeat)
-            ContentEvent.event.repeat = {};
+          ContentEvent.event.repeat = {};
+          ContentEvent.event.repeat.isRepeating = true;
           ContentEvent.event.repeat.repeatType = type;
         };
 
@@ -219,6 +222,21 @@
           $scope.$digest();
         };
 
+        /**
+         * Change the address and map to dragged marker location
+         */
+
+        ContentEvent.setDraggedLocation = function (data) {
+          ContentEvent.event.address = {
+            type: ADDRESS_TYPE.LOCATION,
+            location: data.location,
+            location_coordinates: data.coordinates
+          };
+          ContentEvent.currentAddress = ContentEvent.event.address.location;
+          ContentEvent.currentCoordinates = ContentEvent.event.address.location_coordinates;
+          $scope.$digest();
+        };
+
         /* Build fire thumbnail component to add thumbnail image*/
         var listImage = new Buildfire.components.images.thumbnail("#listImage", {title: "List Image"});
         listImage.onChange = function (url) {
@@ -244,6 +262,38 @@
               $location.path('/');
             });
           }
+        };
+
+        ContentEvent.clearAddress = function () {
+          if (!ContentEvent.currentAddress) {
+            ContentEvent.event.address = null;
+            ContentEvent.currentCoordinates = null;
+          }
+        };
+
+        ContentEvent.setCoordinates = function () {
+          function successCallback(resp) {
+            if (resp) {
+              ContentEvent.event.address = {
+                type: ADDRESS_TYPE.COORDINATES,
+                location: resp.formatted_address || ContentEvent.currentAddress,
+                location_coordinates: [ContentEvent.currentAddress.split(",")[0].trim(), ContentEvent.currentAddress.split(",")[1].trim()]
+              };
+              ContentEvent.currentAddress = ContentEvent.event.address.location;
+              ContentEvent.currentCoordinates = ContentEvent.event.address.location_coordinates;
+            } else {
+              errorCallback();
+            }
+          }
+
+          function errorCallback(err) {
+            ContentEvent.validCoordinatesFailure = true;
+            $timeout(function () {
+              ContentEvent.validCoordinatesFailure = false;
+            }, 5000);
+          }
+
+          Utils.validLongLats(ContentEvent.currentAddress).then(successCallback, errorCallback);
         };
 
 

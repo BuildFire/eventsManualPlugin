@@ -262,7 +262,7 @@
     <div class="main col-md-9 pull-right">
       <div class="col-md-4 pull-left padding-left-zero">
         <input type="text" class="form-control text-center" placeholder="1"
-               ng-model="ContentEvent.event.repeatCount">
+               ng-model="ContentEvent.event.repeat.repeatCount">
       </div>
       <div class="col-md-4 pull-left padding-left-zero">
         <p class="margin-top-five margin-bottom-zero">Weeks</p>
@@ -389,7 +389,7 @@
     <div class="main col-md-9 pull-right">
       <div class="col-md-4 pull-left padding-left-zero">
         <input type="text" class="form-control text-center" placeholder="1"
-               ng-model="ContentEvent.event.repeatCount">
+               ng-model="ContentEvent.event.repeat.repeatCount">
       </div>
       <div class="col-md-4 pull-left padding-left-zero">
         <p class="margin-top-five margin-bottom-zero">Months</p>
@@ -565,13 +565,20 @@
       <input type="text" class="form-control"
              placeholder="Enter Street Address or Long/Lat Coordinates"
              ng-model="ContentEvent.currentAddress" google-location-search
-             callback-fn="ContentEvent.setLocation(data)">
+             callback-fn="ContentEvent.setLocation(data)" ng-enter="ContentEvent.setCoordinates()"
+             ng-change="ContentEvent.clearAddress()">
+      <br>
+      <div class="alert alert-danger alert-sm text-center"
+           ng-show="ContentEvent.validCoordinatesFailure">Please enter valid
+        coordinates
+      </div>
     </div>
   </div>
   <hr class="none">
-  <div class="item clearfix row">
+  <div class="item clearfix row" ng-if="ContentEvent.currentCoordinates">
     <div class="main col-md-9 pull-right">
-      <textarea placeholder="Map Goes Here" class="form-control"></textarea>
+      <div google-map dragged-fn="ContentEvent.setDraggedLocation(data)" coordinates="ContentEvent.currentCoordinates"
+           style="height: 200px; position: relative;"></div>
     </div>
   </div>
   <hr class="none">
