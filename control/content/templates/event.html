@@ -1,6 +1,27 @@
 <div id="eventsManualPluginContent">
   <div id="carousel"></div>
   <hr class="none">
+  <div id="listImage"></div>
+  <hr class="none">
+  <div class="item clearfix row">
+    <div class="labels col-md-3 padding-right-zero pull-left">
+      <span>Event Title</span>
+    </div>
+    <div class="main col-md-9 pull-right">
+      <input type="text" placeholder="Event Title" class="form-control"
+             ng-model="ContentEvent.event.title">
+    </div>
+  </div>
+  <hr class="none">
+  <div class="item clearfix row">
+    <div class="labels col-md-3 padding-right-zero pull-left">
+      <span>Deep Link URL</span>
+    </div>
+    <div class="main col-md-9 pull-right">
+      <span>{{ContentEvent.event.deepLinkUrl}}</span>
+    </div>
+  </div>
+  <hr class="none">
   <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
       <span>Start Date</span>
@@ -542,7 +563,8 @@
     <div class="main col-md-9 pull-right">
       <input type="text" class="form-control"
              placeholder="Enter Street Address or Long/Lat Coordinates"
-             ng-model="ContentEvent.currentAddress" google-location-search callback-fn="ContentEvent.setLocation(data)">
+             ng-model="ContentEvent.currentAddress" google-location-search
+             callback-fn="ContentEvent.setLocation(data)">
     </div>
   </div>
   <hr class="none">

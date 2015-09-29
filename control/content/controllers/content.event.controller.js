@@ -215,6 +215,22 @@
           $scope.$digest();
         };
 
+        /* Build fire thumbnail component to add thumbnail image*/
+        var listImage = new Buildfire.components.images.thumbnail("#listImage", {title: "List Image"});
+        listImage.onChange = function (url) {
+          ContentEvent.event.listImage = url;
+          if (!$scope.$$phase && !$scope.$root.$$phase) {
+            $scope.$apply();
+          }
+        };
+
+        listImage.onDelete = function (url) {
+          ContentEvent.event.listImage = "";
+          if (!$scope.$$phase && !$scope.$root.$$phase) {
+            $scope.$apply();
+          }
+        };
+
 
         $scope.$watch(function () {
           return ContentEvent.event;
