@@ -151,8 +151,8 @@
         };
 
         ContentEvent.changeRepeatType = function (type) {
-          if (!ContentEvent.event.repeat)
-            ContentEvent.event.repeat = {};
+          ContentEvent.event.repeat = {};
+          ContentEvent.event.repeat.isRepeating = true;
           ContentEvent.event.repeat.repeatType = type;
         };
 
@@ -209,6 +209,21 @@
          */
 
         ContentEvent.setLocation = function (data) {
+          ContentEvent.event.address = {
+            type: ADDRESS_TYPE.LOCATION,
+            location: data.location,
+            location_coordinates: data.coordinates
+          };
+          ContentEvent.currentAddress = ContentEvent.event.address.location;
+          ContentEvent.currentCoordinates = ContentEvent.event.address.location_coordinates;
+          $scope.$digest();
+        };
+
+        /**
+         * Change the address and map to dragged marker location
+         */
+
+        ContentEvent.setDraggedLocation= function(data){
           ContentEvent.event.address = {
             type: ADDRESS_TYPE.LOCATION,
             location: data.location,
