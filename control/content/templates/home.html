@@ -12,57 +12,18 @@
 <hr class="none">
 <div class="item clearfix">
   <div class="draggable-list-view wide-list has-btn-link no-sort-icon">
-    <div class="d-item double-line square-icon clearfix">
+    <div class="d-item double-line square-icon clearfix" ng-repeat="events in ContentHome.events">
       <div class="media-holder pull-left">
         <img src="http://www.placehold.it/40x30">
       </div>
       <div class="copy pull-right">
-        <a class="text-primary"><span class="title ellipsis pull-left text-primary">Item Name</span></a>
-        <span class="title ellipsis pull-left">Dec 21, 2015 at 7:00 PM PST (UTC -8)</span>
+        <a class="text-primary"><span class="title ellipsis pull-left text-primary" ng-bind-html="ContentHome.safeHtml(events.data.description)"></span></a>
+        <span class="title ellipsis pull-left">{{events.data.startDate}}</span>
         <div class="pull-right">
           <span class="btn-icon btn-edit-icon btn-primary"></span>
           <span class="btn-icon btn-delete-icon btn-danger"></span>
         </div>
       </div>
     </div>
-    <div class="d-item double-line square-icon clearfix">
-      <div class="media-holder pull-left">
-        <img src="http://www.placehold.it/40x30">
-      </div>
-      <div class="copy pull-right">
-        <a class="text-primary"><span class="title ellipsis pull-left text-primary">Item Name</span></a>
-        <span class="title ellipsis pull-left">Dec 21, 2015 at 7:00 PM PST (UTC -8)</span>
-        <div class="pull-right">
-          <span class="btn-icon btn-edit-icon btn-primary"></span>
-          <span class="btn-icon btn-delete-icon btn-danger"></span>
-        </div>
-      </div>
-    </div>
-    <div class="d-item double-line square-icon clearfix">
-      <div class="media-holder pull-left">
-        <img src="http://www.placehold.it/40x30">
-      </div>
-      <div class="copy pull-right">
-        <a class="text-primary"><span class="title ellipsis pull-left text-primary">Item Name</span></a>
-        <span class="title ellipsis pull-left">Dec 21, 2015 at 7:00 PM PST (UTC -8)</span>
-        <div class="pull-right">
-          <span class="btn-icon btn-edit-icon btn-primary"></span>
-          <span class="btn-icon btn-delete-icon btn-danger"></span>
-        </div>
-      </div>
-    </div>
-    <div class="d-item double-line square-icon clearfix">
-      <div class="media-holder pull-left">
-        <img src="http://www.placehold.it/40x30">
-      </div>
-      <div class="copy pull-right">
-        <a class="text-primary"><span class="title ellipsis pull-left text-primary">Item Name</span></a>
-        <span class="title ellipsis pull-left">Dec 21, 2015 at 7:00 PM PST (UTC -8)</span>
-        <div class="pull-right">
-          <span class="btn-icon btn-edit-icon btn-primary"></span>
-          <span class="btn-icon btn-delete-icon btn-danger"></span>
-        </div>
-      </div>
-    </div>
-  </div>
+
 </div>
