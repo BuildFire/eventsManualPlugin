@@ -73,7 +73,7 @@
         };
         ContentHome.searchEvents = function()
         {
-          console.log(ContentHome.searchEvent)
+          console.log(ContentHome.searchEvent);
           var successEvents = function (result) {
             ContentHome.events = result;
            }, errorEvents = function (err) {
@@ -89,7 +89,7 @@
               },
               err = function (err) {
             console.log(err)
-          }
+          };
           DataStore.deleteById(eventId,TAG_NAMES.EVENTS_MANUAL).then(status, err)
         };
         /*

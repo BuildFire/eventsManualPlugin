@@ -329,14 +329,14 @@
         var listImage = new Buildfire.components.images.thumbnail("#listImage", {title: "List Image"});
 
         listImage.onChange = function (url) {
-          ContentEvent.event.listImage = url;
+          ContentEvent.event.data.listImage = url;
           if (!$scope.$$phase && !$scope.$root.$$phase) {
             $scope.$apply();
           }
         };
 
         listImage.onDelete = function (url) {
-          ContentEvent.event.listImage = "";
+          ContentEvent.event.data.listImage = "";
           if (!$scope.$$phase && !$scope.$root.$$phase) {
             $scope.$apply();
           }
