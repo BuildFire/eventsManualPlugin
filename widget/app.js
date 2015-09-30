@@ -9,6 +9,11 @@
           controllerAs: 'WidgetHome',
           controller: 'WidgetHomeCtrl'
         })
+        .when('/event/:id', {
+          templateUrl: 'templates/eventDetails.html',
+          controller: 'WidgetEventCtrl',
+          controllerAs: 'WidgetEvent'
+        })
         .otherwise('/');
-    }])
+    }]);
 })(window.angular, window.buildfire);
