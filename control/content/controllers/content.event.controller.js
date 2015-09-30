@@ -48,6 +48,18 @@
         ContentEvent.getItem = function (id) {
           var successEvents = function (result) {
             ContentEvent.event = result;
+            if (ContentEvent.event.data.startDate)
+              ContentEvent.event.data.startDate = new Date(result.data.startDate);
+            if (ContentEvent.event.data.endDate)
+              ContentEvent.event.data.endDate = new Date(result.data.endDate);
+            if (ContentEvent.event.data.startTime)
+              ContentEvent.event.data.startTime = new Date(result.data.startTime);
+            if (ContentEvent.event.data.endTime)
+              ContentEvent.event.data.endTime = new Date(result.data.endTime);
+            if (ContentEvent.event.data.address && ContentEvent.event.data.address.location) {
+              ContentEvent.currentAddress = ContentEvent.event.data.address.location;
+              ContentEvent.currentCoordinates = ContentEvent.event.data.address.location_coordinates;
+            }
             _data.dateCreated = result.data.dateCreated;
             updateMasterEvent(ContentEvent.event);
           }, errorEvents = function () {
@@ -288,13 +300,13 @@
          */
 
         ContentEvent.setLocation = function (data) {
-          ContentEvent.event.address = {
+          ContentEvent.event.data.address = {
             type: ADDRESS_TYPE.LOCATION,
             location: data.location,
             location_coordinates: data.coordinates
           };
-          ContentEvent.currentAddress = ContentEvent.event.address.location;
-          ContentEvent.currentCoordinates = ContentEvent.event.address.location_coordinates;
+          ContentEvent.currentAddress = ContentEvent.event.data.address.location;
+          ContentEvent.currentCoordinates = ContentEvent.event.data.address.location_coordinates;
           $scope.$digest();
         };
 
@@ -303,13 +315,13 @@
          */
 
         ContentEvent.setDraggedLocation = function (data) {
-          ContentEvent.event.address = {
+          ContentEvent.event.data.address = {
             type: ADDRESS_TYPE.LOCATION,
             location: data.location,
             location_coordinates: data.coordinates
           };
-          ContentEvent.currentAddress = ContentEvent.event.address.location;
-          ContentEvent.currentCoordinates = ContentEvent.event.address.location_coordinates;
+          ContentEvent.currentAddress = ContentEvent.event.data.address.location;
+          ContentEvent.currentCoordinates = ContentEvent.event.data.address.location_coordinates;
           $scope.$digest();
         };
 
@@ -343,7 +355,7 @@
 
         ContentEvent.clearAddress = function () {
           if (!ContentEvent.currentAddress) {
-            ContentEvent.event.address = null;
+            ContentEvent.event.data.address = null;
             ContentEvent.currentCoordinates = null;
           }
         };
@@ -351,13 +363,13 @@
         ContentEvent.setCoordinates = function () {
           function successCallback(resp) {
             if (resp) {
-              ContentEvent.event.address = {
+              ContentEvent.event.data.address = {
                 type: ADDRESS_TYPE.COORDINATES,
                 location: resp.formatted_address || ContentEvent.currentAddress,
                 location_coordinates: [ContentEvent.currentAddress.split(",")[0].trim(), ContentEvent.currentAddress.split(",")[1].trim()]
               };
-              ContentEvent.currentAddress = ContentEvent.event.address.location;
-              ContentEvent.currentCoordinates = ContentEvent.event.address.location_coordinates;
+              ContentEvent.currentAddress = ContentEvent.event.data.address.location;
+              ContentEvent.currentCoordinates = ContentEvent.event.data.address.location_coordinates;
             } else {
               errorCallback();
             }
