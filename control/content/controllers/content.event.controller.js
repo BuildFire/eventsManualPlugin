@@ -2,11 +2,63 @@
 (function (angular) {
   angular
     .module('eventsManualPluginContent')
-    .controller('ContentEventCtrl', ['$scope', '$routeParams', 'Buildfire', 'DataStore', 'TAG_NAMES', 'ADDRESS_TYPE', '$location', 'Utils','$timeout',
-      function ($scope, $routeParams, Buildfire, DataStore, TAG_NAMES, ADDRESS_TYPE, $location, Utils,$timeout) {
+    .controller('ContentEventCtrl', ['$scope', '$routeParams', 'Buildfire', 'DataStore', 'TAG_NAMES', 'ADDRESS_TYPE', '$location', 'Utils', '$timeout',
+      function ($scope, $routeParams, Buildfire, DataStore, TAG_NAMES, ADDRESS_TYPE, $location, Utils, $timeout) {
         var ContentEvent = this;
-        ContentEvent.event = {};
+        var _data = {
+          "title": "",
+          "listImage": "",
+          "deepLinkUrl": "",
+          "carouselImages": [],
+          "startDate": "",
+          "endDate": "",
+          "isAllDay": "",
+          "timezone": "",
+          "timeDisplay": {},
+          "repeat": {},
+          "addressTitle": "",
+          "address": {},
+          "description": "",
+          "links": []
+
+        };
+
+        ContentEvent.event = {
+          data: angular.copy(_data)
+        };
+        ContentEvent.isUpdating = false;
+        ContentEvent.isNewEventInserted = false;
+        ContentEvent.unchangedData = true;
         ContentEvent.displayTiming = "SELECTED";
+
+        function isValidEvent(event) {
+          return event.startDate || event.title;
+        }
+
+        updateMasterEvent(ContentEvent.event);
+
+        function updateMasterEvent(event) {
+          ContentEvent.masterEvent = angular.copy(event);
+        }
+
+        function isUnchanged(event) {
+          return angular.equals(event, ContentEvent.masterEvent);
+        }
+
+        ContentEvent.getItem = function (id) {
+          var successEvents = function (result) {
+            ContentEvent.event = result;
+            _data.dateCreated = result.data.dateCreated;
+            updateMasterEvent(ContentEvent.event);
+          }, errorEvents = function () {
+            throw console.error('There was a problem fetching your data', err);
+          };
+          DataStore.getById(id, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
+        };
+
+        if ($routeParams.id) {
+          ContentEvent.getItem($routeParams.id);
+        }
 
         ContentEvent.TimeZoneDropdownOptions = [
           {name: "(GMT -12:00) Eniwetok, Kwajalein", value: "-12.0"},
@@ -129,25 +181,49 @@
           $scope.$digest();
         };
 
-        var tmrDelayForEvent = null;
-        var updateItemsWithDelay = function () {
-          if (tmrDelayForEvent) {
-            clearTimeout(tmrDelayForEvent);
-          }
-          var success = function (result) {
-              if (!ContentEvent.event.id)
-                ContentEvent.event.id = result.id;
-              console.info('Init success result:', result);
-              if (tmrDelayForEvent)clearTimeout(tmrDelayForEvent);
-            }
-            , error = function (err) {
-
-            };
-          tmrDelayForEvent = setTimeout(function () {
-            DataStore.insert(ContentEvent.event, TAG_NAMES.EVENTS_MANUAL).then(success, error);
-          }, 500);
+        ContentEvent.addNewEvent = function () {
+          ContentEvent.isNewEventInserted = true;
+          ContentEvent.event.data.dateCreated = +new Date();
+          var successEvents = function (result) {
+            console.log("Inserted", result.id);
+            ContentEvent.isUpdating = false;
+            ContentEvent.event.id = result.id;
+            _data.dateCreated = ContentEvent.event.data.dateCreated;
+            updateMasterEvent(ContentEvent.event);
+            ContentEvent.event.data.deepLinkUrl = Buildfire.deeplink.createLink({id: result.id});
+          }, errorEvents = function () {
+            ContentEvent.isNewEventInserted = false;
+            return console.error('There was a problem saving your data');
+          };
+          DataStore.insert(ContentEvent.event.data, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
 
+        ContentEvent.updateEventData = function () {
+          DataStore.update(ContentEvent.event.id, ContentEvent.event.data, TAG_NAMES.EVENTS_MANUAL, function (err) {
+            ContentEvent.isUpdating = false;
+            if (err)
+              return console.error('There was a problem saving your data');
+          })
+        };
+
+        var tmrDelayForEvent = null;
+
+        var updateItemsWithDelay = function (event) {
+          clearTimeout(tmrDelayForEvent);
+          ContentEvent.isUpdating = false;
+          ContentEvent.unchangedData = angular.equals(_data, ContentEvent.event.data);
+
+          ContentEvent.isEventValid = isValidEvent(ContentEvent.event.data);
+          if (!ContentEvent.isUpdating && !isUnchanged(ContentEvent.event) && ContentEvent.isEventValid) {
+            tmrDelayForEvent = setTimeout(function () {
+              if (event.id) {
+                ContentEvent.updateEventData();
+              } else if (!ContentEvent.isNewEventInserted) {
+                ContentEvent.addNewEvent();
+              }
+            }, 300);
+          }
+        };
 
         ContentEvent.changeTimeZone = function (timezone) {
           ContentEvent.event.timezone = timezone;
@@ -239,6 +315,7 @@
 
         /* Build fire thumbnail component to add thumbnail image*/
         var listImage = new Buildfire.components.images.thumbnail("#listImage", {title: "List Image"});
+
         listImage.onChange = function (url) {
           ContentEvent.event.listImage = url;
           if (!$scope.$$phase && !$scope.$root.$$phase) {
@@ -254,9 +331,9 @@
         };
 
         ContentEvent.deleteEvent = function () {
-          var item = ContentEvent.event;
-          if (item.id) {
-            Buildfire.datastore.delete(item.id, TAG_NAMES.EVENTS_MANUAL, function (err, result) {
+          var event = ContentEvent.event;
+          if (event.id) {
+            Buildfire.datastore.delete(event.id, TAG_NAMES.EVENTS_MANUAL, function (err, result) {
               if (err)
                 return;
               $location.path('/');
@@ -295,7 +372,6 @@
 
           Utils.validLongLats(ContentEvent.currentAddress).then(successCallback, errorCallback);
         };
-
 
         $scope.$watch(function () {
           return ContentEvent.event;

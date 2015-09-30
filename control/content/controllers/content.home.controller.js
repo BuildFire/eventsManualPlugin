@@ -80,7 +80,7 @@
 
           };
           DataStore.search({filter:{"$json.data.title":{"$eq":ContentHome.searchEvent}}}, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
-        }
+        };
         /*
          * Call the datastore to save the data object
          */

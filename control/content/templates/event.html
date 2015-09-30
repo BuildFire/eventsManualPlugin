@@ -9,7 +9,7 @@
     </div>
     <div class="main col-md-9 pull-right">
       <input type="text" placeholder="Event Title" class="form-control"
-             ng-model="ContentEvent.event.title">
+             ng-model="ContentEvent.event.data.title">
     </div>
   </div>
   <hr class="none">
@@ -18,7 +18,7 @@
       <span>Deep Link URL</span>
     </div>
     <div class="main col-md-9 pull-right">
-      <span>{{ContentEvent.event.deepLinkUrl}}</span>
+      <span>{{ContentEvent.event.data.deepLinkUrl}}</span>
     </div>
   </div>
   <hr class="none">
@@ -29,7 +29,7 @@
 
     <div class="main col-md-9 pull-right">
       <input type="date" placeholder="Start Date" class="form-control"
-             ng-model="ContentEvent.event.startDate">
+             ng-model="ContentEvent.event.data.startDate">
     </div>
   </div>
   <hr class="none">
@@ -39,7 +39,7 @@
     </div>
     <div class="main col-md-9 pull-right">
       <input type="time" placeholder="Start Time" class="form-control"
-             ng-model="ContentEvent.event.startTime">
+             ng-model="ContentEvent.event.data.startTime">
     </div>
   </div>
   <hr class="none">
@@ -49,7 +49,7 @@
     </div>
     <div class="main col-md-9 pull-right">
       <input type="date" placeholder="End Date" class="form-control"
-             ng-model="ContentEvent.event.endDate">
+             ng-model="ContentEvent.event.data.endDate">
     </div>
   </div>
   <hr class="none">
@@ -60,20 +60,20 @@
     <div class="main col-md-9 pull-right">
       <div class="checkbox checkbox-primary margin-zero no-label">
         <input type="checkbox" id="allday"
-               ng-model="ContentEvent.event.isAllDay"
-               ng-checked="ContentEvent.event.isAllDay">
+               ng-model="ContentEvent.event.data.isAllDay"
+               ng-checked="ContentEvent.event.data.isAllDay">
         <label for="allday"></label>
       </div>
     </div>
   </div>
   <hr class="none">
-  <div class="item clearfix row" ng-if="!ContentEvent.event.isAllDay">
+  <div class="item clearfix row" ng-if="!ContentEvent.event.data.isAllDay">
     <div class="labels col-md-3 padding-right-zero pull-left">
       <span>End Time</span>
     </div>
     <div class="main col-md-9 pull-right">
       <input type="time" class="form-control" placeholder="End Time"
-             ng-model="ContentEvent.event.endTime">
+             ng-model="ContentEvent.event.data.endTime">
     </div>
   </div>
   <hr class="none">
@@ -85,7 +85,7 @@
       <div class="dropdown pull-left col-md-12 padding-zero" dropdown>
         <button class="btn btn-default text-left dropdown-toggle"
                 data-toggle="dropdown" dropdown-toggle aria-expanded="true">
-          <span class="pull-left">{{ContentEvent.event.timezone.name ||
+          <span class="pull-left">{{ContentEvent.event.data.timezone.name ||
             "Choose timezone"
             }}</span>
           <span class="chevron icon-chevron-down pull-right"></span>
@@ -109,14 +109,14 @@
       <div class="radio radio-primary radio-inline">
         <input id="selectedtimezone" type="radio" name="timedisplay"
                ng-model="ContentEvent.displayTiming" value="SELECTED"
-               ng-change="ContentEvent.event.timeDisplay = 'SELECTED'">
+               ng-change="ContentEvent.event.data.timeDisplay = 'SELECTED'">
         <label for="selectedtimezone" name="timedisplay">Selected Time
           Zone</label>
       </div>
       <div class="radio radio-primary radio-inline">
         <input id="usertimezone" type="radio" name="timedisplay"
                ng-model="ContentEvent.displayTiming" value="USER"
-               ng-change="ContentEvent.event.timeDisplay = 'USER'">
+               ng-change="ContentEvent.event.data.timeDisplay = 'USER'">
         <label for="usertimezone" name="timedisplay">User's Time Zone</label>
       </div>
     </div>
@@ -129,14 +129,14 @@
     <div class="main col-md-9 pull-right">
       <div class="checkbox checkbox-primary margin-zero no-label">
         <input type="checkbox" id="repeat"
-               ng-model="ContentEvent.event.repeat.isRepeating"
-               ng-checked="ContentEvent.event.repeat.isRepeating">
+               ng-model="ContentEvent.event.data.repeat.isRepeating"
+               ng-checked="ContentEvent.event.data.repeat.isRepeating">
         <label for="repeat"></label>
       </div>
     </div>
   </div>
   <hr class="none">
-  <div class="item clearfix row" ng-if="ContentEvent.event.repeat.isRepeating">
+  <div class="item clearfix row" ng-if="ContentEvent.event.data.repeat.isRepeating">
     <div class="labels col-md-3 padding-right-zero pull-left">
       <span>Repeats</span>
     </div>
@@ -144,7 +144,7 @@
       <div class="dropdown pull-left col-md-12 padding-zero" dropdown>
         <button class="btn btn-default text-left dropdown-toggle"
                 data-toggle="dropdown" dropdown-toggle aria-expanded="true">
-          <span class="pull-left">{{ContentEvent.event.repeat.repeatType
+          <span class="pull-left">{{ContentEvent.event.data.repeat.repeatType
             || "Choose repeat duration"}}</span>
           <span class="chevron icon-chevron-down pull-right"></span>
         </button>
@@ -168,7 +168,7 @@
   <hr class="none">
   <hr>
   <span
-      ng-if="ContentEvent.event.repeat.isRepeating && ContentEvent.event.repeat.repeatType == 'Daily'">
+      ng-if="ContentEvent.event.data.repeat.isRepeating && ContentEvent.event.data.repeat.repeatType == 'Daily'">
   <h4>Repeats Daily</h4>
   <hr class="none">
   <div class="item clearfix row">
@@ -178,7 +178,7 @@
     <div class="main col-md-9 pull-right">
       <div class="col-md-4 pull-left padding-left-zero">
         <input type="text" class="form-control text-center" placeholder="1"
-               ng-model="ContentEvent.event.repeat.repeatCount">
+               ng-model="ContentEvent.event.data.repeat.repeatCount">
       </div>
       <div class="col-md-4 pull-left padding-left-zero">
         <p class="margin-top-five margin-bottom-zero">Days</p>
@@ -192,7 +192,7 @@
     </div>
     <div class="main col-md-9 pull-right">
       <input type="date" class="form-control" placeholder="Show Start Date"
-             ng-model="ContentEvent.event.repeat.startDate">
+             ng-model="ContentEvent.event.data.repeat.startDate">
     </div>
   </div>
   <hr class="none">
@@ -203,7 +203,7 @@
     <div class="main col-md-9 pull-right">
       <div class="radio radio-primary margin-zero">
         <input type="radio" id="endsNeverDaily" name="endsRadioDaily"
-               ng-model="ContentEvent.event.repeat.end" value="NEVER">
+               ng-model="ContentEvent.event.data.repeat.end" value="NEVER">
         <label for="endsNeverDaily">Never</label>
       </div>
     </div>
@@ -215,14 +215,14 @@
         <div
             class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
           <input type="radio" id="endsAfterDaily" name="endsRadioDaily"
-                 ng-model="ContentEvent.event.repeat.end" value="AFTER">
+                 ng-model="ContentEvent.event.data.repeat.end" value="AFTER">
           <label for="endsAfterDaily">After</label>
         </div>
       </div>
       <div class="col-md-9 padding-zero pull-left">
         <div class="col-md-6 pull-left padding-zero">
           <input type="text" class="form-control text-center"
-                 ng-model="ContentEvent.event.repeat.endAfter">
+                 ng-model="ContentEvent.event.data.repeat.endAfter">
         </div>
         <div class="col-md-6 pull-left padding-right-zero">
           <p class="margin-top-five margin-bottom-zero">Occurrences</p>
@@ -237,14 +237,14 @@
         <div
             class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
           <input type="radio" id="endsOnDaily" name="endsRadioDaily"
-                 ng-model="ContentEvent.event.repeat.end" value="ON">
+                 ng-model="ContentEvent.event.data.repeat.end" value="ON">
           <label for="endsOnDaily">On</label>
         </div>
       </div>
       <div class="col-md-9 padding-zero pull-left">
         <div class="col-md-12 pull-left padding-zero">
           <input type="date" class="form-control text-center"
-                 ng-model="ContentEvent.event.repeat.endOn">
+                 ng-model="ContentEvent.event.data.repeat.endOn">
         </div>
       </div>
     </div>
@@ -252,7 +252,7 @@
   </span>
   <hr class="none">
   <span
-      ng-if="ContentEvent.event.repeat.isRepeating && ContentEvent.event.repeat.repeatType == 'Weekly'">
+      ng-if="ContentEvent.event.data.repeat.isRepeating && ContentEvent.event.data.repeat.repeatType == 'Weekly'">
     <h4>Repeats Weekly</h4>
   <hr class="none">
   <div class="item clearfix row">
@@ -262,7 +262,7 @@
     <div class="main col-md-9 pull-right">
       <div class="col-md-4 pull-left padding-left-zero">
         <input type="text" class="form-control text-center" placeholder="1"
-               ng-model="ContentEvent.event.repeat.repeatCount">
+               ng-model="ContentEvent.event.data.repeat.repeatCount">
       </div>
       <div class="col-md-4 pull-left padding-left-zero">
         <p class="margin-top-five margin-bottom-zero">Weeks</p>
@@ -277,37 +277,37 @@
     <div class="main col-md-9 pull-right">
       <div class="checkbox checkbox-primary margin-zero">
         <input type="checkbox" id="repeatSu"
-               ng-model="ContentEvent.event.repeat.days.sunday">
+               ng-model="ContentEvent.event.data.repeat.days.sunday">
         <label for="repeatSu">Su</label>
       </div>
       <div class="checkbox checkbox-primary margin-zero margin-left-five">
         <input type="checkbox" id="repeatMo"
-               ng-model="ContentEvent.event.repeat.days.monday">
+               ng-model="ContentEvent.event.data.repeat.days.monday">
         <label for="repeatMo">Mo</label>
       </div>
       <div class="checkbox checkbox-primary margin-zero margin-left-five">
         <input type="checkbox" id="repeatTu"
-               ng-model="ContentEvent.event.repeat.days.tuesday">
+               ng-model="ContentEvent.event.data.repeat.days.tuesday">
         <label for="repeatTu">Tu</label>
       </div>
       <div class="checkbox checkbox-primary margin-zero margin-left-five">
         <input type="checkbox" id="repeatWe"
-               ng-model="ContentEvent.event.repeat.days.wednesday">
+               ng-model="ContentEvent.event.data.repeat.days.wednesday">
         <label for="repeatWe">We</label>
       </div>
       <div class="checkbox checkbox-primary margin-zero margin-left-five">
         <input type="checkbox" id="repeatTh"
-               ng-model="ContentEvent.event.repeat.days.thursday">
+               ng-model="ContentEvent.event.data.repeat.days.thursday">
         <label for="repeatTh">Th</label>
       </div>
       <div class="checkbox checkbox-primary margin-zero margin-left-five">
         <input type="checkbox" id="repeatFr"
-               ng-model="ContentEvent.event.repeat.days.friday">
+               ng-model="ContentEvent.event.data.repeat.days.friday">
         <label for="repeatFr">Fr</label>
       </div>
       <div class="checkbox checkbox-primary margin-zero margin-left-five">
         <input type="checkbox" id="repeatSa"
-               ng-model="ContentEvent.event.repeat.days.saturday">
+               ng-model="ContentEvent.event.data.repeat.days.saturday">
         <label for="repeatSa">Sa</label>
       </div>
     </div>
@@ -319,7 +319,7 @@
     </div>
     <div class="main col-md-9 pull-right">
       <input type="date" class="form-control" placeholder="Show Start Date"
-             ng-model="ContentEvent.event.repeat.startDate">
+             ng-model="ContentEvent.event.data.repeat.startDate">
     </div>
   </div>
   <hr class="none">
@@ -330,7 +330,7 @@
     <div class="main col-md-9 pull-right">
       <div class="radio radio-primary margin-zero">
         <input type="radio" id="endsNeverWeekly" name="endsRadioWeekly"
-               ng-model="ContentEvent.event.repeat.end" value="NEVER">
+               ng-model="ContentEvent.event.data.repeat.end" value="NEVER">
         <label for="endsNeverWeekly">Never</label>
       </div>
     </div>
@@ -342,14 +342,14 @@
         <div
             class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
           <input type="radio" id="endsAfterWeekly" name="endsRadioWeekly"
-                 ng-model="ContentEvent.event.repeat.end" value="AFTER">
+                 ng-model="ContentEvent.event.data.repeat.end" value="AFTER">
           <label for="endsAfterWeekly">After</label>
         </div>
       </div>
       <div class="col-md-9 padding-zero pull-left">
         <div class="col-md-6 pull-left padding-zero">
           <input type="text" class="form-control text-center"
-                 ng-model="ContentEvent.event.repeat.endAfter">
+                 ng-model="ContentEvent.event.data.repeat.endAfter">
         </div>
         <div class="col-md-6 pull-left padding-right-zero">
           <p class="margin-top-five margin-bottom-zero">Occurrences</p>
@@ -364,14 +364,14 @@
         <div
             class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
           <input type="radio" id="endsOnWeekly" name="endsRadioWeekly"
-                 ng-model="ContentEvent.event.repeat.end" value="ON">
+                 ng-model="ContentEvent.event.data.repeat.end" value="ON">
           <label for="endsOnWeekly">On</label>
         </div>
       </div>
       <div class="col-md-9 padding-zero pull-left">
         <div class="col-md-12 pull-left padding-zero">
           <input type="date" class="form-control text-center"
-                 ng-model="ContentEvent.event.repeat.endOn">
+                 ng-model="ContentEvent.event.data.repeat.endOn">
         </div>
       </div>
     </div>
@@ -379,7 +379,7 @@
   </span>
   <hr class="none">
   <span
-      ng-if="ContentEvent.event.repeat.isRepeating && ContentEvent.event.repeat.repeatType == 'Monthly'">
+      ng-if="ContentEvent.event.data.repeat.isRepeating && ContentEvent.event.data.repeat.repeatType == 'Monthly'">
     <h4>Repeats Monthly</h4>
   <hr class="none">
   <div class="item clearfix row">
@@ -389,7 +389,7 @@
     <div class="main col-md-9 pull-right">
       <div class="col-md-4 pull-left padding-left-zero">
         <input type="text" class="form-control text-center" placeholder="1"
-               ng-model="ContentEvent.event.repeat.repeatCount">
+               ng-model="ContentEvent.event.data.repeat.repeatCount">
       </div>
       <div class="col-md-4 pull-left padding-left-zero">
         <p class="margin-top-five margin-bottom-zero">Months</p>
@@ -403,7 +403,7 @@
     </div>
     <div class="main col-md-9 pull-right">
       <input type="date" class="form-control" placeholder="Show Start Date"
-             ng-model="ContentEvent.event.repeat.startDate">
+             ng-model="ContentEvent.event.data.repeat.startDate">
     </div>
   </div>
   <hr class="none">
@@ -414,7 +414,7 @@
     <div class="main col-md-9 pull-right">
       <div class="radio radio-primary margin-zero">
         <input type="radio" id="endsNeverMonthly" name="endsRadioMonthly"
-               ng-model="ContentEvent.event.repeat.end" value="NEVER">
+               ng-model="ContentEvent.event.data.repeat.end" value="NEVER">
         <label for="endsNeverMonthly">Never</label>
       </div>
     </div>
@@ -426,14 +426,14 @@
         <div
             class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
           <input type="radio" id="endsAfterMonthly" name="endsRadioMonthly"
-                 ng-model="ContentEvent.event.repeat.end" value="AFTER">
+                 ng-model="ContentEvent.event.data.repeat.end" value="AFTER">
           <label for="endsAfterMonthly">After</label>
         </div>
       </div>
       <div class="col-md-9 padding-zero pull-left">
         <div class="col-md-6 pull-left padding-zero">
           <input type="text" class="form-control text-center"
-                 ng-model="ContentEvent.event.repeat.endAfter">
+                 ng-model="ContentEvent.event.data.repeat.endAfter">
         </div>
         <div class="col-md-6 pull-left padding-right-zero">
           <p class="margin-top-five margin-bottom-zero">Occurrences</p>
@@ -448,14 +448,14 @@
         <div
             class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
           <input type="radio" id="endsOnMonthly" name="endsRadioMonthly"
-                 ng-model="ContentEvent.event.repeat.end" value="ON">
+                 ng-model="ContentEvent.event.data.repeat.end" value="ON">
           <label for="endsOnMonthly">On</label>
         </div>
       </div>
       <div class="col-md-9 padding-zero pull-left">
         <div class="col-md-12 pull-left padding-zero">
           <input type="date" class="form-control text-center"
-                 ng-model="ContentEvent.event.repeat.endOn">
+                 ng-model="ContentEvent.event.data.repeat.endOn">
         </div>
       </div>
     </div>
@@ -463,7 +463,7 @@
   </span>
   <hr class="none">
   <span
-      ng-if="ContentEvent.event.repeat.isRepeating && ContentEvent.event.repeat.repeatType == 'Yearly'">
+      ng-if="ContentEvent.event.data.repeat.isRepeating && ContentEvent.event.data.repeat.repeatType == 'Yearly'">
     <h4>Repeats Yearly</h4>
   <hr class="none">
   <div class="item clearfix row">
@@ -473,7 +473,7 @@
     <div class="main col-md-9 pull-right">
       <div class="col-md-4 pull-left padding-left-zero">
         <input type="text" class="form-control text-center" placeholder="1"
-               ng-model="ContentEvent.event.repeat.repeatCount">
+               ng-model="ContentEvent.event.data.repeat.repeatCount">
       </div>
       <div class="col-md-4 pull-left padding-left-zero">
         <p class="margin-top-five margin-bottom-zero">Years</p>
@@ -487,7 +487,7 @@
     </div>
     <div class="main col-md-9 pull-right">
       <input type="date" class="form-control" placeholder="Show Start Date"
-             ng-model="ContentEvent.event.repeat.startDate">
+             ng-model="ContentEvent.event.data.repeat.startDate">
     </div>
   </div>
   <hr class="none">
@@ -498,7 +498,7 @@
     <div class="main col-md-9 pull-right">
       <div class="radio radio-primary margin-zero">
         <input type="radio" id="endsNeverYearly" name="endsRadioYearly"
-               ng-model="ContentEvent.event.repeat.end" value="NEVER">
+               ng-model="ContentEvent.event.data.repeat.end" value="NEVER">
         <label for="endsNeverYearly">Never</label>
       </div>
     </div>
@@ -510,14 +510,14 @@
         <div
             class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
           <input type="radio" id="endsAfterYearly" name="endsRadioYearly"
-                 ng-model="ContentEvent.event.repeat.end" value="AFTER">
+                 ng-model="ContentEvent.event.data.repeat.end" value="AFTER">
           <label for="endsAfterYearly">After</label>
         </div>
       </div>
       <div class="col-md-9 padding-zero pull-left">
         <div class="col-md-6 pull-left padding-zero">
           <input type="text" class="form-control text-center"
-                 ng-model="ContentEvent.event.repeat.endAfter">
+                 ng-model="ContentEvent.event.data.repeat.endAfter">
         </div>
         <div class="col-md-6 pull-left padding-right-zero">
           <p class="margin-top-five margin-bottom-zero">Occurrences</p>
@@ -532,14 +532,14 @@
         <div
             class="radio radio-primary pull-left margin-top-five margin-bottom-zero">
           <input type="radio" id="endsOnYearly" name="endsRadioYearly"
-                 ng-model="ContentEvent.event.repeat.end" value="ON">
+                 ng-model="ContentEvent.event.data.repeat.end" value="ON">
           <label for="endsOnYearly">On</label>
         </div>
       </div>
       <div class="col-md-9 padding-zero pull-left">
         <div class="col-md-12 pull-left padding-zero">
           <input type="date" class="form-control text-center"
-                 ng-model="ContentEvent.event.repeat.endOn">
+                 ng-model="ContentEvent.event.data.repeat.endOn">
         </div>
       </div>
     </div>
@@ -553,7 +553,7 @@
     </div>
     <div class="main col-md-9 pull-right">
       <input type="text" class="form-control" placeholder="Address Title"
-             ng-model="ContentEvent.event.addressTitle">
+             ng-model="ContentEvent.event.data.addressTitle">
     </div>
   </div>
   <hr class="none">
@@ -593,7 +593,7 @@
       <textarea rows="5" width="100%"
                 class="form-control" placeholder="WYSIWYG"
                 ui-tinymce="ContentEvent.descriptionWYSIWYGOptions"
-                ng-model="ContentEvent.event.description"></textarea>
+                ng-model="ContentEvent.event.data.description"></textarea>
     </div>
   </div>
   <hr class="none">
@@ -616,9 +616,9 @@
     <div class="main col-md-12 pull-right">
       <div class="draggable-list-view wide-list has-btn links-list"
            ui-sortable="ContentEvent.linksSortableOptions"
-           ng-model="ContentEvent.event.links">
+           ng-model="ContentEvent.event.data.links">
         <div class=" ui-sortable d-item double-line square-icon clearfix"
-             ng-repeat="_link in ContentEvent.event.links">
+             ng-repeat="_link in ContentEvent.event.data.links">
           <span class="icon icon-menu cursor-grab pull-left"></span>
 
           <div class="media-holder pull-left">
@@ -640,7 +640,7 @@
 
         <!-- Show If No Items -->
         <div class="well text-center margin-bottom-zero border-none"
-             ng-hide="ContentEvent.event.links.length">
+             ng-hide="ContentEvent.event.data.links.length">
           <p class="margin-zero">No items found.</p>
         </div>
       </div>
