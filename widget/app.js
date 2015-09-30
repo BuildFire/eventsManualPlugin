@@ -1,7 +1,7 @@
 'use strict';
 
 (function (angular, buildfire) {
-  angular.module('eventsManualPluginWidget', ['ngRoute'])
+  angular.module('eventsManualPluginWidget', ['ngRoute','ui.bootstrap'])
     .config(['$routeProvider', function ($routeProvider) {
       $routeProvider
         .when('/', {
