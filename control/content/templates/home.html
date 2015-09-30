@@ -14,7 +14,7 @@
   <div ng-if="ContentHome.events.length" class="draggable-list-view wide-list has-btn-link no-sort-icon">
     <div class="d-item double-line square-icon clearfix" ng-repeat="event in ContentHome.events">
       <div class="media-holder pull-left">
-        <img src="http://www.placehold.it/40x30">
+        <img ng-src=="{{event.data.listImage}}">
       </div>
       <div class="copy pull-right">
         <a class="text-primary" href="#/event/{{event.id}}"><span
@@ -22,7 +22,7 @@
         <span class="title ellipsis pull-left">{{event.data.startDate}}</span>
         <div class="pull-right">
           <span class="btn-icon btn-edit-icon btn-primary"></span>
-          <span class="btn-icon btn-delete-icon btn-danger"></span>
+          <span class="btn-icon btn-delete-icon btn-danger" ng-click="ContentHome.removeEvent(event.id, $index)"></span>
         </div>
       </div>
     </div>
