@@ -48,6 +48,14 @@
         ContentEvent.getItem = function (id) {
           var successEvents = function (result) {
             ContentEvent.event = result;
+            if (ContentEvent.event.data.startDate)
+              ContentEvent.event.data.startDate = new Date(result.data.startDate);
+            if (ContentEvent.event.data.endDate)
+              ContentEvent.event.data.endDate = new Date(result.data.endDate);
+            if (ContentEvent.event.data.startTime)
+              ContentEvent.event.data.startTime = new Date(result.data.startTime);
+            if (ContentEvent.event.data.endTime)
+              ContentEvent.event.data.endTime = new Date(result.data.endTime);
             _data.dateCreated = result.data.dateCreated;
             updateMasterEvent(ContentEvent.event);
           }, errorEvents = function () {
