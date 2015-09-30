@@ -3,9 +3,9 @@
 (function (angular) {
   angular
     .module('eventsManualPluginContent')
-    .controller('ContentHomeCtrl', ['$scope', 'TAG_NAMES', 'STATUS_CODE', 'DataStore', 'LAYOUTS','$sce','Buildfire', '$modal',
-      function ($scope, TAG_NAMES, STATUS_CODE, DataStore, LAYOUTS,$sce,Buildfire,$modal) {
-        var _data = {
+      .controller('ContentHomeCtrl', ['$scope', 'TAG_NAMES', 'STATUS_CODE', 'DataStore', 'LAYOUTS','$sce','Buildfire','$modal',
+        function ($scope, TAG_NAMES, STATUS_CODE, DataStore, LAYOUTS,$sce,Buildfire,$modal) {
+          var _data = {
           "content": {},
           "design": {
             "itemDetailsLayout": LAYOUTS.itemDetailLayouts[0].name,
