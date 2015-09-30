@@ -11,19 +11,24 @@
 </div>
 <hr class="none">
 <div class="item clearfix">
-  <div class="draggable-list-view wide-list has-btn-link no-sort-icon">
-    <div class="d-item double-line square-icon clearfix" ng-repeat="events in ContentHome.events">
+  <div ng-if="ContentHome.events.length" class="draggable-list-view wide-list has-btn-link no-sort-icon">
+    <div class="d-item double-line square-icon clearfix" ng-repeat="event in ContentHome.events">
       <div class="media-holder pull-left">
         <img src="http://www.placehold.it/40x30">
       </div>
       <div class="copy pull-right">
-        <a class="text-primary"><span class="title ellipsis pull-left text-primary" ng-bind-html="ContentHome.safeHtml(events.data.title)"></span></a>
-        <span class="title ellipsis pull-left">{{events.data.startDate}}</span>
+        <a class="text-primary"><span class="title ellipsis pull-left text-primary">{{event.data.title}}</span></a>
+        <span class="title ellipsis pull-left">{{event.data.startDate}}</span>
         <div class="pull-right">
           <span class="btn-icon btn-edit-icon btn-primary"></span>
           <span class="btn-icon btn-delete-icon btn-danger"></span>
         </div>
       </div>
     </div>
-
+</div>
+  <!-- Show If No Items -->
+  <div class="well text-center margin-bottom-zero border-none"
+       ng-hide="ContentHome.events.length">
+    <p class="margin-zero">No items found.</p>
+  </div>
 </div>
