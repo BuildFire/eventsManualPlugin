@@ -3,8 +3,8 @@
 (function (angular) {
   angular
     .module('eventsManualPluginContent')
-    .controller('ContentHomeCtrl', ['$scope', 'TAG_NAMES', 'STATUS_CODE', 'DataStore', 'LAYOUTS','$sce',
-      function ($scope, TAG_NAMES, STATUS_CODE, DataStore, LAYOUTS,$sce) {
+    .controller('ContentHomeCtrl', ['$scope', 'TAG_NAMES', 'STATUS_CODE', 'DataStore', 'LAYOUTS','$sce','Buildfire',
+      function ($scope, TAG_NAMES, STATUS_CODE, DataStore, LAYOUTS,$sce,Buildfire) {
         var _data = {
           "content": {},
           "design": {
@@ -13,7 +13,7 @@
           }
         };
         var ContentHome = this;
-
+        ContentHome.searchEvent=null;
         /*
          * ContentHome.events used to store the list of events fetched from datastore.
          */
@@ -73,13 +73,24 @@
         };
         ContentHome.searchEvents = function()
         {
+          console.log(ContentHome.searchEvent)
           var successEvents = function (result) {
             ContentHome.events = result;
-            console.log("eeeee",ContentHome.events)
-          }, errorEvents = function () {
-
+           }, errorEvents = function (err) {
+            console.log(err)
           };
-          DataStore.search({filter:{"$json.data.title":{"$eq":ContentHome.searchEvent}}}, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
+          DataStore.search({filter:{"$or":[{"$json.id":ContentHome.searchEvent}]}}, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
+        };
+
+        ContentHome.removeEvent = function (eventId, index) {
+          ContentHome.events.splice(index, 1);
+          var status = function (result) {
+              console.log(result)
+              },
+              err = function (err) {
+            console.log(err)
+          }
+          DataStore.deleteById(eventId,TAG_NAMES.EVENTS_MANUAL).then(status, err)
         };
         /*
          * Call the datastore to save the data object
