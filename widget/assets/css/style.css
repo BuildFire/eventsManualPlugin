@@ -50,3 +50,9 @@
     -moz-user-select: none;
     user-select: none;
 }
+
+.eventDate button span {
+    background-color: limegreen;
+    border-radius: 32px;
+    color: black;
+}

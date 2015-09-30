@@ -6,7 +6,7 @@
       function ($scope, TAG_NAMES, LAYOUTS, DataStore) {
         var WidgetHome = this;
         WidgetHome.data = null;
-
+        WidgetHome.events =null;
         /*
          * Fetch user's data from datastore
          */
@@ -26,9 +26,24 @@
                 console.error('Error while getting data', err);
               }
             };
-          DataStore.get(TAG_NAMES.EVENTS_MANUAL_INFO).then(success, error);
-        };
-        init();
+          var successEvents = function (result) {
+            WidgetHome.events = result;
 
+          }, errorEvents = function () {
+
+          };
+          DataStore.get(TAG_NAMES.EVENTS_MANUAL_INFO).then(success, error);
+          DataStore.search({}, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
+        };
+
+        init();
+         $scope.getDayClass = function (date, mode) {
+
+          var dayToCheck = new Date(date).setHours(0,0,0,0);
+          var currentDay = new Date('2015-09-15T18:30:00.000Z').setHours(0,0,0,0);
+          if (dayToCheck === currentDay) {
+            return 'eventDate';
+          }
+        };
       }])
 })(window.angular);
