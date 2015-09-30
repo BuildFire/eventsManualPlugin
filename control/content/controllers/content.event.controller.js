@@ -257,9 +257,9 @@
             if (error) {
               return console.error('Error:', error);
             }
-            if (!ContentEvent.event.links)
-              ContentEvent.event.links = [];
-            ContentEvent.event.links.push(result);
+            if (!ContentEvent.event.data.links)
+              ContentEvent.event.data.links = [];
+            ContentEvent.event.data.links.push(result);
             $scope.$digest();
           };
           Buildfire.actionItems.showDialog(null, options, callback);
@@ -270,8 +270,8 @@
          */
 
         ContentEvent.removeLink = function (index) {
-          if (ContentEvent.event && ContentEvent.event.links) {
-            ContentEvent.event.links.splice(index, 1);
+          if (ContentEvent.event.data && ContentEvent.event.data.links) {
+            ContentEvent.event.data.links.splice(index, 1);
           }
         };
 
@@ -284,13 +284,13 @@
             if (error) {
               return console.error('Error:', error);
             }
-            if (!ContentEvent.event.links) {
-              ContentEvent.event.links = [];
+            if (!ContentEvent.event.data.links) {
+              ContentEvent.event.data.links = [];
             }
             if (result === null) {
               return console.error('Error:Can not save data, Null record found.');
             }
-            ContentEvent.event.links.splice(index, 1, result);
+            ContentEvent.event.data.links.splice(index, 1, result);
             $scope.$digest();
           });
         };
