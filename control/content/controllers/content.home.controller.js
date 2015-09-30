@@ -3,8 +3,8 @@
 (function (angular) {
   angular
     .module('eventsManualPluginContent')
-    .controller('ContentHomeCtrl', ['$scope', 'TAG_NAMES', 'STATUS_CODE', 'DataStore', 'LAYOUTS','$sce','Buildfire',
-      function ($scope, TAG_NAMES, STATUS_CODE, DataStore, LAYOUTS,$sce,Buildfire) {
+    .controller('ContentHomeCtrl', ['$scope', 'TAG_NAMES', 'STATUS_CODE', 'DataStore', 'LAYOUTS','$sce','Buildfire', '$modal',
+      function ($scope, TAG_NAMES, STATUS_CODE, DataStore, LAYOUTS,$sce,Buildfire,$modal) {
         var _data = {
           "content": {},
           "design": {
@@ -83,14 +83,31 @@
         };
 
         ContentHome.removeEvent = function (eventId, index) {
-          ContentHome.events.splice(index, 1);
           var status = function (result) {
               console.log(result)
               },
               err = function (err) {
             console.log(err)
           }
-          DataStore.deleteById(eventId,TAG_NAMES.EVENTS_MANUAL).then(status, err)
+          var modalInstance = $modal.open({
+            templateUrl: 'templates/modals/remove-event.html',
+            controller: 'RemoveEventPopupCtrl',
+            controllerAs: 'RemoveEventPopup',
+            size: 'sm',
+            resolve: {
+              eventsManualData: function () {
+                return ContentHome.events[index];
+              }
+            }
+          });
+          modalInstance.result.then(function (message) {
+            if (message === 'yes') {
+              ContentHome.events.splice(index, 1);
+              DataStore.deleteById(eventId,TAG_NAMES.EVENTS_MANUAL).then(status, err)
+            }
+          }, function (data) {
+            //do something on cancel
+          });
         };
         /*
          * Call the datastore to save the data object

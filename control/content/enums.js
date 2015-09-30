@@ -5,7 +5,9 @@
     .constant('TAG_NAMES', {
       EVENTS_MANUAL_INFO: 'eventsManualInfo',
       EVENTS_MANUAL: "eventsManual"
-    })
+    }).constant('COLLECTIONS', {
+        eventsManualData: "eventsManualData"
+      })
     .constant('STATUS_CODE', {
       INSERTED: 'inserted',
       UPDATED: 'updated',
