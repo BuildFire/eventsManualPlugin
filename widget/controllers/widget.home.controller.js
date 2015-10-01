@@ -27,6 +27,8 @@
               }
             };
           var successEvents = function (result) {
+            console.log("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+            console.log(result);
             WidgetHome.events = result;
 
           }, errorEvents = function () {

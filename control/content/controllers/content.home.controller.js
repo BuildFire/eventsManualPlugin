@@ -73,7 +73,7 @@
         };
         ContentHome.searchEvents = function()
         {
-          console.log(ContentHome.searchEvent)
+          console.log(ContentHome.searchEvent);
           var successEvents = function (result) {
             ContentHome.events = result;
            }, errorEvents = function (err) {

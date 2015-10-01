@@ -29,7 +29,7 @@
         ContentEvent.isUpdating = false;
         ContentEvent.isNewEventInserted = false;
         ContentEvent.unchangedData = true;
-        ContentEvent.displayTiming = "SELECTED";
+        ContentEvent.displayTiming = "USER";
 
         function isValidEvent(event) {
           return event.startDate || event.title;
@@ -63,6 +63,9 @@
             }
             if (ContentEvent.event.data.listImage) {
               listImage.loadbackground(ContentEvent.event.data.listImage);
+            }
+            if (ContentEvent.event.data.timeDisplay) {
+              ContentEvent.displayTiming = ContentEvent.event.data.timeDisplay;
             }
             _data.dateCreated = result.data.dateCreated;
             updateMasterEvent(ContentEvent.event);
