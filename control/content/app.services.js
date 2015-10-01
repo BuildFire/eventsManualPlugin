@@ -30,7 +30,7 @@
               message: STATUS_MESSAGES.UNDEFINED_ID
             }));
           }
-          Buildfire.datastore.get(_tagName, function (err, result) {
+          Buildfire.datastore.getById(_id,_tagName, function (err, result) {
             if (err) {
               return deferred.reject(err);
             } else if (result) {

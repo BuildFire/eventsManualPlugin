@@ -47,6 +47,7 @@
 
         ContentEvent.getItem = function (id) {
           var successEvents = function (result) {
+            console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&", result);
             ContentEvent.event = result;
             if (ContentEvent.event.data.startDate)
               ContentEvent.event.data.startDate = new Date(result.data.startDate);
