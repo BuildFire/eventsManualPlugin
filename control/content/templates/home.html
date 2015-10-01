@@ -20,7 +20,8 @@
       <div class="copy pull-right">
         <a class="text-primary" href="#/event/{{event.id}}"><span
             class="title ellipsis pull-left text-primary">{{event.data.title}}</span></a>
-        <span class="title ellipsis pull-left">{{event.data.startDate}}</span>
+        <span class="title ellipsis pull-left">{{event.data.startDate | getDateFromTimestamp
+          }}</span>
         <div class="pull-right">
           <span class="btn-icon btn-edit-icon btn-primary"></span>
           <span class="btn-icon btn-delete-icon btn-danger" ng-click="ContentHome.removeEvent(event.id, $index)"></span>

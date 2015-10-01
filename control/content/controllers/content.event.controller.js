@@ -32,7 +32,7 @@
         ContentEvent.displayTiming = "USER";
 
         function isValidEvent(event) {
-          return event.startDate || event.title;
+          return event.startDate;
         }
 
         updateMasterEvent(ContentEvent.event);
@@ -214,10 +214,14 @@
             ContentEvent.isNewEventInserted = false;
             return console.error('There was a problem saving your data');
           };
+          if (ContentEvent.event.data.startDate)
+            ContentEvent.event.data.startDate = +new Date(ContentEvent.event.data.startDate);
           DataStore.insert(ContentEvent.event.data, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
 
         ContentEvent.updateEventData = function () {
+          if (ContentEvent.event.data.startDate)
+            ContentEvent.event.data.startDate = +new Date(ContentEvent.event.data.startDate);
           DataStore.update(ContentEvent.event.id, ContentEvent.event.data, TAG_NAMES.EVENTS_MANUAL, function (err) {
             ContentEvent.isUpdating = false;
             if (err)
@@ -391,6 +395,10 @@
           }
 
           Utils.validLongLats(ContentEvent.currentAddress).then(successCallback, errorCallback);
+        };
+
+        ContentEvent.gotToHome  = function(){
+          $location.path('/');
         };
 
         $scope.$watch(function () {

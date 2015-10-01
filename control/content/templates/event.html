@@ -654,8 +654,10 @@
            ng-click="ContentEvent.deleteEvent()">Delete</a>
       </div>
       <div class="col-md-6 pull-right padding-right-zero padding-left-ten">
-        <a class="btn btn-primary pull-right stretch"
-           href="#/">Done</a>
+        <button class="btn btn-primary pull-right stretch"
+           ng-click="ContentEvent.gotToHome()"
+                ng-disabled="!ContentEvent.event.data.startDate">Done
+        </button>
       </div>
     </div>
   </div>
