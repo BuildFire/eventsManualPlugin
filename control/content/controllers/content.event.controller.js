@@ -60,6 +60,9 @@
               ContentEvent.currentAddress = ContentEvent.event.data.address.location;
               ContentEvent.currentCoordinates = ContentEvent.event.data.address.location_coordinates;
             }
+            if (ContentEvent.event.data.listImage) {
+              listImage.loadbackground(ContentEvent.event.data.listImage);
+            }
             _data.dateCreated = result.data.dateCreated;
             updateMasterEvent(ContentEvent.event);
           }, errorEvents = function () {
