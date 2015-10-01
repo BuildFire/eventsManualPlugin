@@ -3,8 +3,8 @@
 (function (angular) {
   angular
     .module('eventsManualPluginContent')
-      .controller('ContentHomeCtrl', ['$scope', 'TAG_NAMES', 'STATUS_CODE', 'DataStore', 'LAYOUTS','$sce','Buildfire','$modal',
-        function ($scope, TAG_NAMES, STATUS_CODE, DataStore, LAYOUTS,$sce,Buildfire,$modal) {
+      .controller('ContentHomeCtrl', ['$scope', 'TAG_NAMES', 'STATUS_CODE', 'DataStore', 'LAYOUTS', '$sce', 'Buildfire', '$modal',
+        function ($scope, TAG_NAMES, STATUS_CODE, DataStore, LAYOUTS, $sce, Buildfire, $modal) {
           var _data = {
           "content": {},
           "design": {
@@ -59,12 +59,12 @@
 
           var successEvents = function (result) {
             ContentHome.events = result;
-            console.log("ddddd",ContentHome.events)
+            console.log("*********", ContentHome.events)
           }, errorEvents = function () {
 
           };
           DataStore.get(TAG_NAMES.EVENTS_MANUAL_INFO).then(success, error);
-          DataStore.search({}, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
+          DataStore.search({sort: {"startDate": 1}}, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
         init();
         ContentHome.safeHtml = function (html) {
@@ -110,7 +110,7 @@
           modalInstance.result.then(function (message) {
             if (message === 'yes') {
               ContentHome.events.splice(index, 1);
-              DataStore.deleteById(eventId,TAG_NAMES.EVENTS_MANUAL).then(status, err)
+              DataStore.deleteById(eventId, TAG_NAMES.EVENTS_MANUAL).then(status, err)
             }
           }, function (data) {
             //do something on cancel
