@@ -12,33 +12,41 @@
         </div>
       </div>
     </div>
-    <div class="event-list" ng-if="WidgetHome.events">
-        <div class="event-item clearfix" ng-repeat="event in WidgetHome.events">
-          <div class="calendar-icon text-center bg-primary">
-            <span class="icon icon-calendar-check"></span>
-          </div>
-          <span class="icon icon-menu rotate-90 pull-left"></span>
+    <div class="event-list">
+      <div ng-if="WidgetHome.data">
+        <div infinite-scroll="WidgetHome.loadMore()"
+             infinite-scroll-distance="1"
+             infinite-scroll-disabled="WidgetHome.busy">
+          <div class="event-item clearfix"
+               ng-repeat="event in WidgetHome.events">
+            <div class="calendar-icon text-center bg-primary">
+              <span class="icon icon-calendar-check"></span>
+            </div>
+            <span class="icon icon-menu rotate-90 pull-left"></span>
 
-          <div
-              class="event-media border-radius-three border-grey pull-left margin-left-ten">
-            <img src="http://www.placehold.it/60x60">
-          </div>
-          <div class="event-date text-center pull-left margin-left-ten">
-            <h3 class="text-primary margin-zero">{{event.data.startDate
-              | getMonth}}</h3>
+            <div
+                class="event-media border-radius-three border-grey pull-left margin-left-ten">
+              <img src="http://www.placehold.it/60x60">
+            </div>
+            <div class="event-date text-center pull-left margin-left-ten"
+                 ng-if="event.data.startDate">
+              <h3 class="text-primary margin-zero">{{event.data.startDate
+                | getMonth}}</h3>
 
-            <h1 class="text-primary margin-zero">{{event.data.startDate |getDate}}</h1>
-          </div>
-          <div class="event-info pull-left margin-left-ten">
-            <h4
-                class="margin-bottom-zero text-primary ellipsis">{{event.data.title
-              }}</h4>
+              <h1 class="text-primary margin-zero">{{event.data.startDate
+                |getDate}}</h1>
+            </div>
+            <div class="event-info pull-left margin-left-ten">
+              <h4
+                  class="margin-bottom-zero text-primary ellipsis">
+                {{event.data.title
+                }}</h4>
 
-            <p class="margin-zero ellipsis"
-               ng-if="event.data.endTime">{{event.data.startTime | getTime}} -
-              {{event.data.endTime | getTime}}</p>
+              <p class="margin-zero ellipsis"
+                 ng-if="event.data.endTime">{{event.data.startTime | getTime}} -
+                {{event.data.endTime | getTime}}</p>
+            </div>
           </div>
         </div>
+      </div>
     </div>
-  </div>
-</div>

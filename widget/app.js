@@ -1,7 +1,7 @@
 'use strict';
 
 (function (angular, buildfire) {
-  angular.module('eventsManualPluginWidget', ['ngRoute', 'ui.bootstrap'])
+  angular.module('eventsManualPluginWidget', ['ngRoute', 'ui.bootstrap', 'infinite-scroll'])
     .config(['$routeProvider', function ($routeProvider) {
       $routeProvider
         .when('/', {
@@ -27,9 +27,9 @@
         return new Date(input).getDate();
       };
     })
-  .filter('getTime', function () {
-    return function (input) {
-      return moment(new Date(input)).format('hh:mm A');
-    };
-  });
+    .filter('getTime', function () {
+      return function (input) {
+        return moment(new Date(input)).format('hh:mm A');
+      };
+    });
 })(window.angular, window.buildfire);
