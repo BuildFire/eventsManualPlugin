@@ -348,12 +348,13 @@
 
         ContentEvent.deleteEvent = function () {
           var event = ContentEvent.event;
+          var successEvent = function (result) {
+            $location.path('/');
+          }, errorEvent = function () {
+            return console.error('There was a problem deleting your data');
+          };
           if (event.id) {
-            Buildfire.datastore.delete(event.id, TAG_NAMES.EVENTS_MANUAL, function (err, result) {
-              if (err)
-                return;
-              $location.path('/');
-            });
+            DataStore.deleteById(event.id, TAG_NAMES.EVENTS_MANUAL).then(successEvent, errorEvent);
           }
         };
 
