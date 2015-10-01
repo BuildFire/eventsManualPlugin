@@ -3,10 +3,10 @@
     <a class="btn btn-success stretch" href="#/event">Add New Event</a>
   </div>
   <div class="col-md-6 pull-left padding-right-zero">
-    <input type="text" class="form-control" placeholder="Enter Item Name">
+    <input type="text" class="form-control" placeholder="Enter Item Name" ng-model="search">
   </div>
   <div class="col-md-3 pull-left">
-    <a class="btn btn-primary stretch" ng-click="ContentHome.searchEvents()" ng-model="ContentHome.searchEvent">Search</a>
+    <a class="btn btn-primary stretch" ng-click="ContentHome.searchEvents(search)" >Search</a>
   </div>
 </div>
 <hr class="none">

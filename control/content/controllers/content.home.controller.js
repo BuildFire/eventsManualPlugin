@@ -71,15 +71,22 @@
           if (html)
             return $sce.trustAsHtml(html);
         };
-        ContentHome.searchEvents = function()
+        ContentHome.searchEvents = function(search)
         {
-          console.log(ContentHome.searchEvent)
+          var searchOptions = {};
+          if (search) {
+              searchOptions.filter = {"$or": [{"data.title": {"$regex": search}}]};
+            }
+           else {
+            searchOptions.filter = {"data.title": {"$regex": '/*'}};
+          }
+
           var successEvents = function (result) {
             ContentHome.events = result;
            }, errorEvents = function (err) {
             console.log(err)
           };
-          DataStore.search({filter:{"$or":[{"$json.id":ContentHome.searchEvent}]}}, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
+          DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
 
         ContentHome.removeEvent = function (eventId, index) {
