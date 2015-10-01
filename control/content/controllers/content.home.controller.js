@@ -3,9 +3,9 @@
 (function (angular) {
   angular
     .module('eventsManualPluginContent')
-      .controller('ContentHomeCtrl', ['$scope', 'TAG_NAMES', 'STATUS_CODE', 'DataStore', 'LAYOUTS','$sce','Buildfire','$modal',
-        function ($scope, TAG_NAMES, STATUS_CODE, DataStore, LAYOUTS,$sce,Buildfire,$modal) {
-          var _data = {
+    .controller('ContentHomeCtrl', ['$scope', 'TAG_NAMES', 'STATUS_CODE', 'DataStore', 'LAYOUTS', '$sce', 'Buildfire', '$modal',
+      function ($scope, TAG_NAMES, STATUS_CODE, DataStore, LAYOUTS, $sce, Buildfire, $modal) {
+        var _data = {
           "content": {},
           "design": {
             "itemDetailsLayout": LAYOUTS.itemDetailLayouts[0].name,
@@ -13,7 +13,7 @@
           }
         };
         var ContentHome = this;
-        ContentHome.searchEvent=null;
+        ContentHome.searchEvent = null;
         /*
          * ContentHome.events used to store the list of events fetched from datastore.
          */
@@ -59,36 +59,35 @@
 
           var successEvents = function (result) {
             ContentHome.events = result;
-            console.log("ddddd",ContentHome.events)
+            console.log("*********", ContentHome.events)
           }, errorEvents = function () {
 
           };
           DataStore.get(TAG_NAMES.EVENTS_MANUAL_INFO).then(success, error);
-          DataStore.search({}, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
+          DataStore.search({sort: {"startDate": 1}}, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
         init();
         ContentHome.safeHtml = function (html) {
           if (html)
             return $sce.trustAsHtml(html);
         };
-        ContentHome.searchEvents = function()
-        {
+        ContentHome.searchEvents = function () {
           console.log(ContentHome.searchEvent);
           var successEvents = function (result) {
             ContentHome.events = result;
-           }, errorEvents = function (err) {
+          }, errorEvents = function (err) {
             console.log(err)
           };
-          DataStore.search({filter:{"$or":[{"$json.id":ContentHome.searchEvent}]}}, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
+          DataStore.search({filter: {"$or": [{"$json.id": ContentHome.searchEvent}]}}, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
 
         ContentHome.removeEvent = function (eventId, index) {
           var status = function (result) {
               console.log(result)
-              },
-              err = function (err) {
-            console.log(err)
-          }
+            },
+            err = function (err) {
+              console.log(err)
+            }
           var modalInstance = $modal.open({
             templateUrl: 'templates/modals/remove-event.html',
             controller: 'RemoveEventPopupCtrl',
@@ -103,7 +102,7 @@
           modalInstance.result.then(function (message) {
             if (message === 'yes') {
               ContentHome.events.splice(index, 1);
-              DataStore.deleteById(eventId,TAG_NAMES.EVENTS_MANUAL).then(status, err)
+              DataStore.deleteById(eventId, TAG_NAMES.EVENTS_MANUAL).then(status, err)
             }
           }, function (data) {
             //do something on cancel

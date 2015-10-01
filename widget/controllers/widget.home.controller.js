@@ -10,7 +10,8 @@
         WidgetHome.busy = false;
         var searchOptions = {
           skip: 0,
-          limit: PAGINATION.eventsCount // the plus one is to check if there are any more
+          limit: PAGINATION.eventsCount, // the plus one is to check if there are any more
+          sort:{"startDate":1 }
         };
         /*
          * Fetch user's data from datastore
