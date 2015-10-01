@@ -37,10 +37,9 @@
                 |getDate}}</h1>
             </div>
             <div class="event-info pull-left margin-left-ten">
-              <h4
+              <a ng-href="#/event/{{event.id}}"><h4
                   class="margin-bottom-zero text-primary ellipsis">
-                {{event.data.title
-                }}</h4>
+                {{event.data.title}}</h4></a>
 
               <p class="margin-zero ellipsis"
                  ng-if="event.data.endTime">{{event.data.startTime | getTime}} -

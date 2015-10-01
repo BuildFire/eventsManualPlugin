@@ -2,8 +2,8 @@
 
 (function (angular) {
   angular.module('eventsManualPluginWidget')
-    .controller('WidgetHomeCtrl', ['$scope', 'TAG_NAMES', 'LAYOUTS', 'DataStore', 'PAGINATION',
-      function ($scope, TAG_NAMES, LAYOUTS, DataStore, PAGINATION) {
+    .controller('WidgetHomeCtrl', ['$scope', 'TAG_NAMES', 'LAYOUTS', 'DataStore', 'PAGINATION', 'Buildfire',
+      function ($scope, TAG_NAMES, LAYOUTS, DataStore, PAGINATION, Buildfire) {
         var WidgetHome = this;
         WidgetHome.data = null;
         WidgetHome.events = [];
@@ -46,7 +46,9 @@
         };
 
         var getManualEvents = function () {
+          Buildfire.spinner.show();
           var successEvents = function (result) {
+            Buildfire.spinner.hide();
             WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(result) : result;
             searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
             if (result.length == PAGINATION.eventsCount) {
@@ -54,6 +56,7 @@
             }
 
           }, errorEvents = function () {
+            Buildfire.spinner.hide();
             console.log("Error fetching events");
           };
           DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
