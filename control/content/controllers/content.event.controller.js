@@ -32,7 +32,7 @@
         ContentEvent.displayTiming = "USER";
 
         function isValidEvent(event) {
-          return event.startDate;
+          return (event.startDate && event.title && event.startTime);
         }
 
         updateMasterEvent(ContentEvent.event);
@@ -397,7 +397,7 @@
           Utils.validLongLats(ContentEvent.currentAddress).then(successCallback, errorCallback);
         };
 
-        ContentEvent.gotToHome  = function(){
+        ContentEvent.gotToHome = function () {
           $location.path('/');
         };
 

@@ -15,15 +15,6 @@
   <hr class="none">
   <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
-      <span>Deep Link URL</span>
-    </div>
-    <div class="main col-md-9 pull-right">
-      <span>{{ContentEvent.event.data.deepLinkUrl}}</span>
-    </div>
-  </div>
-  <hr class="none">
-  <div class="item clearfix row">
-    <div class="labels col-md-3 padding-right-zero pull-left">
       <span>Start Date</span>
     </div>
 
@@ -40,6 +31,15 @@
     <div class="main col-md-9 pull-right">
       <input type="time" placeholder="Start Time" class="form-control"
              ng-model="ContentEvent.event.data.startTime">
+    </div>
+  </div>
+  <hr class="none">
+  <div class="item clearfix row">
+    <div class="labels col-md-3 padding-right-zero pull-left">
+      <span>Deep Link URL</span>
+    </div>
+    <div class="main col-md-9 pull-right">
+      <span>{{ContentEvent.event.data.deepLinkUrl}}</span>
     </div>
   </div>
   <hr class="none">
@@ -656,7 +656,7 @@
       <div class="col-md-6 pull-right padding-right-zero padding-left-ten">
         <button class="btn btn-primary pull-right stretch"
            ng-click="ContentEvent.gotToHome()"
-                ng-disabled="!ContentEvent.event.data.startDate">Done
+                ng-disabled="!(ContentEvent.event.data.startDate && ContentEvent.event.data.title && ContentEvent.event.data.startTime)">Done
         </button>
       </div>
     </div>
