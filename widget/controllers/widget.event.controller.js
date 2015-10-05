@@ -1,13 +1,15 @@
 'use strict';
 
-(function (angular,buildfire) {
+(function (angular, buildfire) {
   angular.module('eventsManualPluginWidget')
-    .controller('WidgetEventCtrl', ['$scope', 'DataStore', 'TAG_NAMES', 'LAYOUTS', '$routeParams', '$sce',
-      function ($scope, DataStore, TAG_NAMES, LAYOUTS, $routeParams, $sce) {
+    .controller('WidgetEventCtrl', ['$scope', 'DataStore', 'TAG_NAMES', 'LAYOUTS', '$routeParams', '$sce', '$rootScope',
+      function ($scope, DataStore, TAG_NAMES, LAYOUTS, $routeParams, $sce, $rootScope) {
 
         var WidgetEvent = this;
         WidgetEvent.data = {};
-        WidgetEvent.event = {};
+        WidgetEvent.event = null;
+        //create new instance of buildfire carousel viewer
+        var view = null;
 
         var getEventDetails = function (url) {
           var success = function (result) {
@@ -51,5 +53,17 @@
 
           });
         };
+
+        $rootScope.$on("Carousel:LOADED", function () {
+          console.log("*******************************",WidgetEvent.event);
+          if (!view) {
+            view = new buildfire.components.carousel.view("#carousel", []);
+          }
+          if (WidgetEvent.event.data && WidgetEvent.event.data.carouselImages) {
+            view.loadItems(WidgetEvent.event.data.carouselImages);
+          } else {
+            view.loadItems([]);
+          }
+        });
       }])
-})(window.angular,window.buildfire);
+})(window.angular, window.buildfire);
