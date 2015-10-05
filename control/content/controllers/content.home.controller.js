@@ -15,8 +15,9 @@
           var searchOptions = {
             skip: 0,
             limit: PAGINATION.eventsCount, // the plus one is to check if there are any more
-            sort:{"startDate":1 }
+            sort:{"startDate":1 },
           };
+        var regex;
         var ContentHome = this;
         ContentHome.searchEvent = null;
         /*
@@ -62,8 +63,6 @@
                 saveData(JSON.parse(angular.toJson(ContentHome.data)), TAG_NAMES.EVENTS_MANUAL_INFO);
               }
             };
-
-
           DataStore.get(TAG_NAMES.EVENTS_MANUAL_INFO).then(success, error);
           };
         init();
@@ -73,22 +72,17 @@
         };
         ContentHome.searchEvents = function(search)
         {
+          ContentHome.events =[];
+          ContentHome.busy = false;
+          searchOptions.skip =0;
           if (search) {
-            var regex = "\\b" + search + "\\b";
+            regex = "\\b" + search + "\\b";
             searchOptions.filter = {"$or": [{"data.title": {"$regex": regex, "$options": "i"}}]};
             }
            else {
             searchOptions.filter = {"data.title": {"$regex": '/*'}};
           }
-
-          var successEvents = function (result) {
-            Buildfire.spinner.hide();
-            ContentHome.events = result;
-          }, errorEvents = function (err) {
-            Buildfire.spinner.hide();
-            console.log("Error searching events:" +err)
-          };
-          DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
+          ContentHome.loadMore();
         };
 
         ContentHome.removeEvent = function (eventId, index) {
@@ -162,27 +156,22 @@
         }, saveDataWithDelay, true);
 
           var getManualEvents = function () {
-            //  Buildfire.spinner.show();
+              Buildfire.spinner.show();
             var successEvents = function (result) {
-              //Buildfire.spinner.hide();
-              //console.log("length",ContentHome.events.length)
+              Buildfire.spinner.hide();
               ContentHome.events = ContentHome.events.length ? ContentHome.events.concat(result) : result;
               searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
-              console.log("result",ContentHome.events)
               if (result.length == PAGINATION.eventsCount) {
                 ContentHome.busy = false;
               }
-
             }, errorEvents = function () {
-              //  Buildfire.spinner.hide();
+                Buildfire.spinner.hide();
               console.log("Error fetching events");
             };
-
             DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
           };
           ContentHome.loadMore = function () {
-            console.log("end page",ContentHome.busy)
-           if (ContentHome.busy) return;
+            if (ContentHome.busy) return;
             ContentHome.busy = true;
             getManualEvents();
           };
