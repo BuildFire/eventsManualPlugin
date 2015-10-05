@@ -75,7 +75,8 @@
         {
           var searchOptions = {};
           if (search) {
-              searchOptions.filter = {"$or": [{"data.title": {"$regex": search}}]};
+            var regex = "\\b" + search + "\\b";
+            searchOptions.filter = {"$or": [{"data.title": {"$regex": regex, "$options": "i"}}]};
             }
            else {
             searchOptions.filter = {"data.title": {"$regex": '/*'}};
