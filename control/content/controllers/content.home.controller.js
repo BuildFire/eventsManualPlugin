@@ -3,8 +3,8 @@
 (function (angular) {
   angular
     .module('eventsManualPluginContent')
-      .controller('ContentHomeCtrl', ['$scope', 'TAG_NAMES', 'STATUS_CODE', 'DataStore', 'LAYOUTS', '$sce', 'Buildfire', '$modal',
-        function ($scope, TAG_NAMES, STATUS_CODE, DataStore, LAYOUTS, $sce, Buildfire, $modal) {
+      .controller('ContentHomeCtrl', ['$scope', 'TAG_NAMES', 'STATUS_CODE', 'DataStore', 'LAYOUTS', '$sce', 'PAGINATION', 'Buildfire', '$modal',
+        function ($scope, TAG_NAMES, STATUS_CODE, DataStore, LAYOUTS, $sce, PAGINATION, Buildfire, $modal) {
           var _data = {
           "content": {},
           "design": {
@@ -12,12 +12,18 @@
             "itemDetailsBgImage": ""
           }
         };
+          var searchOptions = {
+            skip: 0,
+            limit: PAGINATION.eventsCount, // the plus one is to check if there are any more
+            sort:{"startDate":1 }
+          };
         var ContentHome = this;
         ContentHome.searchEvent=null;
         /*
          * ContentHome.events used to store the list of events fetched from datastore.
          */
-        ContentHome.events = null;
+        ContentHome.events = {};
+        ContentHome.busy = false;
 
         /*
          * ContentHome.data used to store EventsInfo which from datastore.
@@ -57,15 +63,9 @@
               }
             };
 
-          var successEvents = function (result) {
-            ContentHome.events = result;
-            console.log("*********", ContentHome.events)
-          }, errorEvents = function () {
 
-          };
           DataStore.get(TAG_NAMES.EVENTS_MANUAL_INFO).then(success, error);
-          DataStore.search({sort: {"startDate": 1}}, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
-        };
+          };
         init();
         ContentHome.safeHtml = function (html) {
           if (html)
@@ -73,7 +73,6 @@
         };
         ContentHome.searchEvents = function(search)
         {
-          var searchOptions = {};
           if (search) {
             var regex = "\\b" + search + "\\b";
             searchOptions.filter = {"$or": [{"data.title": {"$regex": regex, "$options": "i"}}]};
@@ -104,7 +103,7 @@
             size: 'sm',
             resolve: {
               eventsManualData: function () {
-                return ContentHome.events[index];
+              return ContentHome.events[index];
               }
             }
           });
@@ -155,9 +154,35 @@
         /*
          * watch for changes in data and trigger the saveDataWithDelay function on change
          * */
+
         $scope.$watch(function () {
           return ContentHome.data;
         }, saveDataWithDelay, true);
 
+          var getManualEvents = function () {
+            //  Buildfire.spinner.show();
+            var successEvents = function (result) {
+              //Buildfire.spinner.hide();
+              //console.log("length",ContentHome.events.length)
+              ContentHome.events = ContentHome.events.length ? ContentHome.events.concat(result) : result;
+              searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
+              console.log("result",ContentHome.events)
+              if (result.length == PAGINATION.eventsCount) {
+                ContentHome.busy = false;
+              }
+
+            }, errorEvents = function () {
+              //  Buildfire.spinner.hide();
+              console.log("Error fetching events");
+            };
+
+            DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
+          };
+          ContentHome.loadMore = function () {
+            console.log("end page",ContentHome.busy)
+           if (ContentHome.busy) return;
+            ContentHome.busy = true;
+            getManualEvents();
+          };
       }]);
 })(window.angular);

@@ -39,5 +39,8 @@
     })
     .constant('GOOGLE_KEYS', {
       API_KEY: 'AIzaSyB0xpJ-AseoeusvT2PPWd5MOak58CR_B0c'
-    });
+    })
+    .constant('PAGINATION', {
+    eventsCount: 10
+  });
 })(window.angular);

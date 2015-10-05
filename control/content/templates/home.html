@@ -1,3 +1,9 @@
+<style>
+  .body-scroll{
+    height: auto !important;
+  }
+</style>
+
 <div class="item clearfix row">
   <div class="col-md-3 pull-left padding-right-zero">
     <a class="btn btn-success stretch" href="#/event">Add New Event</a>
@@ -10,8 +16,12 @@
   </div>
 </div>
 <hr class="none">
-<div class="item clearfix">
-  <div ng-if="ContentHome.events.length" class="draggable-list-view wide-list has-btn-link no-sort-icon">
+<div class="item body-scroll">
+  <div infinite-scroll="ContentHome.loadMore()"
+       infinite-scroll-disabled="ContentHome.busy"
+       infinite-scroll-distance="1">
+  <div ng-if="ContentHome.events.length"  class="draggable-list-view wide-list has-btn-link no-sort-icon">
+
     <div class="d-item double-line square-icon clearfix" ng-repeat="event in ContentHome.events">
       <div class="media-holder pull-left">
         <img
@@ -27,6 +37,7 @@
           <span class="btn-icon btn-delete-icon btn-danger" ng-click="ContentHome.removeEvent(event.id, $index)"></span>
         </div>
       </div>
+    </div>
     </div>
 </div>
   <!-- Show If No Items -->
