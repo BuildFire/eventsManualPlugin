@@ -26,7 +26,8 @@
 
             <div
                 class="event-media border-radius-three border-grey pull-left margin-left-ten">
-              <img src="http://www.placehold.it/60x60">
+              <img
+                  ng-src="{{event.data.listImage || 'http://www.placehold.it/60x60' | getImageUrl : 60:60}}">
             </div>
             <div class="event-date text-center pull-left margin-left-ten"
                  ng-if="event.data.startDate">

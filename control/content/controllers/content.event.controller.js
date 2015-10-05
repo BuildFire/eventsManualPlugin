@@ -67,6 +67,16 @@
             if (ContentEvent.event.data.timeDisplay) {
               ContentEvent.displayTiming = ContentEvent.event.data.timeDisplay;
             }
+            if (ContentEvent.event.data.repeat) {
+              if (ContentEvent.event.data.repeat.startDate)
+                ContentEvent.event.data.repeat.startDate = new Date(ContentEvent.event.data.repeat.startDate);
+              if (ContentEvent.event.data.repeat.endOn)
+                ContentEvent.event.data.repeat.endOn = new Date(ContentEvent.event.data.repeat.endOn);
+            }
+            if (!ContentEvent.event.data.carouselImages)
+              editor.loadItems([]);
+            else
+              editor.loadItems(ContentEvent.event.data.carouselImages);
             _data.dateCreated = result.data.dateCreated;
             updateMasterEvent(ContentEvent.event);
           }, errorEvents = function () {
@@ -177,26 +187,26 @@
         var editor = new Buildfire.components.carousel.editor("#carousel");
         // this method will be called when a new item added to the list
         editor.onAddItems = function (items) {
-          if (!ContentEvent.event.carouselImages)
-            ContentEvent.event.carouselImages = [];
-          ContentEvent.event.carouselImages.push.apply(ContentEvent.event.carouselImages, items);
+          if (!ContentEvent.event.data.carouselImages)
+            ContentEvent.event.data.carouselImages = [];
+          ContentEvent.event.data.carouselImages.push.apply(ContentEvent.event.data.carouselImages, items);
           $scope.$digest();
         };
         // this method will be called when an item deleted from the list
         editor.onDeleteItem = function (item, index) {
-          ContentEvent.event.carouselImages.splice(index, 1);
+          ContentEvent.event.data.carouselImages.splice(index, 1);
           $scope.$digest();
         };
         // this method will be called when you edit item details
         editor.onItemChange = function (item, index) {
-          ContentEvent.event.carouselImages.splice(index, 1, item);
+          ContentEvent.event.data.carouselImages.splice(index, 1, item);
           $scope.$digest();
         };
         // this method will be called when you change the order of items
         editor.onOrderChange = function (item, oldIndex, newIndex) {
-          var temp = ContentEvent.event.carouselImages[oldIndex];
-          ContentEvent.event.carouselImages[oldIndex] = ContentEvent.event.carouselImages[newIndex];
-          ContentEvent.event.carouselImages[newIndex] = temp;
+          var temp = ContentEvent.event.data.carouselImages[oldIndex];
+          ContentEvent.event.data.carouselImages[oldIndex] = ContentEvent.event.data.carouselImages[newIndex];
+          ContentEvent.event.data.carouselImages[newIndex] = temp;
           $scope.$digest();
         };
 
@@ -216,12 +226,36 @@
           };
           if (ContentEvent.event.data.startDate)
             ContentEvent.event.data.startDate = +new Date(ContentEvent.event.data.startDate);
+          if (ContentEvent.event.data.startTime)
+            ContentEvent.event.data.startTime = +new Date(ContentEvent.event.data.startTime);
+          if (ContentEvent.event.data.endTime)
+            ContentEvent.event.data.endTime = +new Date(ContentEvent.event.data.endTime);
+          if (ContentEvent.event.data.endDate)
+            ContentEvent.event.data.endDate = +new Date(ContentEvent.event.data.endDate);
+          if (ContentEvent.event.data.repeat) {
+            if (ContentEvent.event.data.repeat.startDate)
+              ContentEvent.event.data.repeat.startDate = +new Date(ContentEvent.event.data.repeat.startDate);
+            if (ContentEvent.event.data.repeat.endOn)
+              ContentEvent.event.data.repeat.endOn = +new Date(ContentEvent.event.data.repeat.endOn);
+          }
           DataStore.insert(ContentEvent.event.data, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
 
         ContentEvent.updateEventData = function () {
           if (ContentEvent.event.data.startDate)
             ContentEvent.event.data.startDate = +new Date(ContentEvent.event.data.startDate);
+          if (ContentEvent.event.data.endDate)
+            ContentEvent.event.data.endDate = +new Date(ContentEvent.event.data.endDate);
+          if (ContentEvent.event.data.startTime)
+            ContentEvent.event.data.startTime = +new Date(ContentEvent.event.data.startTime);
+          if (ContentEvent.event.data.endTime)
+            ContentEvent.event.data.endTime = +new Date(ContentEvent.event.data.endTime);
+          if (ContentEvent.event.data.repeat) {
+            if (ContentEvent.event.data.repeat.startDate)
+              ContentEvent.event.data.repeat.startDate = +new Date(ContentEvent.event.data.repeat.startDate);
+            if (ContentEvent.event.data.repeat.endOn)
+              ContentEvent.event.data.repeat.endOn = +new Date(ContentEvent.event.data.repeat.endOn);
+          }
           DataStore.update(ContentEvent.event.id, ContentEvent.event.data, TAG_NAMES.EVENTS_MANUAL, function (err) {
             ContentEvent.isUpdating = false;
             if (err)
@@ -249,13 +283,13 @@
         };
 
         ContentEvent.changeTimeZone = function (timezone) {
-          ContentEvent.event.timezone = timezone;
+          ContentEvent.event.data.timezone = timezone;
         };
 
         ContentEvent.changeRepeatType = function (type) {
-          ContentEvent.event.repeat = {};
-          ContentEvent.event.repeat.isRepeating = true;
-          ContentEvent.event.repeat.repeatType = type;
+          ContentEvent.event.data.repeat = {};
+          ContentEvent.event.data.repeat.isRepeating = true;
+          ContentEvent.event.data.repeat.repeatType = type;
         };
 
         /**

@@ -2,8 +2,48 @@
 
 (function (angular) {
   angular.module('eventsManualPluginWidget')
-    .controller('WidgetEventCtrl', ['$scope',
-      function ($scope) {
+    .controller('WidgetEventCtrl', ['$scope', 'DataStore', 'TAG_NAMES', 'LAYOUTS', '$routeParams', '$sce',
+      function ($scope, DataStore, TAG_NAMES, LAYOUTS, $routeParams, $sce) {
 
+        var WidgetEvent = this;
+        WidgetEvent.data = {};
+        WidgetEvent.event = {};
+
+        var getEventDetails = function (url) {
+          var success = function (result) {
+              console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", result);
+              WidgetEvent.event = result;
+            }
+            , error = function (err) {
+              console.error('Error In Fetching Event', err);
+            };
+          if ($routeParams.id)
+            DataStore.get(TAG_NAMES.EVENTS_MANUAL).then(success, error);
+        };
+
+        /*
+         * Fetch user's data from datastore
+         */
+        var init = function () {
+          var success = function (result) {
+              WidgetEvent.data = result.data;
+              if (!WidgetEvent.data.design)
+                WidgetEvent.data.design = {};
+              if (!WidgetEvent.data.design.itemDetailsLayout) {
+                WidgetEvent.data.design.itemDetailsLayout = LAYOUTS.itemDetailsLayout[0].name;
+              }
+              getEventDetails();
+            }
+            , error = function (err) {
+              console.error('Error while getting data', err);
+            };
+          DataStore.get(TAG_NAMES.EVENTS_MANUAL_INFO).then(success, error);
+        };
+        init();
+
+        WidgetEvent.safeHtml = function (html) {
+          if (html)
+            return $sce.trustAsHtml(html);
+        };
       }])
 })(window.angular);

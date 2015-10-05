@@ -18,7 +18,7 @@
             sort:{"startDate":1 }
           };
         var ContentHome = this;
-        ContentHome.searchEvent=null;
+        ContentHome.searchEvent = null;
         /*
          * ContentHome.events used to store the list of events fetched from datastore.
          */
@@ -82,9 +82,11 @@
           }
 
           var successEvents = function (result) {
+            Buildfire.spinner.hide();
             ContentHome.events = result;
-           }, errorEvents = function (err) {
-            console.log(err)
+          }, errorEvents = function (err) {
+            Buildfire.spinner.hide();
+            console.log("Error searching events:" +err)
           };
           DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
@@ -92,10 +94,10 @@
         ContentHome.removeEvent = function (eventId, index) {
           var status = function (result) {
               console.log(result)
-              },
-              err = function (err) {
-            console.log(err)
-          }
+            },
+            err = function (err) {
+              console.log(err)
+            }
           var modalInstance = $modal.open({
             templateUrl: 'templates/modals/remove-event.html',
             controller: 'RemoveEventPopupCtrl',
