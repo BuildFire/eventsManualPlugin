@@ -15,7 +15,7 @@
     <div class="d-item double-line square-icon clearfix" ng-repeat="event in ContentHome.events">
       <div class="media-holder pull-left">
         <img
-            ng-src="{{event.data.listImage || 'http://www.placehold.it/40x30' | getImageUrl : 40:30:'resize'}}">
+            ng-src="{{event.data.listImage || 'http://www.placehold.it/40x30' | getImageUrl : 40:30}}">
       </div>
       <div class="copy pull-right">
         <a class="text-primary" href="#/event/{{event.id}}"><span

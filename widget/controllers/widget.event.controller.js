@@ -6,8 +6,8 @@
       function ($scope, DataStore, TAG_NAMES, LAYOUTS, $routeParams) {
 
         var WidgetEvent = this;
-        WidgetEvent.data = null;
-        WidgetEvent.event = null;
+        WidgetEvent.data = {};
+        WidgetEvent.event = {};
 
         var getEventDetails = function (url) {
           var success = function (result) {
