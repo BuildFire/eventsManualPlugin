@@ -3,9 +3,9 @@
 (function (angular) {
   angular
     .module('eventsManualPluginContent')
-      .controller('ContentHomeCtrl', ['$scope', 'TAG_NAMES', 'STATUS_CODE', 'DataStore', 'LAYOUTS', '$sce', 'Buildfire', '$modal',
-        function ($scope, TAG_NAMES, STATUS_CODE, DataStore, LAYOUTS, $sce, Buildfire, $modal) {
-          var _data = {
+    .controller('ContentHomeCtrl', ['$scope', 'TAG_NAMES', 'STATUS_CODE', 'DataStore', 'LAYOUTS', '$sce', 'Buildfire', '$modal',
+      function ($scope, TAG_NAMES, STATUS_CODE, DataStore, LAYOUTS, $sce, Buildfire, $modal) {
+        var _data = {
           "content": {},
           "design": {
             "itemDetailsLayout": LAYOUTS.itemDetailLayouts[0].name,
@@ -13,7 +13,7 @@
           }
         };
         var ContentHome = this;
-        ContentHome.searchEvent=null;
+        ContentHome.searchEvent = null;
         /*
          * ContentHome.events used to store the list of events fetched from datastore.
          */
@@ -71,21 +71,29 @@
           if (html)
             return $sce.trustAsHtml(html);
         };
-        ContentHome.searchEvents = function(search)
-        {
+        ContentHome.searchEvents = function (search) {
+          Buildfire.spinner.show();
           var searchOptions = {};
           if (search) {
             var regex = "\\b" + search + "\\b";
-            searchOptions.filter = {"$or": [{"data.title": {"$regex": regex, "$options": "i"}}]};
-            }
-           else {
+            searchOptions.filter = {
+              "$or": [{
+                "data.title": {
+                  "$regex": regex,
+                  "$options": "i"
+                }
+              }]
+            };
+          }
+          else {
             searchOptions.filter = {"data.title": {"$regex": '/*'}};
           }
-
           var successEvents = function (result) {
+            Buildfire.spinner.hide();
             ContentHome.events = result;
-           }, errorEvents = function (err) {
-            console.log(err)
+          }, errorEvents = function (err) {
+            Buildfire.spinner.hide();
+            console.log("Error searching events:" +err)
           };
           DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
@@ -93,10 +101,10 @@
         ContentHome.removeEvent = function (eventId, index) {
           var status = function (result) {
               console.log(result)
-              },
-              err = function (err) {
-            console.log(err)
-          }
+            },
+            err = function (err) {
+              console.log(err)
+            }
           var modalInstance = $modal.open({
             templateUrl: 'templates/modals/remove-event.html',
             controller: 'RemoveEventPopupCtrl',
