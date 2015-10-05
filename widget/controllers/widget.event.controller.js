@@ -2,8 +2,8 @@
 
 (function (angular) {
   angular.module('eventsManualPluginWidget')
-    .controller('WidgetEventCtrl', ['$scope', 'DataStore', 'TAG_NAMES', 'LAYOUTS', '$routeParams',
-      function ($scope, DataStore, TAG_NAMES, LAYOUTS, $routeParams) {
+    .controller('WidgetEventCtrl', ['$scope', 'DataStore', 'TAG_NAMES', 'LAYOUTS', '$routeParams', '$sce',
+      function ($scope, DataStore, TAG_NAMES, LAYOUTS, $routeParams, $sce) {
 
         var WidgetEvent = this;
         WidgetEvent.data = {};
@@ -40,5 +40,10 @@
           DataStore.get(TAG_NAMES.EVENTS_MANUAL_INFO).then(success, error);
         };
         init();
+
+        WidgetEvent.safeHtml = function (html) {
+          if (html)
+            return $sce.trustAsHtml(html);
+        };
       }])
 })(window.angular);

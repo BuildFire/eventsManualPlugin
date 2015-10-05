@@ -41,10 +41,7 @@
       <p class="text-center margin-zero text-primary">1234 Grand Ave, San Diego,
         CA 92127</p>
       <hr class="small">
-      <p>This is the WYSIWYG Editor. This is the WYSIWYG Editor. This is the
-        WYSIWYG Editor. This is the WYSIWYG Editor. This is the WYSIWYG Editor.
-        This is the WYSIWYG Editor. This is the WYSIWYG Editor. This is the
-        WYSIWYG Editor.</p</p>
+      <p ng-bind-html="WidgetEvent.safeHtml(WidgetEvent.event.data.description)"></p>
       <div class="dynamic-links">
         <a>Dynamic Link</a>
         <a>Dynamic Link</a>
