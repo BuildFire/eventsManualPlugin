@@ -43,11 +43,9 @@
       <hr class="small">
       <p ng-bind-html="WidgetEvent.safeHtml(WidgetEvent.event.data.description)"></p>
       <div class="dynamic-links">
-        <a>Dynamic Link</a>
-        <a>Dynamic Link</a>
-        <a>Dynamic Link</a>
-        <a>Dynamic Link</a>
-        <a>Dynamic Link</a>
+        <a ng-repeat="link in WidgetEvent.event.data.links"
+           ng-click="WidgetEvent.executeActionItem(link)">{{link
+          .title}}</a>
       </div>
     </div>
   </div>

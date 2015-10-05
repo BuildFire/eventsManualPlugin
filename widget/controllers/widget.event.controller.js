@@ -1,6 +1,6 @@
 'use strict';
 
-(function (angular) {
+(function (angular,buildfire) {
   angular.module('eventsManualPluginWidget')
     .controller('WidgetEventCtrl', ['$scope', 'DataStore', 'TAG_NAMES', 'LAYOUTS', '$routeParams', '$sce',
       function ($scope, DataStore, TAG_NAMES, LAYOUTS, $routeParams, $sce) {
@@ -45,5 +45,11 @@
           if (html)
             return $sce.trustAsHtml(html);
         };
+
+        WidgetEvent.executeActionItem = function (actionItem) {
+          buildfire.actionItems.execute(actionItem, function () {
+
+          });
+        };
       }])
-})(window.angular);
+})(window.angular,window.buildfire);

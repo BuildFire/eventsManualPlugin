@@ -31,11 +31,9 @@
     <div class="text-left padded padding-bottom-zeroclearfix">
       <p ng-bind-html="WidgetEvent.safeHtml(WidgetEvent.event.data.description)"></p>
       <div class="dynamic-links border-bottom-grey">
-        <a>Dynamic Link</a>
-        <a>Dynamic Link</a>
-        <a>Dynamic Link</a>
-        <a>Dynamic Link</a>
-        <a>Dynamic Link</a>
+        <a ng-repeat="link in WidgetEvent.event.data.links"
+           ng-click="WidgetEvent.executeActionItem(link)">{{link
+          .title}}</a>
       </div>
     </div>
     <p class="text-center text-primary">1234 Grand Ave, San Diego, CA 92127</p>
