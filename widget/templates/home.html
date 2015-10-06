@@ -1,3 +1,4 @@
+
 <div class="holder padding-zero">
   <!--
   Add 'long-month' class to events-plugin container below if month has 6 rows instead of 5.
@@ -9,7 +10,8 @@
           <datepicker ng-model="dt" min-date="minDate" show-weeks="false"
                       max-mode="day" class="calendar-day" show-year="false"
                       custom-class="getDayClass(date, mode)"
-                  ng-click="WidgetHome.getEvent()"></datepicker>
+                      ng-click="WidgetHome.getEvent()"
+                  ng-class="{'avoid-clicks':WidgetHome.clickEvent}"></datepicker>
         </div>
       </div>
     </div>

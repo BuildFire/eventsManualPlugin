@@ -8,6 +8,7 @@
         WidgetHome.data = null;
         WidgetHome.events = [];
         WidgetHome.busy = false;
+        WidgetHome.clickEvent=false;
         $scope.dt = new Date();
         var searchOptions = {
           skip: 0,
@@ -22,11 +23,13 @@
          */
         WidgetHome.getEvent = function()
         {
-          formattedDate= moment($scope.dt).format("MMM")+" "+$scope.dt.getFullYear()+", "+$scope.dt.getDate();
-          timeStampinMiliSec = +new Date("'"+formattedDate+"'");
+          WidgetHome.clickEvent = true;
           WidgetHome.events={};
           searchOptions.skip=0;
           WidgetHome.busy =false;
+          WidgetHome.disabled=true;
+          formattedDate= moment($scope.dt).format("MMM")+" "+$scope.dt.getFullYear()+", "+$scope.dt.getDate();
+          timeStampinMiliSec = +new Date("'"+formattedDate+"'");
           WidgetHome.loadMore();
         }
         var init = function () {
@@ -68,7 +71,7 @@
             if (result.length == PAGINATION.eventsCount) {
               WidgetHome.busy = false;
             }
-
+            WidgetHome.clickEvent =false;
           }, errorEvents = function () {
             Buildfire.spinner.hide();
             console.log("Error fetching events");
