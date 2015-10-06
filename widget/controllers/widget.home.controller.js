@@ -13,6 +13,12 @@
           limit: PAGINATION.eventsCount, // the plus one is to check if there are any more
           sort:{"startDate":1 }
         };
+        var currentDate = new Date();
+        var dd = currentDate.getDate();
+        var mm = moment(currentDate).format("MMM");
+        var yyyy = currentDate.getFullYear();
+        var formattedDate= mm+" "+yyyy+", "+dd;
+        var timeStampinMiliSec = +new Date("'"+formattedDate+"'");
         /*
          * Fetch user's data from datastore
          */
@@ -60,6 +66,8 @@
             Buildfire.spinner.hide();
             console.log("Error fetching events");
           };
+
+          searchOptions.filter = {"$or": [{"data.startDate": {"$gt":timeStampinMiliSec }},{"data.startDate": {"$eq":timeStampinMiliSec }}]};
           DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
 
