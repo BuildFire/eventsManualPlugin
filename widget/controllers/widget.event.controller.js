@@ -75,20 +75,25 @@
           setTimeout(function () {
             $scope.imagesUpdated = false;
             $scope.$digest();
-            if (event && event.tag === TAG_NAMES.EVENTS_MANUAL_INFO) {
-              WidgetEvent.data = event.data;
-              if (!WidgetEvent.data.design)
-                WidgetEvent.data.design = {};
-              if (!WidgetEvent.data.content)
-                WidgetEvent.data.content = {};
+            if (event && event.tag) {
+              switch (event.tag) {
+                case TAG_NAMES.EVENTS_MANUAL_INFO:
+                  WidgetEvent.data = event.data;
+                  if (!WidgetEvent.data.design)
+                    WidgetEvent.data.design = {};
+                  if (!WidgetEvent.data.design.itemDetailsLayout) {
+                    WidgetEvent.data.design.itemDetailsLayout = LAYOUTS.itemDetailsLayout[0].name;
+                  }
+                  currentListLayout = WidgetEvent.data.design.itemDetailsLayout;
+                  $scope.imagesUpdated = !!event.data.content;
+                  break;
+                case TAG_NAMES.EVENTS_MANUAL:
+                  if(event.data)
+                    WidgetEvent.event.data = event.data;
+                  break;
+              }
+              $scope.$digest();
             }
-            if (!WidgetEvent.data.design.itemDetailsLayout) {
-              WidgetEvent.data.design.itemDetailsLayout = LAYOUTS.itemDetailsLayout[0].name;
-            }
-
-            currentListLayout = WidgetEvent.data.design.itemDetailsLayout;
-            $scope.imagesUpdated = !!event.data.content;
-            $scope.$digest();
           }, 0);
         };
         DataStore.onUpdate().then(null, null, onUpdateCallback);
@@ -124,6 +129,10 @@
 
           });
         };
+
+        $scope.$on("$destroy", function () {
+          DataStore.clearListener();
+        });
 
         $rootScope.$on("Carousel:LOADED", function () {
           console.log("*******************************", WidgetEvent.event);
