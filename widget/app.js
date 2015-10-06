@@ -53,7 +53,8 @@
           $rootScope.$broadcast("Carousel:LOADED");
         }
       };
-    }])    .directive("googleMap", function () {
+    }])
+    .directive("googleMap", function () {
         return {
           template: "<div></div>",
           replace: true,
