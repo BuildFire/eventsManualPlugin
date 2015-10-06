@@ -73,7 +73,6 @@
         /*update data on change event*/
         var onUpdateCallback = function (event) {
           setTimeout(function () {
-            $scope.imagesUpdated = false;
             $scope.$digest();
             if (event && event.tag) {
               switch (event.tag) {
@@ -85,11 +84,15 @@
                     WidgetEvent.data.design.itemDetailsLayout = LAYOUTS.itemDetailsLayout[0].name;
                   }
                   currentListLayout = WidgetEvent.data.design.itemDetailsLayout;
-                  $scope.imagesUpdated = !!event.data.content;
+
                   break;
                 case TAG_NAMES.EVENTS_MANUAL:
-                  if(event.data)
+                  if (event.data)
                     WidgetEvent.event.data = event.data;
+                  if (view) {
+                    console.log("_____________________________");
+                    view.loadItems(WidgetEvent.event.data.carouselImages);
+                  }
                   break;
               }
               $scope.$digest();

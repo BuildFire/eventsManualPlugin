@@ -1,7 +1,14 @@
 <div class="holder padding-zero">
   <div class="events-plugin">
     <div class="plugin-banner clearfix border-bottom-grey" ng-if="WidgetEvent.event">
-      <div id="carousel" build-fire-carousel=""></div>
+      <div id="carousel" ng-if="WidgetEvent.event.data.carouselImages.length"
+           build-fire-carousel=""></div>
+      <div class="plugin-slider text-center"
+           ng-if="!WidgetEvent.event.data.carouselImages.length">
+        <div class="plugin-slide">
+          <img src="http://www.placehold.it/1280x565.jpg">
+        </div>
+      </div>
     </div>
     <div class="padded event-intro clearfix padding-bottom-five">
       <div class="event-date text-center pull-left">
