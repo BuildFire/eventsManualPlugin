@@ -320,7 +320,8 @@
             }
             if (!ContentEvent.event.data.links)
               ContentEvent.event.data.links = [];
-            ContentEvent.event.data.links.push(result);
+            if (result.title)
+              ContentEvent.event.data.links.push(result);
             $scope.$digest();
           };
           Buildfire.actionItems.showDialog(null, options, callback);
