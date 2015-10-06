@@ -26,11 +26,13 @@
     </div>
     <div class="plugin-banner has-info-bar location-map clearfix">
       <div class="plugin-slide map-holder">
-        <div google-map style="height: 240px"
+        <p style="position:relative; top:100px; color:#fff; text-align:center;" ng-if="!WidgetEvent.event.data.address.location">
+        <div google-map style="height: 240px" ng-if="WidgetEvent.event.data.address.location"
              coordinates="WidgetEvent.event.data.address.location_coordinates"></div>
       </div>
       <div class="info-bar bg-primary text-center">
-        <p class="margin-bottom-zero ellipsis col-xs-12">{{WidgetEvent.event.data.address.location}}</p>
+        <p ng-show="WidgetEvent.event.data.addressTitle" class="margin-bottom-zero ellipsis col-xs-12">{{WidgetEvent.event.data.addressTitle}}</p>
+        <p ng-hide="WidgetEvent.event.data.addressTitle"class="margin-bottom-zero ellipsis col-xs-12">{{WidgetEvent.event.data.address.location}}</p>
       </div>
     </div>
     <div class="text-left padded padding-bottom-zero clearfix">

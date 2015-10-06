@@ -31,7 +31,7 @@
          */
         ContentHome.masterData = null;
         ContentHome.data = angular.copy(_data);
-
+        updateMasterItem(_data)
         function updateMasterItem(data) {
           ContentHome.masterData = angular.copy(data);
         }
