@@ -96,7 +96,6 @@
       })
     .run(['Location', function (Location) {
       buildfire.messaging.onReceivedMessage = function (msg) {
-        alert("Called widget>>>"+msg.type + msg.id);
         switch (msg.type) {
           case 'AddNewItem':
             Location.goTo("#/event/" + msg.id + "?stopSwitch=true");

@@ -149,7 +149,6 @@
     .run(['Location', function (Location) {
       // Handler to receive message from widget
       buildfire.messaging.onReceivedMessage = function (msg) {
-        alert(">>>>>>>>>>>>>>>>>>>>>>");
         switch (msg.type) {
           case 'OpenItem':
             Location.goTo("#/event/" + msg.id);
