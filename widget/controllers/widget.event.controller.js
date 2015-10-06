@@ -2,8 +2,8 @@
 
 (function (angular, buildfire) {
   angular.module('eventsManualPluginWidget')
-    .controller('WidgetEventCtrl', ['$scope', 'DataStore', 'TAG_NAMES', 'LAYOUTS', '$routeParams', '$sce', '$rootScope', 'Buildfire',
-      function ($scope, DataStore, TAG_NAMES, LAYOUTS, $routeParams, $sce, $rootScope, Buildfire) {
+    .controller('WidgetEventCtrl', ['$scope', 'DataStore', 'TAG_NAMES', 'LAYOUTS', '$routeParams', '$sce', '$rootScope', 'Buildfire', '$location',
+      function ($scope, DataStore, TAG_NAMES, LAYOUTS, $routeParams, $sce, $rootScope, Buildfire, $location) {
 
         var WidgetEvent = this;
         WidgetEvent.data = {};
@@ -11,6 +11,14 @@
         var currentListLayout = null;
         //create new instance of buildfire carousel viewer
         var view = null;
+
+        var _searchObj = $location.search();
+        if ($routeParams.id && !_searchObj.stopSwitch) {
+          buildfire.messaging.sendMessageToControl({
+            id: $routeParams.id,
+            type: 'OpenItem'
+          });
+        }
 
         var getEventDetails = function (url) {
           var success = function (result) {
@@ -21,7 +29,7 @@
               console.error('Error In Fetching Event', err);
             };
           if ($routeParams.id)
-            DataStore.get(TAG_NAMES.EVENTS_MANUAL).then(success, error);
+            DataStore.getById($routeParams.id, TAG_NAMES.EVENTS_MANUAL).then(success, error);
         };
 
         /*declare the device width heights*/
@@ -79,7 +87,6 @@
             }
 
             currentListLayout = WidgetEvent.data.design.itemDetailsLayout;
-            console.log("+++++++++++",currentListLayout)
             $scope.imagesUpdated = !!event.data.content;
             $scope.$digest();
           }, 0);
@@ -119,7 +126,7 @@
         };
 
         $rootScope.$on("Carousel:LOADED", function () {
-          console.log("*******************************",WidgetEvent.event);
+          console.log("*******************************", WidgetEvent.event);
           if (!view) {
             view = new buildfire.components.carousel.view("#carousel", []);
           }

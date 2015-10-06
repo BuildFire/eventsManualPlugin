@@ -1,7 +1,7 @@
 'use strict';
 
-(function (angular) {
-  angular.module('eventsManualPluginContent', ['ngRoute', 'ui.tinymce','ui.bootstrap','ui.sortable','infinite-scroll'])
+(function (angular,buildfire) {
+  angular.module('eventsManualPluginContent', ['ngRoute', 'ui.tinymce', 'ui.bootstrap', 'ui.sortable', 'infinite-scroll'])
     //injected ngRoute for routing
     .config(['$routeProvider', function ($routeProvider) {
       $routeProvider
@@ -50,7 +50,7 @@
       return {
         template: "<div></div>",
         replace: true,
-        scope: {coordinates: '=',draggedGeoData: '&draggedFn'},
+        scope: {coordinates: '=', draggedGeoData: '&draggedFn'},
         link: function (scope, elem, attrs) {
           var geocoder = new google.maps.Geocoder();
           var location;
@@ -69,7 +69,7 @@
                 var marker = new google.maps.Marker({
                   position: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
                   map: map,
-                  draggable:true
+                  draggable: true
                 });
 
                 var styleOptions = {
@@ -78,7 +78,7 @@
                 var MAP_STYLE = [
                   {
                     stylers: [
-                      { visibility: "on" }
+                      {visibility: "on"}
                     ]
                   }];
                 var mapType = new google.maps.StyledMapType(MAP_STYLE, styleOptions);
@@ -89,9 +89,9 @@
                 scope.coordinates = [event.latLng.lng(), event.latLng.lat()];
                 geocoder.geocode({
                   latLng: marker.getPosition()
-                }, function(responses) {
+                }, function (responses) {
                   if (responses && responses.length > 0) {
-                    scope.location  = responses[0].formatted_address;
+                    scope.location = responses[0].formatted_address;
                     scope.draggedGeoData({
                       data: {
                         location: scope.location,
@@ -145,5 +145,18 @@
       return function (input) {
         return moment(new Date(input)).format('MMM D, YYYY')
       };
-    });
-})(window.angular);
+    })
+    .run(['Location', function (Location) {
+      // Handler to receive message from widget
+      buildfire.messaging.onReceivedMessage = function (msg) {
+        alert(">>>>>>>>>>>>>>>>>>>>>>");
+        switch (msg.type) {
+          case 'OpenItem':
+            Location.goTo("#/event/" + msg.id);
+            break;
+          default:
+            Location.goToHome();
+        }
+      };
+    }]);
+})(window.angular,window.buildfire);

@@ -31,6 +31,16 @@
         ContentEvent.unchangedData = true;
         ContentEvent.displayTiming = "USER";
 
+        /*
+         Send message to widget that this page has been opened
+         */
+        if ($routeParams.id) {
+          buildfire.messaging.sendMessageToWidget({
+            id: $routeParams.id,
+            type: 'OpenItem'
+          });
+        }
+
         function isValidEvent(event) {
           return (event.startDate && event.title && event.startTime);
         }
@@ -220,6 +230,12 @@
             _data.dateCreated = ContentEvent.event.data.dateCreated;
             updateMasterEvent(ContentEvent.event);
             ContentEvent.event.data.deepLinkUrl = Buildfire.deeplink.createLink({id: result.id});
+            if (ContentEvent.event.id) {
+              buildfire.messaging.sendMessageToWidget({
+                id: ContentEvent.event.id,
+                type: 'AddNewItem'
+              });
+            }
           }, errorEvents = function () {
             ContentEvent.isNewEventInserted = false;
             return console.error('There was a problem saving your data');
