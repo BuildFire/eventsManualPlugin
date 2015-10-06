@@ -8,20 +8,27 @@
         WidgetHome.data = null;
         WidgetHome.events = [];
         WidgetHome.busy = false;
+        $scope.dt = new Date();
         var searchOptions = {
           skip: 0,
           limit: PAGINATION.eventsCount, // the plus one is to check if there are any more
           sort:{"startDate":1 }
         };
         var currentDate = new Date();
-        var dd = currentDate.getDate();
-        var mm = moment(currentDate).format("MMM");
-        var yyyy = currentDate.getFullYear();
-        var formattedDate= mm+" "+yyyy+", "+dd;
+        var formattedDate= moment(currentDate).format("MMM")+" "+currentDate.getFullYear()+", "+currentDate.getDate();
         var timeStampinMiliSec = +new Date("'"+formattedDate+"'");
         /*
          * Fetch user's data from datastore
          */
+        WidgetHome.getEvent = function()
+        {
+          formattedDate= moment($scope.dt).format("MMM")+" "+$scope.dt.getFullYear()+", "+$scope.dt.getDate();
+          timeStampinMiliSec = +new Date("'"+formattedDate+"'");
+          WidgetHome.events={};
+          searchOptions.skip=0;
+          WidgetHome.busy =false;
+          WidgetHome.loadMore();
+        }
         var init = function () {
           var success = function (result) {
               WidgetHome.data = result.data;

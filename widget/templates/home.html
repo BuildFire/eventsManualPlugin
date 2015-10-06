@@ -8,7 +8,8 @@
         <div style="display:inline-block; border: none">
           <datepicker ng-model="dt" min-date="minDate" show-weeks="false"
                       max-mode="day" class="calendar-day" show-year="false"
-                      custom-class="getDayClass(date, mode)"></datepicker>
+                      custom-class="getDayClass(date, mode)"
+                  ng-click="WidgetHome.getEvent()"></datepicker>
         </div>
       </div>
     </div>
