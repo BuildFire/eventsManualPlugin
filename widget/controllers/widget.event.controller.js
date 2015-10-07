@@ -138,7 +138,6 @@
         });
 
         $rootScope.$on("Carousel:LOADED", function () {
-          console.log("*******************************", WidgetEvent.event);
           if (!view) {
             view = new buildfire.components.carousel.view("#carousel", []);
           }
@@ -148,5 +147,11 @@
             view.loadItems([]);
           }
         });
-      }])
+
+        //Check is description is empty or not
+        WidgetEvent.showDescription = function (description) {
+          console.log("------------------------------", description);
+          return !(description == '<p><br data-mce-bogus="1"></p>');
+        };
+      }]);
 })(window.angular, window.buildfire);
