@@ -1,6 +1,6 @@
-describe('Unit : Event Manual Plugin content.home.controller.js', function () {
-    var ContentEvent, scope, $rootScope, $controller, Buildfire, ActionItems, TAG_NAMES, STATUS_CODE, LAYOUTS, STATUS_MESSAGES, CONTENT_TYPE, q, Utils;
-    beforeEach(module('eventsManualPluginContent'));
+describe('Unit : event Feed Plugin widget.manual.controller.js', function () {
+    var WidgetEvent, scope, $rootScope, $controller, Buildfire, ActionItems, TAG_NAMES, STATUS_CODE, LAYOUTS, STATUS_MESSAGES, CONTENT_TYPE, q;
+    beforeEach(module('eventsManualPluginWidget'));
     var editor;
     beforeEach(inject(function (_$rootScope_, _$q_, _$controller_, _TAG_NAMES_, _STATUS_CODE_, _LAYOUTS_, _STATUS_MESSAGES_) {
         $rootScope = _$rootScope_;
@@ -23,13 +23,13 @@ describe('Unit : Event Manual Plugin content.home.controller.js', function () {
                 }
             }
         };
-        it('DataStore should exist and be an object', function () {
-            expect(ContentEvent.isUpdating).toEqual(false);
-        });
-         }));
+        ActionItems = jasmine.createSpyObj('ActionItems', ['showDialog']);
+        Buildfire.components.carousel = jasmine.createSpyObj('Buildfire.components.carousel', ['editor','onAddItems']);
+
+    }));
 
     beforeEach(function () {
-        ContentEvent = $controller('ContentHomeCtrl', {
+        WidgetEvent = $controller('WidgetHomeCtrl', {
             $scope: scope,
             $q: q,
             Buildfire: Buildfire,
@@ -37,28 +37,29 @@ describe('Unit : Event Manual Plugin content.home.controller.js', function () {
             ActionItems: ActionItems,
             STATUS_CODE: STATUS_CODE,
             CONTENT_TYPE: CONTENT_TYPE,
-            LAYOUTS: LAYOUTS,
-            Utils:Utils
+            LAYOUTS: LAYOUTS
         });
     });
 
-    var  _data = {
-        "title": "",
-        "listImage": "",
-        "deepLinkUrl": "",
-        "carouselImages": [],
-        "startDate": "",
-        "endDate": "",
-        "isAllDay": "",
-        "timezone": "",
-        "timeDisplay": {},
-        "repeat": {},
-        "addressTitle": "",
-        "address": {},
-        "description": "",
-        "links": []
+    describe('Units: units should be Defined', function () {
+     });
 
-    };
+    describe('$destroy', function() {
+        it('should invoke when get $destroy', function() {
+            $rootScope.$broadcast('$destroy');
+        });
+    });
+
+    describe('Carousel:LOADED', function() {
+        it('should invoke when get Carousel:LOADED', function() {
+            $rootScope.$broadcast('Carousel:LOADED');
+        });
+    });
+
+
+
+
+
 
 
 })
