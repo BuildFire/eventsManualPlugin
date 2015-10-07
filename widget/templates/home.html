@@ -20,9 +20,9 @@
         <div infinite-scroll="WidgetHome.loadMore()"
              infinite-scroll-distance="1"
              infinite-scroll-disabled="WidgetHome.busy">
-          <div class="event-item clearfix"
+          <div class="event-item clearfix" ng-swipe-right="WidgetHome.addEvents($event, $index, true)" ng-swipe-left="WidgetHome.addEvents($event, $index, false)" ng-class="{'active' : WidgetHome.swiped[$index]}"
                ng-repeat="event in WidgetHome.events">
-            <div class="calendar-icon text-center bg-primary">
+            <div class="calendar-icon text-center bg-primary" ng-click="WidgetHome.addEventsToCalendar(event)">
               <span class="icon icon-calendar-check"></span>
             </div>
             <span class="icon icon-menu rotate-90 pull-left"></span>

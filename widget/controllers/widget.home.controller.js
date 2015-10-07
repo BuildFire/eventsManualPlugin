@@ -6,6 +6,7 @@
       function ($scope, TAG_NAMES, LAYOUTS, DataStore, PAGINATION, Buildfire) {
         var WidgetHome = this;
         WidgetHome.data = null;
+        WidgetHome.swiped = [];
         WidgetHome.events = [];
         WidgetHome.allEvents = [];
         WidgetHome.busy = false;
@@ -32,6 +33,13 @@
           formattedDate= moment($scope.dt).format("MMM")+" "+$scope.dt.getFullYear()+", "+$scope.dt.getDate();
           timeStampinMiliSec = +new Date("'"+formattedDate+"'");
           WidgetHome.loadMore();
+        }
+        WidgetHome.addEvents = function (e, i, toggle) {
+          toggle ? WidgetHome.swiped[i] = true : WidgetHome.swiped[i] = false;
+        };
+        WidgetHome.addEventsToCalendar =function(event)
+        {
+          /*Add to calendar event will add here*/
         }
         var init = function () {
           var success = function (result) {

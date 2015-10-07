@@ -1,7 +1,7 @@
 'use strict';
 
 (function (angular, buildfire) {
-  angular.module('eventsManualPluginWidget', ['ngRoute', 'ui.bootstrap', 'infinite-scroll'])
+  angular.module('eventsManualPluginWidget', ['ngRoute','ngTouch', 'ui.bootstrap', 'infinite-scroll'])
     .config(['$routeProvider', function ($routeProvider) {
       $routeProvider
         .when('/', {
