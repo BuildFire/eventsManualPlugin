@@ -41,15 +41,15 @@
           .title}}</a>
       </div>
     </div>
-    <p ng-show="WidgetEvent.event.data.addressTitle" class="margin-bottom-zero ellipsis col-xs-12">{{WidgetEvent.event.data.addressTitle}}</p>
-    <p ng-hide="WidgetEvent.event.data.addressTitle"class="margin-bottom-zero ellipsis col-xs-12">{{WidgetEvent.event.data.address.location}}</p>
+    <p class="text-center text-primary" ng-show="WidgetEvent.event.data.addressTitle">{{WidgetEvent.event.data.addressTitle}}</p>
+    <p class="text-center text-primary" ng-hide="WidgetEvent.event.data.addressTitle">{{WidgetEvent.event.data.address.location}}</p>
 
     <div class="plugin-banner has-info-bar location-map clearfix">
       <div class="plugin-slide map-holder">
         <p style="position:relative; top:100px; color:#fff; text-align:center;" ng-if="!WidgetEvent.event.data.address.location">
         <div google-map style="height: 280px" ng-if="WidgetEvent.event.data.address.location"
-             coordinates="WidgetEvent.event.data.address.location_coordinates"></div>
-      </div>
+                       coordinates="WidgetEvent.event.data.address.location_coordinates"></div>
+        </div>
     </div>
   </div>
 </div>
