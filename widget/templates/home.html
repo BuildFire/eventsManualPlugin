@@ -4,14 +4,14 @@
   Add 'long-month' class to events-plugin container below if month has 6 rows instead of 5.
   -->
   <div class="events-plugin">
-    <div class="event-calendar-holder padded clearfix">
-      <div class="event-calendar">
+    <div class="event-calendar-holder padded clearfix" ng-if="WidgetHome.allEvents.length">
+      <div class="event-calendar" >
         <div style="display:inline-block; border: none">
-          <datepicker ng-model="dt" min-date="minDate" show-weeks="false"
+          <datepicker ng-model="$parent.dt" min-date="minDate" show-weeks="false"
                       max-mode="day" class="calendar-day" show-year="false"
                       custom-class="getDayClass(date, mode)"
                       ng-click="WidgetHome.getEvent()"
-                  ng-class="{'avoid-clicks':WidgetHome.clickEvent}"></datepicker>
+                      ng-class="{'avoid-clicks':WidgetHome.clickEvent}"></datepicker>
         </div>
       </div>
     </div>

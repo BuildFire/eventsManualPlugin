@@ -50,13 +50,25 @@
     -moz-user-select: none;
     user-select: none;
 }
-
-.eventDate button span {
-    background-color: limegreen;
-    border-radius: 32px;
-    color: black;
+.eventDate button{
+    position: relative;
+}
+.eventDate button span:after {
+    background-color: #355ACF;
+    border-radius: 100%;
+    padding: 3px;
+    height: 1px;
+    width: 1px;
+    content: " ";
+    position: absolute;
+    top: 2px;
+    left: 0;
+    right: 0;
+    display: inline-block;
+    margin: 0 auto;
 }
 
 .avoid-clicks {
     pointer-events: none;
 }
+

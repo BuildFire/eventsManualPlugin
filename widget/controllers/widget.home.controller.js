@@ -7,6 +7,7 @@
         var WidgetHome = this;
         WidgetHome.data = null;
         WidgetHome.events = [];
+        WidgetHome.allEvents = [];
         WidgetHome.busy = false;
         WidgetHome.clickEvent=false;
         $scope.dt = new Date();
@@ -48,7 +49,15 @@
                 console.error('Error while getting data', err);
               }
             };
+          var successEventsAll = function(resultAll){
+            WidgetHome.allEvents = resultAll;
+              },
+              errorEventsAll = function(error)
+          {
+            console.log("error", error)
+          }
 
+          DataStore.search({}, TAG_NAMES.EVENTS_MANUAL).then(successEventsAll, errorEventsAll);
           DataStore.get(TAG_NAMES.EVENTS_MANUAL_INFO).then(success, error);
         };
 
@@ -56,12 +65,14 @@
         $scope.getDayClass = function (date, mode) {
 
           var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
-          var currentDay = new Date('2015-09-15T18:30:00.000Z').setHours(0, 0, 0, 0);
+          var currentDay;
+          for (var i=0;i<WidgetHome.allEvents.length;i++) {
+          currentDay = new Date(WidgetHome.allEvents[i].data.startDate).setHours(0, 0, 0, 0);
           if (dayToCheck === currentDay) {
             return 'eventDate';
           }
+          }
         };
-
         var getManualEvents = function () {
           Buildfire.spinner.show();
           var successEvents = function (result) {
@@ -78,9 +89,8 @@
           };
 
           searchOptions.filter = {"$or": [{"data.startDate": {"$gt":timeStampinMiliSec }},{"data.startDate": {"$eq":timeStampinMiliSec }}]};
-          DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
+         DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
-
         WidgetHome.loadMore = function () {
           if (WidgetHome.busy) return;
           WidgetHome.busy = true;
