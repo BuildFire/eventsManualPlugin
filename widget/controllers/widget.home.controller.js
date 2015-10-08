@@ -14,12 +14,12 @@
         $scope.dt = new Date();
         var searchOptions = {
           skip: 0,
-          limit: PAGINATION.eventsCount, // the plus one is to check if there are any more
+          limit: PAGINATION.eventsCount,
           sort: {"startDate": 1}
         };
         var currentDate = new Date();
         var formattedDate = moment(currentDate).format("MMM") + " " + currentDate.getFullYear() + ", " + currentDate.getDate();
-        var timeStampinMiliSec = +new Date("'" + formattedDate + "'");
+        var timeStampInMiliSec = +new Date("'" + formattedDate + "'");
 
         var getManualEvents = function () {
           Buildfire.spinner.show();
@@ -36,10 +36,13 @@
             console.log("Error fetching events");
           };
 
-          searchOptions.filter = {"$or": [{"data.startDate": {"$gt": timeStampinMiliSec}}, {"data.startDate": {"$eq": timeStampinMiliSec}}]};
+          searchOptions.filter = {"$or": [{"data.startDate": {"$gt": timeStampInMiliSec}}, {"data.startDate": {"$eq": timeStampInMiliSec}}]};
           DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
 
+        /**
+         * init() function invocation to fetch previously saved user's data from datastore.
+         */
         var init = function () {
           var success = function (result) {
               WidgetHome.data = result.data;
@@ -77,7 +80,7 @@
           WidgetHome.busy = false;
           WidgetHome.disabled = true;
           formattedDate = moment($scope.dt).format("MMM") + " " + $scope.dt.getFullYear() + ", " + $scope.dt.getDate();
-          timeStampinMiliSec = +new Date("'" + formattedDate + "'");
+          timeStampInMiliSec = +new Date("'" + formattedDate + "'");
           WidgetHome.loadMore();
         };
 
@@ -106,6 +109,43 @@
             }
           }
         };
+
+        var onUpdateCallback = function (event) {
+          setTimeout(function () {
+            if (event && event.tag) {
+              switch (event.tag) {
+                case TAG_NAMES.EVENTS_MANUAL_INFO:
+                  WidgetHome.data = event.data;
+                  if (!WidgetHome.data.design)
+                    WidgetHome.data.design = {};
+                  if (!WidgetHome.data.design.itemDetailsLayout) {
+                    WidgetHome.data.design.itemDetailsLayout = LAYOUTS.itemDetailsLayout[0].name;
+                  }
+
+                  break;
+                case TAG_NAMES.EVENTS_MANUAL:
+                  WidgetHome.events = [];
+                  searchOptions = {
+                    skip: 0,
+                    limit: PAGINATION.eventsCount, 
+                    sort: {"startDate": 1}
+                  };
+                  getManualEvents();
+                  break;
+              }
+              $scope.$digest();
+            }
+          }, 0);
+        };
+
+        /**
+         * DataStore.onUpdate() is bound to listen any changes in datastore
+         */
+        DataStore.onUpdate().then(null, null, onUpdateCallback);
+
+        $scope.$on("$destroy", function () {
+          DataStore.clearListener();
+        });
 
         init();
 
