@@ -1,5 +1,11 @@
 <div id="eventsManualPluginContent">
   <div id="carousel"></div>
+  <!-- Show If No images -->
+  <div class="well text-center margin-bottom-zero border-none"
+       ng-hide="ContentEvent.event.data.carouselImages.length"
+       style="margin-top: 15px">
+    <p class="margin-zero">No images found.</p>
+  </div>
   <hr class="none">
   <div id="listImage"></div>
   <hr class="none">
@@ -20,7 +26,8 @@
 
     <div class="main col-md-9 pull-right">
       <input type="date" placeholder="Start Date" class="form-control"
-             ng-model="ContentEvent.event.data.startDate" ng-change="ContentEvent.setEndDay()">
+             ng-model="ContentEvent.event.data.startDate"
+             ng-change="ContentEvent.setEndDay()">
     </div>
   </div>
   <hr class="none">
@@ -137,7 +144,8 @@
     </div>
   </div>
   <hr class="none">
-  <div class="item clearfix row" ng-if="ContentEvent.event.data.repeat.isRepeating">
+  <div class="item clearfix row"
+       ng-if="ContentEvent.event.data.repeat.isRepeating">
     <div class="labels col-md-3 padding-right-zero pull-left">
       <span>Repeats</span>
     </div>
@@ -566,9 +574,11 @@
       <input type="text" class="form-control"
              placeholder="Enter Street Address or Long/Lat Coordinates"
              ng-model="ContentEvent.currentAddress" google-location-search
-             callback-fn="ContentEvent.setLocation(data)" ng-enter="ContentEvent.setCoordinates()"
+             callback-fn="ContentEvent.setLocation(data)"
+             ng-enter="ContentEvent.setCoordinates()"
              ng-change="ContentEvent.clearAddress()">
       <br>
+
       <div class="alert alert-danger alert-sm text-center"
            ng-show="ContentEvent.validCoordinatesFailure">Please enter valid
         coordinates
@@ -578,7 +588,8 @@
   <hr class="none">
   <div class="item clearfix row" ng-if="ContentEvent.currentCoordinates">
     <div class="main col-md-9 pull-right">
-      <div google-map dragged-fn="ContentEvent.setDraggedLocation(data)" coordinates="ContentEvent.currentCoordinates"
+      <div google-map dragged-fn="ContentEvent.setDraggedLocation(data)"
+           coordinates="ContentEvent.currentCoordinates"
            style="height: 200px; position: relative;"></div>
     </div>
   </div>
@@ -639,10 +650,10 @@
           </div>
         </div>
 
-        <!-- Show If No Items -->
+        <!-- Show If No Links -->
         <div class="well text-center margin-bottom-zero border-none"
              ng-hide="ContentEvent.event.data.links.length">
-          <p class="margin-zero">No items found.</p>
+          <p class="margin-zero">No links found.</p>
         </div>
       </div>
     </div>
@@ -656,8 +667,9 @@
       </div>
       <div class="col-md-6 pull-right padding-right-zero padding-left-ten">
         <button class="btn btn-primary pull-right stretch"
-           ng-click="ContentEvent.gotToHome()"
-                ng-disabled="!ContentEvent.isValidEvent(ContentEvent.event.data)">Done
+                ng-click="ContentEvent.gotToHome()"
+                ng-disabled="!ContentEvent.isValidEvent(ContentEvent.event.data)">
+          Done
         </button>
       </div>
     </div>
