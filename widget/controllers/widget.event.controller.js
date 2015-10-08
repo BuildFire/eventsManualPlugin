@@ -9,10 +9,12 @@
         WidgetEvent.data = {};
         WidgetEvent.event = null;
         var currentListLayout = null;
+
         //create new instance of buildfire carousel viewer
         var view = null;
 
         var _searchObj = $location.search();
+
         if ($routeParams.id && !_searchObj.stopSwitch) {
           buildfire.messaging.sendMessageToControl({
             id: $routeParams.id,
@@ -37,7 +39,7 @@
         WidgetEvent.deviceWidth = window.innerWidth;
 
         /*initialize the device width heights*/
-        function initDeviceSize(callback) {
+        var initDeviceSize = function(callback) {
           WidgetEvent.deviceHeight = window.innerHeight;
           WidgetEvent.deviceWidth = window.innerWidth;
           if (callback) {
@@ -52,7 +54,7 @@
               }
             }
           }
-        }
+        };
 
         /*crop image on the basis of width heights*/
         WidgetEvent.cropImage = function (url, settings) {
@@ -70,6 +72,23 @@
             return Buildfire.imageLib.cropImage(url, options);
           }
         };
+
+        WidgetEvent.safeHtml = function (html) {
+          if (html)
+            return $sce.trustAsHtml(html);
+        };
+
+        WidgetEvent.executeActionItem = function (actionItem) {
+          buildfire.actionItems.execute(actionItem, function () {
+
+          });
+        };
+
+        //Check is description is empty or not
+        WidgetEvent.showDescription = function (description) {
+          return !(description == '<p><br data-mce-bogus="1"></p>');
+        };
+
         /*update data on change event*/
         var onUpdateCallback = function (event) {
           setTimeout(function () {
@@ -99,8 +118,6 @@
             }
           }, 0);
         };
-        DataStore.onUpdate().then(null, null, onUpdateCallback);
-
 
         /*
          * Fetch user's data from datastore
@@ -120,18 +137,10 @@
             };
           DataStore.get(TAG_NAMES.EVENTS_MANUAL_INFO).then(success, error);
         };
+
         init();
 
-        WidgetEvent.safeHtml = function (html) {
-          if (html)
-            return $sce.trustAsHtml(html);
-        };
-
-        WidgetEvent.executeActionItem = function (actionItem) {
-          buildfire.actionItems.execute(actionItem, function () {
-
-          });
-        };
+        DataStore.onUpdate().then(null, null, onUpdateCallback);
 
         $scope.$on("$destroy", function () {
           DataStore.clearListener();
@@ -148,10 +157,5 @@
           }
         });
 
-        //Check is description is empty or not
-        WidgetEvent.showDescription = function (description) {
-          console.log("------------------------------", description);
-          return !(description == '<p><br data-mce-bogus="1"></p>');
-        };
       }]);
 })(window.angular, window.buildfire);

@@ -31,17 +31,19 @@
          */
         ContentHome.masterData = null;
         ContentHome.data = angular.copy(_data);
-        updateMasterItem(_data)
-        function updateMasterItem(data) {
+
+        /*
+         * create an artificial delay so api isnt called on every character entered
+         * */
+        var tmrDelay = null;
+
+        var updateMasterItem = function (data) {
           ContentHome.masterData = angular.copy(data);
-        }
+        };
 
-        function isUnchanged(data) {
+        var isUnchanged = function(data) {
           return angular.equals(data, ContentHome.masterData);
-        }
-
-        // Send message to widget to return to list layout
-        buildfire.messaging.sendMessageToWidget({type: 'Init'});
+        };
 
         /*
          * Go pull any previously saved data
@@ -68,11 +70,12 @@
             };
           DataStore.get(TAG_NAMES.EVENTS_MANUAL_INFO).then(success, error);
         };
-        init();
+
         ContentHome.safeHtml = function (html) {
           if (html)
             return $sce.trustAsHtml(html);
         };
+
         ContentHome.searchEvents = function (search) {
           ContentHome.events = [];
           ContentHome.busy = false;
@@ -121,6 +124,13 @@
             //do something on cancel
           });
         };
+
+        ContentHome.loadMore = function () {
+          if (ContentHome.busy) return;
+          ContentHome.busy = true;
+          getManualEvents();
+        };
+
         /*
          * Call the datastore to save the data object
          */
@@ -138,11 +148,6 @@
           DataStore.save(newObj, tag).then(success, error);
         };
 
-
-        /*
-         * create an artificial delay so api isnt called on every character entered
-         * */
-        var tmrDelay = null;
         var saveDataWithDelay = function (newObj) {
           if (newObj) {
             if (isUnchanged(newObj)) {
@@ -156,13 +161,6 @@
             }, 500);
           }
         };
-        /*
-         * watch for changes in data and trigger the saveDataWithDelay function on change
-         * */
-
-        $scope.$watch(function () {
-          return ContentHome.data;
-        }, saveDataWithDelay, true);
 
         var getManualEvents = function () {
           Buildfire.spinner.show();
@@ -179,10 +177,20 @@
           };
           DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
-        ContentHome.loadMore = function () {
-          if (ContentHome.busy) return;
-          ContentHome.busy = true;
-          getManualEvents();
-        };
+
+        // Send message to widget to return to list layout
+        buildfire.messaging.sendMessageToWidget({type: 'Init'});
+
+        init();
+
+        updateMasterItem(_data);
+
+        /*
+         * watch for changes in data and trigger the saveDataWithDelay function on change
+         * */
+        $scope.$watch(function () {
+          return ContentHome.data;
+        }, saveDataWithDelay, true);
+
       }]);
 })(window.angular);
