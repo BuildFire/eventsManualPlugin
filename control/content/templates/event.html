@@ -20,11 +20,26 @@
 
     <div class="main col-md-9 pull-right">
       <input type="date" placeholder="Start Date" class="form-control"
-             ng-model="ContentEvent.event.data.startDate">
+             ng-model="ContentEvent.event.data.startDate" ng-change="ContentEvent.setEndDay()">
     </div>
   </div>
   <hr class="none">
   <div class="item clearfix row">
+    <div class="labels col-md-3 padding-right-zero pull-left">
+      <span>All Day</span>
+    </div>
+    <div class="main col-md-9 pull-right">
+      <div class="checkbox checkbox-primary margin-zero no-label">
+        <input type="checkbox" id="allday"
+               ng-model="ContentEvent.event.data.isAllDay"
+               ng-checked="ContentEvent.event.data.isAllDay"
+               ng-change="ContentEvent.setEndDay()">
+        <label for="allday"></label>
+      </div>
+    </div>
+  </div>
+  <hr class="none">
+  <div class="item clearfix row" ng-if="!ContentEvent.event.data.isAllDay">
     <div class="labels col-md-3 padding-right-zero pull-left">
       <span>Start Time</span>
     </div>
@@ -50,20 +65,6 @@
     <div class="main col-md-9 pull-right">
       <input type="date" placeholder="End Date" class="form-control"
              ng-model="ContentEvent.event.data.endDate">
-    </div>
-  </div>
-  <hr class="none">
-  <div class="item clearfix row">
-    <div class="labels col-md-3 padding-right-zero pull-left">
-      <span>All Day</span>
-    </div>
-    <div class="main col-md-9 pull-right">
-      <div class="checkbox checkbox-primary margin-zero no-label">
-        <input type="checkbox" id="allday"
-               ng-model="ContentEvent.event.data.isAllDay"
-               ng-checked="ContentEvent.event.data.isAllDay">
-        <label for="allday"></label>
-      </div>
     </div>
   </div>
   <hr class="none">
@@ -656,7 +657,7 @@
       <div class="col-md-6 pull-right padding-right-zero padding-left-ten">
         <button class="btn btn-primary pull-right stretch"
            ng-click="ContentEvent.gotToHome()"
-                ng-disabled="!(ContentEvent.event.data.startDate && ContentEvent.event.data.title && ContentEvent.event.data.startTime)">Done
+                ng-disabled="!ContentEvent.isValidEvent(ContentEvent.event.data)">Done
         </button>
       </div>
     </div>
