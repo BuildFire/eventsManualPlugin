@@ -31,32 +31,20 @@
         ContentEvent.unchangedData = true;
         ContentEvent.displayTiming = "USER";
 
-        /*
-         Send message to widget that this page has been opened
-         */
-        if ($routeParams.id) {
-          buildfire.messaging.sendMessageToWidget({
-            id: $routeParams.id,
-            type: 'OpenItem'
-          });
-        }
-
-        ContentEvent.isValidEvent = function(event) {
+        ContentEvent.isValidEvent = function (event) {
           if (event.isAllDay)
             return (event.startDate && event.title);
           else
             return (event.startDate && event.title && event.startTime);
         };
 
-        updateMasterEvent(ContentEvent.event);
-
-        function updateMasterEvent(event) {
+        var updateMasterEvent = function (event) {
           ContentEvent.masterEvent = angular.copy(event);
-        }
+        };
 
-        function isUnchanged(event) {
+        var isUnchanged = function (event) {
           return angular.equals(event, ContentEvent.masterEvent);
-        }
+        };
 
         ContentEvent.getItem = function (id) {
           var successEvents = function (result) {
@@ -97,10 +85,6 @@
           };
           DataStore.getById(id, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
-
-        if ($routeParams.id) {
-          ContentEvent.getItem($routeParams.id);
-        }
 
         ContentEvent.TimeZoneDropdownOptions = [
           {name: "(GMT -12:00) Eniwetok, Kwajalein", value: "-12.0"},
@@ -190,6 +174,7 @@
          * link and sortable options
          */
         var linkOptions = {"icon": "true"};
+
         ContentEvent.linksSortableOptions = {
           handle: '> .cursor-grab'
         };
@@ -459,6 +444,20 @@
           if (ContentEvent.event.data.startDate && ContentEvent.event.data.isAllDay)
             ContentEvent.event.data.endDate = ContentEvent.event.data.startDate;
         };
+
+        updateMasterEvent(ContentEvent.event);
+
+        if ($routeParams.id) {
+          ContentEvent.getItem($routeParams.id);
+
+          /*
+           Send message to widget that this page has been opened
+           */
+          buildfire.messaging.sendMessageToWidget({
+            id: $routeParams.id,
+            type: 'OpenItem'
+          });
+        }
 
         $scope.$watch(function () {
           return ContentEvent.event;
