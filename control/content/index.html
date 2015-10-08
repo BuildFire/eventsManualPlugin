@@ -20,7 +20,7 @@
   <script src="assets/js/jquery-ui.min.js"></script>
   <script src="assets/js/sortable.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
-  <script src="assets/js/ng-infinite-scroll.js" type="application/javascript"></script>
+  <script src="assets/js/ng-infinite-scroll.custom.js" type="application/javascript"></script>
   <script src="app.js"></script>
   <script src="enums.js"></script>
   <script src="app.services.js"></script>
@@ -29,7 +29,11 @@
   <script src="controllers/modal.removeEvent.controller.js"></script>
   <style>
     .body-scroll{
-      height: auto !important;
+      height: 600px !important;
+    }
+    .draggable-list-view.tab-order.wide-list, .draggable-list-view.wide-list {
+      max-height: inherit;
+      height: inherit;
     }
   </style>
   <meta charset="UTF-8">
