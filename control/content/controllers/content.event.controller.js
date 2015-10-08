@@ -41,9 +41,12 @@
           });
         }
 
-        function isValidEvent(event) {
-          return (event.startDate && event.title && event.startTime);
-        }
+        ContentEvent.isValidEvent = function(event) {
+          if (event.isAllDay)
+            return (event.startDate && event.title);
+          else
+            return (event.startDate && event.title && event.startTime);
+        };
 
         updateMasterEvent(ContentEvent.event);
 
@@ -286,7 +289,7 @@
           ContentEvent.isUpdating = false;
           ContentEvent.unchangedData = angular.equals(_data, ContentEvent.event.data);
 
-          ContentEvent.isEventValid = isValidEvent(ContentEvent.event.data);
+          ContentEvent.isEventValid = ContentEvent.isValidEvent(ContentEvent.event.data);
           if (!ContentEvent.isUpdating && !isUnchanged(ContentEvent.event) && ContentEvent.isEventValid) {
             tmrDelayForEvent = setTimeout(function () {
               if (event.id) {
@@ -450,6 +453,11 @@
 
         ContentEvent.gotToHome = function () {
           $location.path('/');
+        };
+
+        ContentEvent.setEndDay = function () {
+          if (ContentEvent.event.data.startDate && ContentEvent.event.data.isAllDay)
+            ContentEvent.event.data.endDate = ContentEvent.event.data.startDate;
         };
 
         $scope.$watch(function () {
