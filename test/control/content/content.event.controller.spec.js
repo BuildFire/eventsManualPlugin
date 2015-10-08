@@ -1,8 +1,8 @@
-describe('Unit : Event Manual Plugin content.home.controller.js', function () {
+describe('Unit : Event Manual Plugin content.event.controller.js', function () {
     var ContentEvent, scope, $rootScope, $controller, Buildfire, ActionItems, TAG_NAMES, STATUS_CODE, LAYOUTS, STATUS_MESSAGES, CONTENT_TYPE, q, Utils;
     beforeEach(module('eventsManualPluginContent'));
     var editor;
-    beforeEach(inject(function (_$rootScope_, _$q_, _$controller_, _TAG_NAMES_, _STATUS_CODE_, _LAYOUTS_, _STATUS_MESSAGES_) {
+    beforeEach(inject(function (_$rootScope_, _$q_, _Buildfire_, _$controller_, _TAG_NAMES_, _STATUS_CODE_, _LAYOUTS_, _STATUS_MESSAGES_) {
         $rootScope = _$rootScope_;
         q = _$q_;
         scope = $rootScope.$new();
@@ -23,13 +23,14 @@ describe('Unit : Event Manual Plugin content.home.controller.js', function () {
                 }
             }
         };
-        it('DataStore should exist and be an object', function () {
-            expect(ContentEvent.isUpdating).toEqual(false);
-        });
+        ActionItems = jasmine.createSpyObj('ActionItems', ['showDialog']);
+        Utils = jasmine.createSpyObj('Utils', ['validLongLats']);
+        Buildfire.components.carousel = jasmine.createSpyObj('Buildfire.components.carousel', ['editor','onAddItems']);
+
          }));
 
     beforeEach(function () {
-        ContentEvent = $controller('ContentHomeCtrl', {
+        ContentEvent = $controller('ContentEventCtrl', {
             $scope: scope,
             $q: q,
             Buildfire: Buildfire,
@@ -42,24 +43,14 @@ describe('Unit : Event Manual Plugin content.home.controller.js', function () {
         });
     });
 
-    var  _data = {
-        "title": "",
-        "listImage": "",
-        "deepLinkUrl": "",
-        "carouselImages": [],
-        "startDate": "",
-        "endDate": "",
-        "isAllDay": "",
-        "timezone": "",
-        "timeDisplay": {},
-        "repeat": {},
-        "addressTitle": "",
-        "address": {},
-        "description": "",
-        "links": []
 
-    };
+    describe('It will test the defined methods', function () {
+        it('it should pass if ContentEvent is defined', function () {
+            expect(ContentEvent).not.toBeUndefined();
+            ContentEvent.addNewEvent
+        });
 
+    });
 
 })
 ;

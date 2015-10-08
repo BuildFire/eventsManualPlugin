@@ -39,7 +39,19 @@ describe('Unit : Event Manual Plugin content.home.controller.js', function () {
             STATUS_CODE: STATUS_CODE,
             CONTENT_TYPE: CONTENT_TYPE,
             LAYOUTS: LAYOUTS,
+
             Utils:Utils
+        });
+    });
+
+    describe('It will test the defined methods', function () {
+        it('it should pass if ContentHome is defined', function () {
+            expect(ContentHome).not.toBeUndefined();
+        });
+
+        it('it should test the passed html with tag', function () {
+            var html = "<p>Test</p>"
+            ContentHome.safeHtml(html)
         });
     });
 
