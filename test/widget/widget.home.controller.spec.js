@@ -1,4 +1,4 @@
-describe('Unit : event Feed Plugin widget.home.controller.js', function () {
+describe('Unit : event Manual Plugin widget.home.controller.js', function () {
     var WidgetHome, scope, $rootScope, $controller, Buildfire, ActionItems, TAG_NAMES, STATUS_CODE, LAYOUTS, STATUS_MESSAGES, CONTENT_TYPE, q;
     beforeEach(module('eventsManualPluginWidget'));
     var editor;

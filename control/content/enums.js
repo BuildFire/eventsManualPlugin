@@ -5,9 +5,7 @@
     .constant('TAG_NAMES', {
       EVENTS_MANUAL_INFO: 'eventsManualInfo',
       EVENTS_MANUAL: "eventsManual"
-    }).constant('COLLECTIONS', {
-        eventsManualData: "eventsManualData"
-      })
+    })
     .constant('STATUS_CODE', {
       INSERTED: 'inserted',
       UPDATED: 'updated',
@@ -41,6 +39,6 @@
       API_KEY: 'AIzaSyB0xpJ-AseoeusvT2PPWd5MOak58CR_B0c'
     })
     .constant('PAGINATION', {
-    eventsCount: 10
-  });
+      eventsCount: 10
+    });
 })(window.angular);
