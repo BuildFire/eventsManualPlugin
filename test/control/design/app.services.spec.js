@@ -8,7 +8,6 @@ describe('Unit : eventsManualPlugin design services', function () {
 
     }));
     it('Buildfire should exist and be an object', function () {
-      console.log(Buildfire)
       expect(typeof Buildfire).toEqual('object');
     });
   });
@@ -50,12 +49,6 @@ describe('Unit : eventsManualPlugin design services', function () {
     it('DataStore.get should exist and be a function', function () {
       expect(typeof DataStore.get).toEqual('function');
     });
-    it('DataStore.get should exist and be a function', function () {
-      expect(typeof DataStore.getById).toEqual('function');
-    });
-    it('DataStore.get should exist and be a function', function () {
-      expect(typeof DataStore.insert).toEqual('function');
-    });
     it('DataStore.save should exist and be a function', function () {
       expect(typeof DataStore.save).toEqual('function');
     });
@@ -68,8 +61,6 @@ describe('Unit : eventsManualPlugin design services', function () {
             result = err;
           };
       DataStore.get(null).then(success, error);
-      DataStore.getById(null,null).then(success, error);
-     // DataStore.insert(null,null).then(success, error);
       $rootScope.$digest();
       expect(result).toEqual('Error');
     });
@@ -82,8 +73,6 @@ describe('Unit : eventsManualPlugin design services', function () {
             result = err;
           };
       DataStore.get(TAG_NAMES.EVENTS_MANUAL_INFO).then(success, error);
-      DataStore.getById(null,TAG_NAMES.EVENTS_MANUAL_INFO).then(success, error);
-  //    DataStore.insert(null,TAG_NAMES.EVENTS_MANUAL_INFO).then(success, error);
       $rootScope.$digest();
       expect(result).toEqual('Success');
     });

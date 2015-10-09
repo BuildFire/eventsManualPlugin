@@ -24,5 +24,4 @@ describe('Unit: eventsManualPluginDesign content app', function () {
       });
     });
   });
-
 });

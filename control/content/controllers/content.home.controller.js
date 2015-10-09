@@ -8,7 +8,7 @@
         var _data = {
           "content": {},
           "design": {
-            "itemDetailsLayout": LAYOUTS.itemDetailLayouts[0].name,
+            "itemDetailsLayout": LAYOUTS.itemDetailsLayout[0].name,
             "itemDetailsBgImage": ""
           }
         };

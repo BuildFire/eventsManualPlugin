@@ -7,6 +7,18 @@
       function ($scope, Buildfire, LAYOUTS, DataStore, TAG_NAMES) {
         var DesignHome = this;
         var DesignHomeMaster;
+        var _data = {
+          design: {
+            itemDetailsLayout: "",
+            itemDetailsBgImage: ""
+          },
+          content: {}
+        };
+        DesignHome.data = {
+          design: {
+            itemDetailsLayout: null
+          }
+        };
         DesignHome.layouts = {
           itemDetailsLayout: [
             {name: "Event_Item_1"},
@@ -37,22 +49,14 @@
         };
 
         /*save method*/
-        var saveData = function(callback) {
+        var saveData = function (callback) {
           callback = callback || function () {
 
           };
           Buildfire.datastore.save(DesignHome.data, TAG_NAMES.EVENTS_MANUAL_INFO, callback);
         };
 
-        var init = function() {
-          var _data = {
-            design: {
-              itemDetailsLayout: "",
-              itemDetailsBgImage: ""
-            },
-            content: {}
-          };
-
+        var init = function () {
           /* background image add </end>*/
           Buildfire.datastore.get(TAG_NAMES.EVENTS_MANUAL_INFO, function (err, data) {
             if (err) {
