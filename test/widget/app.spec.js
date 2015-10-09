@@ -100,4 +100,18 @@ describe('Unit: eventsManualPluginWidget widget app', function () {
       expect(result).toEqual('01:00 AM');
     });
   });
+
+  describe('Unit: getTimeZone filter', function () {
+    beforeEach(module('eventsManualPluginWidget'));
+    var filter;
+    beforeEach(inject(function (_$filter_) {
+      filter = _$filter_;
+    }));
+
+    it('it should pass if "getTimeZone" filter returns timezone from given timestamp', function () {
+      var result;
+      result = filter('getTimeZone')(1444289669939);
+      expect(result).toEqual('IST');
+    });
+  });
 });
