@@ -1,6 +1,7 @@
 <div class="holder padding-zero">
   <div class="events-plugin">
-    <div class="plugin-banner clearfix border-bottom-grey" ng-if="WidgetEvent.event">
+    <div class="plugin-banner clearfix border-bottom-grey"
+         ng-if="WidgetEvent.event">
       <div id="carousel" ng-if="WidgetEvent.event.data.carouselImages.length"
            build-fire-carousel=""></div>
       <div class="plugin-slider text-center"
@@ -27,23 +28,33 @@
         <p class="margin-zero"
            ng-if="WidgetEvent.event.data.endTime && !WidgetEvent.event.data.isAllDay">
           {{WidgetEvent.event.data.startTime | getTime}} -
-          {{WidgetEvent.event.data.endTime | getTime}}</p>
+          {{WidgetEvent.event.data.endTime | getTime}}
+          {{WidgetEvent.event.data.endTime | getTimeZone}}</p>
         <a class="text-primary">Add to Calendar</a>
       </div>
     </div>
     <div class="plugin-banner has-info-bar location-map clearfix">
       <div class="plugin-slide map-holder">
-        <p style="position:relative; top:100px; color:#fff; text-align:center;" ng-if="!WidgetEvent.event.data.address.location">
-        <div google-map style="height: 240px" ng-if="WidgetEvent.event.data.address.location"
+        <p style="position:relative; top:100px; color:#fff; text-align:center;"
+           ng-if="!WidgetEvent.event.data.address.location">
+
+        <div google-map style="height: 240px"
+             ng-if="WidgetEvent.event.data.address.location"
              coordinates="WidgetEvent.event.data.address.location_coordinates"></div>
       </div>
       <div class="info-bar bg-primary text-center">
-        <p ng-show="WidgetEvent.event.data.addressTitle" class="margin-bottom-zero ellipsis col-xs-12">{{WidgetEvent.event.data.addressTitle}}</p>
-        <p ng-hide="WidgetEvent.event.data.addressTitle"class="margin-bottom-zero ellipsis col-xs-12">{{WidgetEvent.event.data.address.location}}</p>
+        <p ng-show="WidgetEvent.event.data.addressTitle"
+           class="margin-bottom-zero ellipsis col-xs-12">
+          {{WidgetEvent.event.data.addressTitle}}</p>
+
+        <p ng-hide="WidgetEvent.event.data.addressTitle"
+           class="margin-bottom-zero ellipsis col-xs-12">
+          {{WidgetEvent.event.data.address.location}}</p>
       </div>
     </div>
     <div class="text-left padded padding-bottom-zero clearfix">
       <p ng-bind-html="WidgetEvent.safeHtml(WidgetEvent.event.data.description)"></p>
+
       <div class="dynamic-links">
         <a ng-repeat="link in WidgetEvent.event.data.links"
            ng-click="WidgetEvent.executeActionItem(link)">{{link

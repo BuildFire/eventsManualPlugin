@@ -46,6 +46,15 @@
           });
       }
     })
+    .filter('getTimeZone', function () {
+      return function (input) {
+        input = new Date(input);
+        var result = input.toString().match(/\((.+)\)/i);
+        if (result.length)
+          return result[1];
+        else return "";
+      };
+    })
     .directive("buildFireCarousel", ["$rootScope", function ($rootScope) {
       return {
         restrict: 'A',

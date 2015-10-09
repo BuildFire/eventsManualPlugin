@@ -1,6 +1,7 @@
 <div class="holder padding-zero">
   <div class="events-plugin event-layout4">
-    <div class="plugin-banner clearfix border-bottom-grey" ng-if="WidgetEvent.event">
+    <div class="plugin-banner clearfix border-bottom-grey"
+         ng-if="WidgetEvent.event">
       <div id="carousel" ng-if="WidgetEvent.event.data.carouselImages.length"
            build-fire-carousel=""></div>
       <div class="plugin-slider text-center"
@@ -19,12 +20,14 @@
         </div>
       </div>
       <div class="info-text">
-        <p class="margin-bottom-zero ellipsis">{{WidgetEvent.event.data.title}}</p>
+        <p class="margin-bottom-zero ellipsis">
+          {{WidgetEvent.event.data.title}}</p>
 
         <p class="margin-bottom-zero ellipsis"
            ng-if="WidgetEvent.event.data.endTime && !WidgetEvent.event.data.isAllDay">
           {{WidgetEvent.event.data.startTime | getTime}} -
-          {{WidgetEvent.event.data.endTime | getTime}}</p>
+          {{WidgetEvent.event.data.endTime | getTime}}
+          {{WidgetEvent.event.data.endTime | getTimeZone}}</p>
       </div>
     </div>
     <div class="padded text-center clearfix padding-bottom-ten">
@@ -43,12 +46,21 @@
           .title}}</a>
       </div>
     </div>
-    <p class="text-center text-primary" ng-show="WidgetEvent.event.data.addressTitle">{{WidgetEvent.event.data.addressTitle}}</p>
-    <p class="text-center text-primary" ng-hide="WidgetEvent.event.data.addressTitle">{{WidgetEvent.event.data.address.location}}</p>
+    <p class="text-center text-primary"
+       ng-show="WidgetEvent.event.data.addressTitle">
+      {{WidgetEvent.event.data.addressTitle}}</p>
+
+    <p class="text-center text-primary"
+       ng-hide="WidgetEvent.event.data.addressTitle">
+      {{WidgetEvent.event.data.address.location}}</p>
+
     <div class="plugin-banner has-info-bar location-map clearfix">
       <div class="plugin-slide map-holder">
-        <p style="position:relative; top:100px; color:#fff; text-align:center;" ng-if="!WidgetEvent.event.data.address.location">
-        <div google-map style="height: 280px" ng-if="WidgetEvent.event.data.address.location"
+        <p style="position:relative; top:100px; color:#fff; text-align:center;"
+           ng-if="!WidgetEvent.event.data.address.location">
+
+        <div google-map style="height: 280px"
+             ng-if="WidgetEvent.event.data.address.location"
              coordinates="WidgetEvent.event.data.address.location_coordinates"></div>
       </div>
     </div>
