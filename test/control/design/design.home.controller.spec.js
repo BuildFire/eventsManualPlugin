@@ -1,6 +1,3 @@
-/**
- * Created by ttnd on 4/9/15.
- */
 describe('Unit : eventsManualPluginDesign design.home.controller.js', function () {
   var $scope, DesignHome, $rootScope, q, $controller, DataStore, TAG_NAMES, STATUS_CODE, STATUS_MESSAGES;
   beforeEach(module('eventsManualPluginDesign'));
