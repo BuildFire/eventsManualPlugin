@@ -22,7 +22,7 @@
         <p class="margin-bottom-zero ellipsis">{{WidgetEvent.event.data.title}}</p>
 
         <p class="margin-bottom-zero ellipsis"
-           ng-if="WidgetEvent.event.data.endTime">
+           ng-if="WidgetEvent.event.data.endTime && !WidgetEvent.event.data.isAllDay">
           {{WidgetEvent.event.data.startTime | getTime}} -
           {{WidgetEvent.event.data.endTime | getTime}}</p>
       </div>

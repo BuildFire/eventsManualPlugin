@@ -1,13 +1,12 @@
-
 <div class="holder padding-zero">
-  <!--
-  Add 'long-month' class to events-plugin container below if month has 6 rows instead of 5.
-  -->
+
   <div class="events-plugin">
-    <div class="event-calendar-holder padded clearfix" ng-if="WidgetHome.allEvents.length">
-      <div class="event-calendar" >
+    <div class="event-calendar-holder padded clearfix"
+         ng-if="WidgetHome.allEvents.length">
+      <div class="event-calendar">
         <div style="display:inline-block; border: none">
-          <datepicker ng-model="$parent.dt" min-date="minDate" show-weeks="false"
+          <datepicker ng-model="$parent.dt" min-date="minDate"
+                      show-weeks="false"
                       max-mode="day" class="calendar-day" show-year="false"
                       custom-class="getDayClass(date, mode)"
                       ng-click="WidgetHome.getEvent()"
@@ -20,9 +19,13 @@
         <div infinite-scroll="WidgetHome.loadMore()"
              infinite-scroll-distance="1"
              infinite-scroll-disabled="WidgetHome.busy">
-          <div class="event-item clearfix" ng-swipe-right="WidgetHome.addEvents($event, $index, true)" ng-swipe-left="WidgetHome.addEvents($event, $index, false)" ng-class="{'active' : WidgetHome.swiped[$index]}"
+          <div class="event-item clearfix"
+               ng-swipe-right="WidgetHome.addEvents($event, $index, true)"
+               ng-swipe-left="WidgetHome.addEvents($event, $index, false)"
+               ng-class="{'active' : WidgetHome.swiped[$index]}"
                ng-repeat="event in WidgetHome.events">
-            <div class="calendar-icon text-center bg-primary" ng-click="WidgetHome.addEventsToCalendar(event)">
+            <div class="calendar-icon text-center bg-primary"
+                 ng-click="WidgetHome.addEventsToCalendar(event)">
               <span class="icon icon-calendar-check"></span>
             </div>
             <span class="icon icon-menu rotate-90 pull-left"></span>
@@ -46,10 +49,14 @@
                 {{event.data.title}}</h4></a>
 
               <p class="margin-zero ellipsis"
-                 ng-if="event.data.endTime">{{event.data.startTime | getTime}} -
+                 ng-if="event.data.endTime && !event.data.isAllDay">{{event.data.startTime | getTime}} -
                 {{event.data.endTime | getTime}}</p>
             </div>
           </div>
         </div>
+        <div class="no-event-found" ng-if="!WidgetHome.events.length">No
+          Events Found</div>
       </div>
     </div>
+  </div>
+</div>
