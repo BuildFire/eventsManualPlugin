@@ -132,6 +132,23 @@
         };
 
         /*
+         * ContentHome.showDeepLink to open a popup and show deeplink url so that user can copy it if needed
+         * */
+        ContentHome.showDeepLink = function (deepLink) {
+          $modal.open({
+            templateUrl: 'templates/modals/deep-link.html',
+            controller: 'DeepLinkPopupCtrl',
+            controllerAs: 'DeepLinkPopup',
+            size: 'sm',
+            resolve: {
+              deepLink: function () {
+                return deepLink;
+              }
+            }
+          });
+        };
+
+        /*
          * Call the datastore to save the data object
          */
         var saveData = function (newObj, tag) {
