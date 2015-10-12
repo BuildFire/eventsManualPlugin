@@ -104,7 +104,8 @@
           }
         }
       })
-    .run(['Location', function (Location) {
+    .run(['Location', '$location', function (Location, $location) {
+
       buildfire.messaging.onReceivedMessage = function (msg) {
         switch (msg.type) {
           case 'AddNewItem':
@@ -112,10 +113,19 @@
             break;
           case 'OpenItem':
             Location.goTo("#/event/" + msg.id);
+            console.log("LoactionPath2", window.location.hash)
             break;
           default:
             Location.goToHome();
         }
       };
+
+      buildfire.navigation.onBackButtonClick = function(){
+      if($location.path()!= "/"){
+        Location.goToHome();
+      }
+    };
+
     }]);
+
 })(window.angular, window.buildfire);
