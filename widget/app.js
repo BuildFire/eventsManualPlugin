@@ -113,7 +113,6 @@
             break;
           case 'OpenItem':
             Location.goTo("#/event/" + msg.id);
-            console.log("LoactionPath2", window.location.hash)
             break;
           default:
             Location.goToHome();
