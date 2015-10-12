@@ -1,0 +1,7 @@
+.body-scroll{
+    height: 600px !important;
+}
+.draggable-list-view.tab-order.wide-list, .draggable-list-view.wide-list {
+    max-height: inherit;
+    height: inherit;
+}

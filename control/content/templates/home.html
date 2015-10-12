@@ -1,0 +1,49 @@
+<style>
+
+</style>
+
+<div class="item clearfix row">
+  <div class="col-md-3 pull-left padding-right-zero">
+    <a class="btn btn-success stretch" href="#/event">Add New Event</a>
+  </div>
+  <div class="col-md-6 pull-left padding-right-zero">
+    <input type="text" class="form-control" placeholder="Enter Item Name" ng-model="search">
+  </div>
+  <div class="col-md-3 pull-left">
+    <a class="btn btn-primary stretch" ng-click="ContentHome.searchEvents(search)" >Search</a>
+  </div>
+</div>
+<hr class="none">
+<div class="item">
+  <div infinite-scroll="ContentHome.loadMore()"
+       infinite-scroll-distance="1"
+       data-infinite-container="body"
+       infinite-scroll-disabled="ContentHome.busy">
+  <div ng-if="ContentHome.events.length"
+       class="draggable-list-view wide-list has-btn-link no-sort-icon">
+
+    <div class="d-item double-line square-icon clearfix" ng-repeat="event in ContentHome.events">
+      <div class="media-holder pull-left">
+        <img
+            ng-src="{{event.data.listImage || 'http://www.placehold.it/40x30' | getImageUrl : 40:30}}">
+      </div>
+      <div class="copy pull-right">
+        <a class="text-primary" href="#/event/{{event.id}}"><span
+            class="title ellipsis pull-left text-primary">{{event.data.title}}</span></a>
+        <span class="title ellipsis pull-left">{{event.data.startDate | getDateFromTimestamp
+          }}</span>
+        <div class="pull-right">
+          <span class="btn-icon btn-link-icon btn-primary"
+                ng-click="ContentHome.showDeepLink(event.data.deepLinkUrl)"></span>
+          <span class="btn-icon btn-delete-icon btn-danger" ng-click="ContentHome.removeEvent(event.id, $index)"></span>
+        </div>
+      </div>
+    </div>
+    </div>
+</div>
+  <!-- Show If No Items -->
+  <div class="well text-center margin-bottom-zero border-none"
+       ng-hide="ContentHome.events.length">
+    <p class="margin-zero">No items found.</p>
+  </div>
+</div>

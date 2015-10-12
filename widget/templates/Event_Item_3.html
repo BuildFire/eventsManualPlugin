@@ -1,0 +1,69 @@
+<div class="holder padding-zero">
+  <div class="events-plugin event-layout3">
+    <div class="plugin-banner clearfix border-bottom-grey"
+         ng-if="WidgetEvent.event">
+      <div id="carousel" ng-if="WidgetEvent.event.data.carouselImages.length"
+           build-fire-carousel=""></div>
+      <div class="plugin-slider text-center"
+           ng-if="!WidgetEvent.event.data.carouselImages.length">
+        <div class="plugin-slide">
+          <img src="http://www.placehold.it/1000x800.jpg">
+        </div>
+      </div>
+      <div class="info-circle small bg-white">
+        <div class="info-circle-inner">
+          <h3 class="margin-zero text-primary">
+            {{WidgetEvent.event.data.startDate | getMonth}}</h3>
+
+          <h1 class="margin-zero text-primary">
+            {{WidgetEvent.event.data.startDate |
+            getDate}}</h1>
+        </div>
+      </div>
+      <div class="info-text">
+        <p class="margin-bottom-zero ellipsis">
+          {{WidgetEvent.event.data.title}}</p>
+
+        <p class="margin-bottom-zero ellipsis"
+           ng-if="WidgetEvent.event.data.endTime && !WidgetEvent.event.data.isAllDay">
+          {{WidgetEvent.event.data.startTime | getTime}} -
+          {{WidgetEvent.event.data.endTime | getTime}}
+          {{WidgetEvent.event.data.endTime | getTimeZone}}</p>
+      </div>
+    </div>
+    <div class="padded text-center clearfix padding-bottom-ten">
+      <a class="text-primary">Add to Calendar</a>
+    </div>
+    <hr
+        class="margin-top-zero margin-bottom-zero margin-left-fifteen margin-right-fifteen"
+        ng-if="WidgetEvent.showDescription(WidgetEvent.event.data.description)">
+    <div class="text-left padded padding-bottom-zeroclearfix"
+         ng-if="WidgetEvent.showDescription(WidgetEvent.event.data.description) || WidgetEvent.event.data.links.length">
+      <p ng-bind-html="WidgetEvent.safeHtml(WidgetEvent.event.data.description)"></p>
+
+      <div class="dynamic-links border-bottom-grey">
+        <a ng-repeat="link in WidgetEvent.event.data.links"
+           ng-click="WidgetEvent.executeActionItem(link)">{{link
+          .title}}</a>
+      </div>
+    </div>
+    <p class="text-center text-primary"
+       ng-if="WidgetEvent.event.data.addressTitle">
+      {{WidgetEvent.event.data.addressTitle}}</p>
+
+    <p class="text-center text-primary"
+       ng-if="!WidgetEvent.event.data.addressTitle">
+      {{WidgetEvent.event.data.address.location}}</p>
+
+    <div class="plugin-banner has-info-bar location-map clearfix">
+      <div class="plugin-slide map-holder">
+        <p style="position:relative; top:100px; color:#fff; text-align:center;"
+           ng-if="!WidgetEvent.event.data.address.location">
+
+        <div google-map style="height: 280px"
+             ng-if="WidgetEvent.event.data.address.location"
+             coordinates="WidgetEvent.event.data.address.location_coordinates"></div>
+      </div>
+    </div>
+  </div>
+</div>
