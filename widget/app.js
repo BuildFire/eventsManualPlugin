@@ -104,7 +104,8 @@
           }
         }
       })
-    .run(['Location', function (Location) {
+    .run(['Location', '$location', function (Location, $location) {
+
       buildfire.messaging.onReceivedMessage = function (msg) {
         switch (msg.type) {
           case 'AddNewItem':
@@ -117,5 +118,13 @@
             Location.goToHome();
         }
       };
+
+      buildfire.navigation.onBackButtonClick = function(){
+      if($location.path()!= "/"){
+        Location.goToHome();
+      }
+    };
+
     }]);
+
 })(window.angular, window.buildfire);
