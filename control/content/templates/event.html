@@ -143,9 +143,8 @@
       </div>
     </div>
   </div>
-  <hr class="none">
-  <div class="item clearfix row"
-       ng-if="ContentEvent.event.data.repeat.isRepeating">
+  <div class="item clearfix row" ng-if="ContentEvent.event.data.repeat.isRepeating">
+	<hr class="none">
     <div class="labels col-md-3 padding-right-zero pull-left">
       <span>Repeats</span>
     </div>
@@ -153,8 +152,7 @@
       <div class="dropdown pull-left col-md-12 padding-zero" dropdown>
         <button class="btn btn-default text-left dropdown-toggle"
                 data-toggle="dropdown" dropdown-toggle aria-expanded="true">
-          <span class="pull-left">{{ContentEvent.event.data.repeat.repeatType
-            || "Choose repeat duration"}}</span>
+          <span class="pull-left">{{ContentEvent.event.data.repeat.repeatType || "Choose Repeat Duration"}}</span>
           <span class="chevron icon-chevron-down pull-right"></span>
         </button>
         <ul class="dropdown-menu extended" role="menu">
@@ -174,11 +172,7 @@
       </div>
     </div>
   </div>
-  <hr class="none">
-  <hr>
-  <span
-      ng-if="ContentEvent.event.data.repeat.isRepeating && ContentEvent.event.data.repeat.repeatType == 'Daily'">
-  <h4>Repeats Daily</h4>
+  <span ng-if="ContentEvent.event.data.repeat.isRepeating && ContentEvent.event.data.repeat.repeatType == 'Daily'">
   <hr class="none">
   <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
@@ -259,10 +253,7 @@
     </div>
   </div>
   </span>
-  <hr class="none">
-  <span
-      ng-if="ContentEvent.event.data.repeat.isRepeating && ContentEvent.event.data.repeat.repeatType == 'Weekly'">
-    <h4>Repeats Weekly</h4>
+  <span ng-if="ContentEvent.event.data.repeat.isRepeating && ContentEvent.event.data.repeat.repeatType == 'Weekly'">
   <hr class="none">
   <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
@@ -386,10 +377,7 @@
     </div>
   </div>
   </span>
-  <hr class="none">
-  <span
-      ng-if="ContentEvent.event.data.repeat.isRepeating && ContentEvent.event.data.repeat.repeatType == 'Monthly'">
-    <h4>Repeats Monthly</h4>
+  <span ng-if="ContentEvent.event.data.repeat.isRepeating && ContentEvent.event.data.repeat.repeatType == 'Monthly'">
   <hr class="none">
   <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
@@ -470,10 +458,7 @@
     </div>
   </div>
   </span>
-  <hr class="none">
-  <span
-      ng-if="ContentEvent.event.data.repeat.isRepeating && ContentEvent.event.data.repeat.repeatType == 'Yearly'">
-    <h4>Repeats Yearly</h4>
+  <span ng-if="ContentEvent.event.data.repeat.isRepeating && ContentEvent.event.data.repeat.repeatType == 'Yearly'">
   <hr class="none">
   <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
@@ -554,7 +539,6 @@
     </div>
   </div>
   </span>
-  <hr>
   <hr class="none">
   <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
@@ -585,8 +569,8 @@
       </div>
     </div>
   </div>
-  <hr class="none">
   <div class="item clearfix row" ng-if="ContentEvent.currentCoordinates">
+	<hr class="none">
     <div class="main col-md-9 pull-right">
       <div google-map dragged-fn="ContentEvent.setDraggedLocation(data)"
            coordinates="ContentEvent.currentCoordinates"
@@ -613,9 +597,6 @@
     <div class="labels col-md-3 padding-right-zero pull-left">
       <span>Links</span>
     </div>
-  </div>
-  <hr class="none">
-  <div class="item clearfix row">
     <div class="main col-md-9 pull-right">
       <div class="col-md-4 row">
         <a class="btn btn-success pull-left stretch"
