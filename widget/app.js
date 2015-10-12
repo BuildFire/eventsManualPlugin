@@ -121,6 +121,7 @@
 
       buildfire.navigation.onBackButtonClick = function(){
       if($location.path()!= "/"){
+        buildfire.messaging.sendMessageToControl({});
         Location.goToHome();
       }
     };
