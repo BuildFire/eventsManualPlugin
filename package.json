@@ -1,7 +1,7 @@
 {
-  "name": "eventsFeedPlugin",
+  "name": "eventsManualPlugin",
   "version": "1.0.0",
-  "description": "This Buildfire plugin allows user to add their calender events in feed mode:",
+  "description": "This Buildfire plugin allows user to create and manage events manually",
   "main": "index.js",
   "scripts": {
     "postinstall": "./node_modules/.bin/bower install",
