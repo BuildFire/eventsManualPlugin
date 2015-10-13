@@ -7,11 +7,11 @@
 
         var WidgetEvent = this;
         WidgetEvent.data = {};
-        WidgetEvent.event = null;
+        WidgetEvent.event = {};
         var currentListLayout = null;
 
         //create new instance of buildfire carousel viewer
-        var view = null;
+        WidgetEvent.view = null;
 
         var _searchObj = $location.search();
 
@@ -24,7 +24,6 @@
 
         var getEventDetails = function (url) {
           var success = function (result) {
-              console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", result);
               WidgetEvent.event = result;
             }
             , error = function (err) {
@@ -108,9 +107,9 @@
                 case TAG_NAMES.EVENTS_MANUAL:
                   if (event.data)
                     WidgetEvent.event.data = event.data;
-                  if (view) {
+                  if (WidgetEvent.view) {
                     console.log("_____________________________");
-                    view.loadItems(WidgetEvent.event.data.carouselImages);
+                    WidgetEvent.view.loadItems(WidgetEvent.event.data.carouselImages);
                   }
                   break;
               }
@@ -147,13 +146,13 @@
         });
 
         $rootScope.$on("Carousel:LOADED", function () {
-          if (!view) {
-            view = new buildfire.components.carousel.view("#carousel", []);
+          if (!WidgetEvent.view) {
+            WidgetEvent.view = new buildfire.components.carousel.view("#carousel", []);
           }
           if (WidgetEvent.event.data && WidgetEvent.event.data.carouselImages) {
-            view.loadItems(WidgetEvent.event.data.carouselImages);
+            WidgetEvent.view.loadItems(WidgetEvent.event.data.carouselImages);
           } else {
-            view.loadItems([]);
+            WidgetEvent.view.loadItems([]);
           }
         });
 
