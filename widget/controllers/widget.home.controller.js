@@ -8,7 +8,7 @@
         WidgetHome.data = null;
         WidgetHome.swiped = [];
         WidgetHome.events = [];
-        WidgetHome.allEvents = [];
+        WidgetHome.allEvents = null;
         WidgetHome.busy = false;
         WidgetHome.clickEvent = false;
         $scope.dt = new Date();
@@ -60,6 +60,7 @@
               }
             };
           var successEventsAll = function (resultAll) {
+                WidgetHome.allEvents=[];
               WidgetHome.allEvents = resultAll;
             },
             errorEventsAll = function (error) {
