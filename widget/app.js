@@ -1,8 +1,15 @@
 'use strict';
 
 (function (angular, buildfire) {
-  angular.module('eventsManualPluginWidget', ['ngRoute','ngTouch', 'ui.bootstrap', 'infinite-scroll'])
-    .config(['$routeProvider', function ($routeProvider) {
+  angular.module('eventsManualPluginWidget', ['ngRoute', 'ngTouch', 'ui.bootstrap', 'infinite-scroll'])
+    .config(['$routeProvider', '$compileProvider', function ($routeProvider, $compileProvider) {
+
+      /**
+       * To make href urls safe on mobile
+       */
+      $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|cdvfile):/);
+
+
       $routeProvider
         .when('/', {
           templateUrl: 'templates/home.html',
@@ -64,46 +71,46 @@
       };
     }])
     .directive("googleMap", function () {
-        return {
-          template: "<div></div>",
-          replace: true,
-          scope: {coordinates: '='},
-          link: function (scope, elem, attrs) {
-            scope.$watch('coordinates', function (newValue, oldValue) {
-              if (newValue) {
-                scope.coordinates = newValue;
-                if (scope.coordinates.length) {
-                  var map = new google.maps.Map(elem[0], {
-                    center: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
-                    zoomControl: false,
-                    streetViewControl: false,
-                    mapTypeControl: false,
-                    zoom: 15,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                  });
-                  var marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
-                    map: map
-                  });
-                  var styleOptions = {
-                    name: "Report Error Hide Style"
-                  };
-                  var MAP_STYLE = [
-                    {
-                      stylers: [
-                        { visibility: "on" }
-                      ]
-                    }];
-                  var mapType = new google.maps.StyledMapType(MAP_STYLE, styleOptions);
-                  map.mapTypes.set("Report Error Hide Style", mapType);
-                  map.setMapTypeId("Report Error Hide Style");
+      return {
+        template: "<div></div>",
+        replace: true,
+        scope: {coordinates: '='},
+        link: function (scope, elem, attrs) {
+          scope.$watch('coordinates', function (newValue, oldValue) {
+            if (newValue) {
+              scope.coordinates = newValue;
+              if (scope.coordinates.length) {
+                var map = new google.maps.Map(elem[0], {
+                  center: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
+                  zoomControl: false,
+                  streetViewControl: false,
+                  mapTypeControl: false,
+                  zoom: 15,
+                  mapTypeId: google.maps.MapTypeId.ROADMAP
+                });
+                var marker = new google.maps.Marker({
+                  position: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
+                  map: map
+                });
+                var styleOptions = {
+                  name: "Report Error Hide Style"
+                };
+                var MAP_STYLE = [
+                  {
+                    stylers: [
+                      {visibility: "on"}
+                    ]
+                  }];
+                var mapType = new google.maps.StyledMapType(MAP_STYLE, styleOptions);
+                map.mapTypes.set("Report Error Hide Style", mapType);
+                map.setMapTypeId("Report Error Hide Style");
 
-                }
               }
-            }, true);
-          }
+            }
+          }, true);
         }
-      })
+      }
+    })
     .run(['Location', '$location', function (Location, $location) {
 
       buildfire.messaging.onReceivedMessage = function (msg) {
@@ -119,12 +126,12 @@
         }
       };
 
-      buildfire.navigation.onBackButtonClick = function(){
-      if($location.path()!= "/"){
-        buildfire.messaging.sendMessageToControl({});
-        Location.goToHome();
-      }
-    };
+      buildfire.navigation.onBackButtonClick = function () {
+        if ($location.path() != "/") {
+          buildfire.messaging.sendMessageToControl({});
+          Location.goToHome();
+        }
+      };
 
     }]);
 
