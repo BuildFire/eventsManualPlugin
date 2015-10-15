@@ -392,18 +392,6 @@
           }
         };
 
-        ContentEvent.deleteEvent = function () {
-          var event = ContentEvent.event;
-          var successEvent = function (result) {
-            $location.path('/');
-          }, errorEvent = function () {
-            return console.error('There was a problem deleting your data');
-          };
-          if (event.id) {
-            DataStore.deleteById(event.id, TAG_NAMES.EVENTS_MANUAL).then(successEvent, errorEvent);
-          }
-        };
-
         ContentEvent.clearAddress = function () {
           if (!ContentEvent.currentAddress) {
             ContentEvent.event.data.address = null;
