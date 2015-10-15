@@ -51,6 +51,8 @@
               <p class="margin-zero ellipsis"
                  ng-if="event.data.endTime && !event.data.isAllDay">{{event.data.startTime | getTime}} -
                 {{event.data.endTime | getTime}} {{event.data.endTime | getTimeZone}}</p>
+                <p class="margin-zero ellipsis"
+                   ng-if="event.data.isAllDay">All Day</p>
             </div>
           </div>
         </div>
