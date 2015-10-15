@@ -131,7 +131,7 @@
                     limit: PAGINATION.eventsCount, 
                     sort: {"startDate": 1}
                   };
-                  getManualEvents();
+                  WidgetHome.loadMore();
                   break;
               }
               $scope.$digest();
