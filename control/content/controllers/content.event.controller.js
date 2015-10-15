@@ -376,7 +376,7 @@
         };
 
         /* Build fire thumbnail component to add thumbnail image*/
-        var listImage = new Buildfire.components.images.thumbnail("#listImage", {title: "List Image"});
+        var listImage = new Buildfire.components.images.thumbnail("#listImage", {title: "List Image",dimensionsLabel:"500x500"});
 
         listImage.onChange = function (url) {
           ContentEvent.event.data.listImage = url;
