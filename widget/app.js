@@ -131,6 +131,9 @@
           buildfire.messaging.sendMessageToControl({});
           Location.goToHome();
         }
+        else{
+          buildfire.navigation.navigateHome();
+        }
       };
 
     }]);
