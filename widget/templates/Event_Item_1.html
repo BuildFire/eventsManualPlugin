@@ -49,10 +49,9 @@
         <p ng-show="WidgetEvent.event.data.addressTitle"
            class="margin-bottom-zero ellipsis col-xs-12">
           {{WidgetEvent.event.data.addressTitle}}</p>
-
-        <p ng-hide="WidgetEvent.event.data.addressTitle"
-           class="margin-bottom-zero ellipsis col-xs-12">
-          {{WidgetEvent.event.data.address.location}}</p>
+         <p ng-hide="WidgetEvent.event.data.addressTitle"
+           class="margin-bottom-zero ellipsis col-xs-12"> <a class ="text-primary" ng-click="WidgetEvent.onAddressClick(WidgetEvent.event.data.address.location_coordinates[0],WidgetEvent.event.data.address.location_coordinates[1])" style="color:#fff">
+          {{WidgetEvent.event.data.address.location}}</a></p>
       </div>
     </div>
     <div class="text-left padded padding-bottom-zero clearfix">

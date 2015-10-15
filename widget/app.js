@@ -105,6 +105,13 @@
                 map.mapTypes.set("Report Error Hide Style", mapType);
                 map.setMapTypeId("Report Error Hide Style");
 
+                marker.addListener('click', function () {
+                 if (buildfire.context.device && buildfire.context.device.platform == 'ios')
+                   window.open("maps://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
+                   else
+                   window.open("http://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
+
+                 });
               }
             }
           }, true);
