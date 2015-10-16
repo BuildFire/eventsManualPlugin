@@ -146,6 +146,7 @@
         });
 
         $rootScope.$on("Carousel:LOADED", function () {
+          WidgetEvent.view = null;
           if (!WidgetEvent.view) {
             WidgetEvent.view = new buildfire.components.carousel.view("#carousel", []);
           }
