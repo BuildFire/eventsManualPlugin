@@ -92,3 +92,6 @@
 .overlap-color-white{
     color:#ffffff !important
 }
+.map-holder{
+    min-height: 192px !important;
+}
