@@ -18,7 +18,7 @@
           sort: {"startDate": 1}
         };
         var currentDate = new Date();
-        var formattedDate = currentDate.getFullYear() + "-" + moment(currentDate).format("MM") + "-" + currentDate.getDate() + "T00:00:00";
+        var formattedDate = currentDate.getFullYear() + "-" + moment(currentDate).format("MM") + "-" + ("0" + currentDate.getDate()).slice(-2) + "T00:00:00";
         var timeStampInMiliSec = +new Date(formattedDate);
 
         var getManualEvents = function () {
@@ -79,7 +79,7 @@
           searchOptions.skip = 0;
           WidgetHome.busy = false;
           WidgetHome.disabled = true;
-          formattedDate = $scope.dt.getFullYear() + "-" + moment($scope.dt).format("MM") + "-" + $scope.dt.getDate() + "T00:00:00";
+          formattedDate = $scope.dt.getFullYear() + "-" + moment($scope.dt).format("MM") + "-" + ("0" + $scope.dt.getDate()).slice(-2)+ "T00:00:00";
           timeStampInMiliSec = +new Date(formattedDate);
           WidgetHome.loadMore();
         };
