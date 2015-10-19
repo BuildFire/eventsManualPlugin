@@ -41,3 +41,8 @@
 .content.ng-leave-active {
     left: -200%;
 }
+
+.screens .screen.layouticon a, .screens .layoutgrid .layouticon{
+    height: 94px !important;
+    line-height: 90px !important;
+}
