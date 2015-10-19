@@ -18,14 +18,12 @@
           sort: {"startDate": 1}
         };
         var currentDate = new Date();
-        var formattedDate = moment(currentDate).format("MMM") + " " + currentDate.getFullYear() + ", " + currentDate.getDate();
-        var timeStampInMiliSec = +new Date("'" + formattedDate + "'");
+        var formattedDate = currentDate.getFullYear() + "-" + moment(currentDate).format("MM") + "-" + currentDate.getDate() + "T00:00:00";
+        var timeStampInMiliSec = +new Date(formattedDate);
 
         var getManualEvents = function () {
-          alert(">>>>>>>>>>>>>>>>>>>");
           Buildfire.spinner.show();
           var successEvents = function (result) {
-            alert("**************success"+result.length);
             Buildfire.spinner.hide();
             WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(result) : result;
             searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
@@ -34,11 +32,9 @@
             }
             WidgetHome.clickEvent = false;
           }, errorEvents = function () {
-            alert("**************error");
             Buildfire.spinner.hide();
             console.log("Error fetching events");
           };
-
           searchOptions.filter = {"$or": [{"data.startDate": {"$gt": timeStampInMiliSec}}, {"data.startDate": {"$eq": timeStampInMiliSec}}]};
           DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
@@ -63,7 +59,7 @@
               }
             };
           var successEventsAll = function (resultAll) {
-                WidgetHome.allEvents=[];
+              WidgetHome.allEvents = [];
               WidgetHome.allEvents = resultAll;
             },
             errorEventsAll = function (error) {
@@ -83,8 +79,8 @@
           searchOptions.skip = 0;
           WidgetHome.busy = false;
           WidgetHome.disabled = true;
-          formattedDate = moment($scope.dt).format("MMM") + " " + $scope.dt.getFullYear() + ", " + $scope.dt.getDate();
-          timeStampInMiliSec = +new Date("'" + formattedDate + "'");
+          formattedDate = $scope.dt.getFullYear() + "-" + moment($scope.dt).format("MM") + "-" + $scope.dt.getDate() + "T00:00:00";
+          timeStampInMiliSec = +new Date(formattedDate);
           WidgetHome.loadMore();
         };
 
@@ -97,7 +93,6 @@
         };
 
         WidgetHome.loadMore = function () {
-          alert("&&&&&&&&&&&&&Loadmore");
           if (WidgetHome.busy) return;
           WidgetHome.busy = true;
           getManualEvents();
@@ -132,7 +127,7 @@
                   WidgetHome.events = [];
                   searchOptions = {
                     skip: 0,
-                    limit: PAGINATION.eventsCount, 
+                    limit: PAGINATION.eventsCount,
                     sort: {"startDate": 1}
                   };
                   WidgetHome.loadMore();
