@@ -90,6 +90,34 @@
 
         WidgetHome.addEventsToCalendar = function (event) {
           /*Add to calendar event will add here*/
+          alert(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
+          alert("inCal:"+buildfire.device.calendar);
+           if(buildfire.device && buildfire.device.calendar) {
+           buildfire.device.calendar.addEvent(
+               {
+                 title: 'Dannys Birthday'
+                 , location: event.data.address.location
+                 , notes: 'Better bring a gift'
+                 , startDate: event.data.startDate
+                 , endDate: event.data.endDate
+                 , options: {
+                 firstReminderMinutes: 120
+                 , secondReminderMinutes: 5
+                 , recurrence: "yearly"
+                 , recurrenceEndDate: new Date(2025, 6, 1, 0, 0, 0, 0, 0)
+               }
+               }
+               ,
+               function (err, result) {
+                 alert("Done");
+                 if (err)
+                   alert("******************"+err);
+                 else
+                   alert('worked ' + JSON.stringify(result));
+               }
+           );
+         }
+          console.log(">>>>>>>>",event);
         };
 
         WidgetHome.loadMore = function () {
