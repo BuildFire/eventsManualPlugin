@@ -1,7 +1,7 @@
 'use strict';
 
 (function (angular,buildfire) {
-  angular.module('eventsManualPluginContent', ['ngRoute', 'ui.tinymce', 'ui.bootstrap', 'ui.sortable', 'infinite-scroll'])
+  angular.module('eventsManualPluginContent', ['ngRoute', 'ui.tinymce', 'ui.bootstrap', 'ui.sortable', 'infinite-scroll', 'ngAnimate'])
     //injected ngRoute for routing
     .config(['$routeProvider', function ($routeProvider) {
       $routeProvider
