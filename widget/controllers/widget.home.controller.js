@@ -95,16 +95,16 @@
            if(buildfire.device && buildfire.device.calendar) {
            buildfire.device.calendar.addEvent(
                {
-                 title: 'Dannys Birthday'
+                 title: event.data.title
                  , location: event.data.address.location
-                 , notes: 'Better bring a gift'
-                 , startDate: event.data.startDate
-                 , endDate: event.data.endDate
+                 , notes: event.data.description
+                 , startDate: new Date(event.data.startDate)
+                 , endDate: new Date(event.data.endDate)
                  , options: {
                  firstReminderMinutes: 120
                  , secondReminderMinutes: 5
-                 , recurrence: "yearly"
-                 , recurrenceEndDate: new Date(2025, 6, 1, 0, 0, 0, 0, 0)
+                 , recurrence: event.data.repeat.repeatType
+                 , recurrenceEndDate: event.data.repeat.repeatType?new Date(event.data.repeat.endOn): new Date(2025, 6, 1, 0, 0, 0, 0, 0)
                }
                }
                ,
