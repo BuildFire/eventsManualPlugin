@@ -22,8 +22,10 @@
         var timeStampInMiliSec = +new Date("'" + formattedDate + "'");
 
         var getManualEvents = function () {
+          alert(">>>>>>>>>>>>>>>>>>>");
           Buildfire.spinner.show();
           var successEvents = function (result) {
+            alert("**************success"+result.length);
             Buildfire.spinner.hide();
             WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(result) : result;
             searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
@@ -32,6 +34,7 @@
             }
             WidgetHome.clickEvent = false;
           }, errorEvents = function () {
+            alert("**************error");
             Buildfire.spinner.hide();
             console.log("Error fetching events");
           };
@@ -122,6 +125,7 @@
         };
 
         WidgetHome.loadMore = function () {
+          alert("&&&&&&&&&&&&&Loadmore");
           if (WidgetHome.busy) return;
           WidgetHome.busy = true;
           getManualEvents();
