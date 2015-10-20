@@ -376,7 +376,7 @@
         };
 
         /* Build fire thumbnail component to add thumbnail image*/
-        var listImage = new Buildfire.components.images.thumbnail("#listImage", {title: "List Image"});
+        var listImage = new Buildfire.components.images.thumbnail("#listImage", {title: "List Image",dimensionsLabel:"500x500"});
 
         listImage.onChange = function (url) {
           ContentEvent.event.data.listImage = url;
@@ -389,18 +389,6 @@
           ContentEvent.event.data.listImage = "";
           if (!$scope.$$phase && !$scope.$root.$$phase) {
             $scope.$apply();
-          }
-        };
-
-        ContentEvent.deleteEvent = function () {
-          var event = ContentEvent.event;
-          var successEvent = function (result) {
-            $location.path('/');
-          }, errorEvent = function () {
-            return console.error('There was a problem deleting your data');
-          };
-          if (event.id) {
-            DataStore.deleteById(event.id, TAG_NAMES.EVENTS_MANUAL).then(successEvent, errorEvent);
           }
         };
 

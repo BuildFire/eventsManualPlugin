@@ -146,6 +146,7 @@
         });
 
         $rootScope.$on("Carousel:LOADED", function () {
+          WidgetEvent.view = null;
           if (!WidgetEvent.view) {
             WidgetEvent.view = new buildfire.components.carousel.view("#carousel", []);
           }
@@ -155,6 +156,13 @@
             WidgetEvent.view.loadItems([]);
           }
         });
+
+        WidgetEvent.onAddressClick = function (long,lat) {
+          if (buildfire.context.device && buildfire.context.device.platform == 'ios')
+            window.open("maps://maps.google.com/maps?daddr=" + lat + "," + long);
+          else
+            window.open("http://maps.google.com/maps?daddr=" + lat + "," + long);
+        }
 
       }]);
 })(window.angular, window.buildfire);

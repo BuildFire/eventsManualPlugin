@@ -1,4 +1,4 @@
-describe('Unit : event Feed Plugin widget.manual.controller.js', function () {
+describe('Unit : event Manual Plugin widget.manual.controller.js', function () {
   var WidgetEvent, scope, $rootScope, $controller, Buildfire, ActionItems, TAG_NAMES, STATUS_CODE, LAYOUTS, STATUS_MESSAGES, CONTENT_TYPE, q;
   beforeEach(module('eventsManualPluginWidget'));
   var editor;
@@ -52,10 +52,10 @@ describe('Unit : event Feed Plugin widget.manual.controller.js', function () {
 
   describe('Carousel:LOADED', function () {
     it('should invoke when get Carousel:LOADED', function () {
-      WidgetEvent.view = {
+        WidgetEvent.view = {
         loadItems: function() {}
       };
-      $rootScope.$broadcast('Carousel:LOADED');
+      $rootScope.$broadcast(' ');
     });
   });
 });
