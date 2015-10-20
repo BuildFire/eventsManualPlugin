@@ -45,6 +45,30 @@
           return angular.equals(data, ContentHome.masterData);
         };
 
+      //  if(ContentHome.getUTCZone()=="+5:30"){
+
+        //}
+        ContentHome.convertToZone=function(result){
+          for(var   event=0; event<result.length; event++){
+            console.log("Heloinner",result[event].data.startDate)
+            ContentHome.timeHour = moment(new Date(result[event].data.startTime)).format('HH');
+            ContentHome.timeMin = moment(new Date(result[event].data.startTime)).format('mm');
+            ContentHome.timeSec = moment(new Date(result[event].data.startTime)).format('ss');
+            ContentHome.completeDate = moment(new Date(result[event].data.startDate)).add(ContentHome.timeHour,'hour')
+            ContentHome.completeDate = moment(ContentHome.completeDate).add(ContentHome.timeMin,'minute')
+            ContentHome.completeDate = moment(ContentHome.completeDate).add(ContentHome.timeSec,'second')
+            result[event].data.startDate=moment(ContentHome.completeDate).utcOffset(result[event].data.timezone["value"]?result[event].data.timezone["value"]:ContentHome.getUTCZone()).format('MMM D, YYYY')
+            result[event].data.startTime=moment(new Date(result[event].data.startTime)).utcOffset(result[event].data.timezone['value']?result[event].data.timezone['value']:"").format()
+          }
+
+        }
+
+        ContentHome.getUTCZone=function(){
+          //return moment(new Date()).utc().format("Z");
+          return moment(new Date()).format("Z")
+        }
+
+
         /*
          * Go pull any previously saved data
          * */
@@ -183,6 +207,7 @@
           Buildfire.spinner.show();
           var successEvents = function (result) {
             Buildfire.spinner.hide();
+            ContentHome.convertToZone(result)
             ContentHome.events = ContentHome.events.length ? ContentHome.events.concat(result) : result;
             searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
             if (result.length == PAGINATION.eventsCount) {
