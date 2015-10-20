@@ -2,7 +2,7 @@
 
   <div class="events-plugin">
     <div class="event-calendar-holder padded clearfix"
-         ng-if="WidgetHome.allEvents.length">
+         ng-if="WidgetHome.allEvents">
       <div class="event-calendar">
         <div style="display:inline-block; border: none">
           <datepicker ng-model="$parent.dt" min-date="minDate"
@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-    <div class="event-list" ng-if="WidgetHome.events.length">
+    <div class="event-list">
       <div ng-if="WidgetHome.data">
         <div infinite-scroll="WidgetHome.loadMore()"
              infinite-scroll-distance="1"
@@ -37,20 +37,22 @@
             </div>
             <div class="event-date text-center pull-left margin-left-ten"
                  ng-if="event.data.startDate">
-              <h3 class="text-primary margin-zero">{{event.data.startDate
+              <h3 class="text-primary margin-zero overlap-color-blue">{{event.data.startDate
                 | getMonth}}</h3>
 
-              <h1 class="text-primary margin-zero">{{event.data.startDate
+              <h1 class="text-primary margin-zero overlap-color-blue">{{event.data.startDate
                 |getDate}}</h1>
             </div>
             <div class="event-info pull-left margin-left-ten">
               <a ng-href="#/event/{{event.id}}"><h4
-                  class="margin-bottom-zero text-primary ellipsis">
+                  class="margin-bottom-zero text-primary ellipsis overlap-color-blue">
                 {{event.data.title}}</h4></a>
 
               <p class="margin-zero ellipsis"
                  ng-if="event.data.endTime && !event.data.isAllDay">{{event.data.startTime | getTime}} -
                 {{event.data.endTime | getTime}} {{event.data.endTime | getTimeZone}}</p>
+                <p class="margin-zero ellipsis"
+                   ng-if="event.data.isAllDay">All Day</p>
             </div>
           </div>
         </div>

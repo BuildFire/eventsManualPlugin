@@ -8,7 +8,7 @@
         WidgetHome.data = null;
         WidgetHome.swiped = [];
         WidgetHome.events = [];
-        WidgetHome.allEvents = [];
+        WidgetHome.allEvents = null;
         WidgetHome.busy = false;
         WidgetHome.clickEvent = false;
         $scope.dt = new Date();
@@ -18,8 +18,8 @@
           sort: {"startDate": 1}
         };
         var currentDate = new Date();
-        var formattedDate = moment(currentDate).format("MMM") + " " + currentDate.getFullYear() + ", " + currentDate.getDate();
-        var timeStampInMiliSec = +new Date("'" + formattedDate + "'");
+        var formattedDate = currentDate.getFullYear() + "-" + moment(currentDate).format("MM") + "-" + ("0" + currentDate.getDate()).slice(-2) + "T00:00:00";
+        var timeStampInMiliSec = +new Date(formattedDate);
 
         var getManualEvents = function () {
           Buildfire.spinner.show();
@@ -35,7 +35,6 @@
             Buildfire.spinner.hide();
             console.log("Error fetching events");
           };
-
           searchOptions.filter = {"$or": [{"data.startDate": {"$gt": timeStampInMiliSec}}, {"data.startDate": {"$eq": timeStampInMiliSec}}]};
           DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
@@ -60,6 +59,7 @@
               }
             };
           var successEventsAll = function (resultAll) {
+              WidgetHome.allEvents = [];
               WidgetHome.allEvents = resultAll;
             },
             errorEventsAll = function (error) {
@@ -79,8 +79,8 @@
           searchOptions.skip = 0;
           WidgetHome.busy = false;
           WidgetHome.disabled = true;
-          formattedDate = moment($scope.dt).format("MMM") + " " + $scope.dt.getFullYear() + ", " + $scope.dt.getDate();
-          timeStampInMiliSec = +new Date("'" + formattedDate + "'");
+          formattedDate = $scope.dt.getFullYear() + "-" + moment($scope.dt).format("MM") + "-" + ("0" + $scope.dt.getDate()).slice(-2)+ "T00:00:00";
+          timeStampInMiliSec = +new Date(formattedDate);
           WidgetHome.loadMore();
         };
 
@@ -90,6 +90,34 @@
 
         WidgetHome.addEventsToCalendar = function (event) {
           /*Add to calendar event will add here*/
+          alert(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
+          alert("inCal:"+buildfire.device.calendar);
+           if(buildfire.device && buildfire.device.calendar) {
+           buildfire.device.calendar.addEvent(
+               {
+                 title: event.data.title
+                 , location: event.data.address.location
+                 , notes: event.data.description
+                 , startDate: new Date(event.data.startDate)
+                 , endDate: new Date(event.data.endDate)
+                 , options: {
+                 firstReminderMinutes: 120
+                 , secondReminderMinutes: 5
+                 , recurrence: event.data.repeat.repeatType
+                 , recurrenceEndDate: event.data.repeat.repeatType?new Date(event.data.repeat.endOn): new Date(2025, 6, 1, 0, 0, 0, 0, 0)
+               }
+               }
+               ,
+               function (err, result) {
+                 alert("Done");
+                 if (err)
+                   alert("******************"+err);
+                 else
+                   alert('worked ' + JSON.stringify(result));
+               }
+           );
+         }
+          console.log(">>>>>>>>",event);
         };
 
         WidgetHome.loadMore = function () {
@@ -127,10 +155,10 @@
                   WidgetHome.events = [];
                   searchOptions = {
                     skip: 0,
-                    limit: PAGINATION.eventsCount, 
+                    limit: PAGINATION.eventsCount,
                     sort: {"startDate": 1}
                   };
-                  getManualEvents();
+                  WidgetHome.loadMore();
                   break;
               }
               $scope.$digest();
