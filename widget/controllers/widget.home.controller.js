@@ -21,10 +21,43 @@
         var formattedDate = currentDate.getFullYear() + "-" + moment(currentDate).format("MM") + "-" + ("0" + currentDate.getDate()).slice(-2) + "T00:00:00";
         var timeStampInMiliSec = +new Date(formattedDate);
 
+        WidgetHome.getUTCZone=function(){
+          //return moment(new Date()).utc().format("Z");
+          return moment(new Date()).format("Z")
+        }
+
+        WidgetHome.partOfTime= function(format,paramTime){
+          return moment(new Date(paramTime)).format(format);
+        }
+
+        WidgetHome.convertToZone=function(result){
+          for(var   event=0; event<result.length; event++){
+            WidgetHome.completeDateStart = moment(new Date(result[event].data.startDate))
+                .add(WidgetHome.partOfTime('HH',result[event].data.startTime),'hour')
+                .add(WidgetHome.partOfTime('mm',result[event].data.startTime),'minute')
+                .add(WidgetHome.partOfTime('ss',result[event].data.startTime),'second');
+            WidgetHome.completeDateEnd = moment(new Date(result[event].data.endDate))
+                .add(WidgetHome.partOfTime('HH',result[event].data.endTime),'hour')
+                .add(WidgetHome.partOfTime('mm',result[event].data.endTime),'minute')
+                .add(WidgetHome.partOfTime('ss',result[event].data.endTime),'second');
+            result[event].data.startDate=moment(WidgetHome.completeDateStart)
+                .utcOffset(result[event].data.timeDisplay=='SELECTED'&&result[event].data.timezone["value"]?result[event].data.timezone["value"]:WidgetHome.getUTCZone()).format('MMM D, YYYY');
+            result[event].data.startTime=moment(WidgetHome.completeDateStart)
+                .utcOffset(result[event].data.timeDisplay=='SELECTED'&&result[event].data.timezone["value"]?result[event].data.timezone["value"]:WidgetHome.getUTCZone()).format('hh:mm A');
+            result[event].data.endDate=moment(WidgetHome.completeDateEnd)
+                .utcOffset(result[event].data.timeDisplay=='SELECTED'&&result[event].data.timezone["value"]?result[event].data.timezone["value"]:WidgetHome.getUTCZone()).format('MMM D, YYYY');
+            result[event].data.endTime=moment(WidgetHome.completeDateEnd)
+                .utcOffset(result[event].data.timeDisplay=='SELECTED'&&result[event].data.timezone["value"]?result[event].data.timezone["value"]:WidgetHome.getUTCZone()).format('hh:mm A');
+            result[event].data.upadtedTtimeZone=moment(WidgetHome.completeDateEnd)
+                .utcOffset(result[event].data.timeDisplay=='SELECTED'&&result[event].data.timezone["value"]?result[event].data.timezone["value"]:WidgetHome.getUTCZone()).format('Z');
+          }
+
+        }
         var getManualEvents = function () {
           Buildfire.spinner.show();
           var successEvents = function (result) {
             Buildfire.spinner.hide();
+            WidgetHome.convertToZone(result);
             WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(result) : result;
             searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
             if (result.length == PAGINATION.eventsCount) {
@@ -60,6 +93,7 @@
             };
           var successEventsAll = function (resultAll) {
               WidgetHome.allEvents = [];
+              WidgetHome.convertToZone(resultAll);
               WidgetHome.allEvents = resultAll;
             },
             errorEventsAll = function (error) {

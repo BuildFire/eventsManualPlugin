@@ -22,8 +22,40 @@
           });
         }
 
+        WidgetEvent.getUTCZone=function(){
+          //return moment(new Date()).utc().format("Z");
+          return moment(new Date()).format("Z")
+        };
+
+        WidgetEvent.partOfTime= function(format,paramTime){
+          return moment(new Date(paramTime)).format(format);
+        };
+
+        WidgetEvent.convertToZone=function(result){
+          WidgetEvent.completeDateStart = moment(new Date(result.data.startDate))
+              .add(WidgetEvent.partOfTime('HH',result.data.startTime),'hour')
+              .add(WidgetEvent.partOfTime('mm',result.data.startTime),'minute')
+              .add(WidgetEvent.partOfTime('ss',result.data.startTime),'second');
+          WidgetEvent.completeDateEnd = moment(new Date(result.data.endDate))
+              .add(WidgetEvent.partOfTime('HH',result.data.endTime),'hour')
+              .add(WidgetEvent.partOfTime('mm',result.data.endTime),'minute')
+              .add(WidgetEvent.partOfTime('ss',result.data.endTime),'second');
+          result.data.startDate=moment(WidgetEvent.completeDateStart)
+              .utcOffset(result.data.timeDisplay=='SELECTED'&&result.data.timezone["value"]?result.data.timezone["value"]:WidgetEvent.getUTCZone()).format('MMM D, YYYY');
+          result.data.startTime=moment(WidgetEvent.completeDateStart)
+              .utcOffset(result.data.timeDisplay=='SELECTED'&&result.data.timezone["value"]?result.data.timezone["value"]:WidgetEvent.getUTCZone()).format('hh:mm A');
+          result.data.endDate=moment(WidgetEvent.completeDateEnd)
+              .utcOffset(result.data.timeDisplay=='SELECTED'&&result.data.timezone["value"]?result.data.timezone["value"]:WidgetEvent.getUTCZone()).format('MMM D, YYYY');
+          result.data.endTime=moment(WidgetEvent.completeDateEnd)
+              .utcOffset(result.data.timeDisplay=='SELECTED'&&result.data.timezone["value"]?result.data.timezone["value"]:WidgetEvent.getUTCZone()).format('hh:mm A');
+          result.data.upadtedTtimeZone=moment(WidgetEvent.completeDateEnd)
+              .utcOffset(result.data.timeDisplay=='SELECTED'&&result.data.timezone["value"]?result.data.timezone["value"]:WidgetEvent.getUTCZone()).format('Z');
+
+        }
         var getEventDetails = function (url) {
           var success = function (result) {
+                WidgetEvent.convertToZone(result);
+
               WidgetEvent.event = result;
             }
             , error = function (err) {

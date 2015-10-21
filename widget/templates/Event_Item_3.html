@@ -26,9 +26,9 @@
 
         <p class="margin-bottom-zero ellipsis overlap-color-white"
            ng-if="WidgetEvent.event.data.endTime && !WidgetEvent.event.data.isAllDay">
-          {{WidgetEvent.event.data.startTime | getTime}} -
-          {{WidgetEvent.event.data.endTime | getTime}}
-          {{WidgetEvent.event.data.endTime | getTimeZone}}</p>
+          {{WidgetEvent.event.data.startTime}} -
+          {{WidgetEvent.event.data.endTime}}
+          {{WidgetEvent.event.data.upadtedTtimeZone | getTimeZone}}</p>
           <p class="margin-bottom-zero ellipsis overlap-color-white"
              ng-if="WidgetEvent.event.data.isAllDay">
               All Day</p>
