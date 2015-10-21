@@ -170,7 +170,8 @@
                   break;
                 case TAG_NAMES.EVENTS_MANUAL:
                   if (event.data)
-                    WidgetEvent.event.data = event.data;
+                    WidgetEvent.convertToZone(event);
+                  WidgetEvent.event.data = event.data;
                   if (WidgetEvent.view) {
                     console.log("_____________________________");
                     WidgetEvent.view.loadItems(WidgetEvent.event.data.carouselImages);
