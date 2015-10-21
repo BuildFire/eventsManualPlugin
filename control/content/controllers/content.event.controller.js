@@ -14,7 +14,7 @@
           "endDate": "",
           "isAllDay": "",
           "timezone": "",
-          "timeDisplay": {},
+          "timeDisplay": "",
           "repeat": {},
           "addressTitle": "",
           "address": {},
