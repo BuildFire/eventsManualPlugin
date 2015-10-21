@@ -88,6 +88,38 @@
           return !(description == '<p><br data-mce-bogus="1"></p>');
         };
 
+        WidgetEvent.addEventsToCalendar = function (event) {
+          /*Add to calendar event will add here*/
+          alert(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
+          alert("inCal:"+buildfire.device.calendar);
+          if(buildfire.device && buildfire.device.calendar) {
+            buildfire.device.calendar.addEvent(
+              {
+                title: event.data.title
+                , location: event.data.address.location
+                , notes: event.data.description
+                , startDate: new Date(event.data.startDate)
+                , endDate: new Date(event.data.endDate)
+                , options: {
+                firstReminderMinutes: 120
+                , secondReminderMinutes: 5
+                , recurrence: event.data.repeat.repeatType
+                , recurrenceEndDate: event.data.repeat.repeatType?new Date(event.data.repeat.endOn): new Date(2025, 6, 1, 0, 0, 0, 0, 0)
+              }
+              }
+              ,
+              function (err, result) {
+                alert("Done");
+                if (err)
+                  alert("******************"+err);
+                else
+                  alert('worked ' + JSON.stringify(result));
+              }
+            );
+          }
+          console.log(">>>>>>>>",event);
+        };
+
         /*update data on change event*/
         var onUpdateCallback = function (event) {
           setTimeout(function () {
