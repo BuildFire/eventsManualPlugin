@@ -25,16 +25,16 @@
 
         <p class="margin-bottom-zero ellipsis"
            ng-if="WidgetEvent.event.data.endTime && !WidgetEvent.event.data.isAllDay">
-          {{WidgetEvent.event.data.startTime | getTime}} -
-          {{WidgetEvent.event.data.endTime | getTime}}
-          {{WidgetEvent.event.data.endTime | getTimeZone}}</p>
+          {{WidgetEvent.event.data.startTime}} -
+          {{WidgetEvent.event.data.endTime}}
+          {{WidgetEvent.event.data.upadtedTtimeZone | getTimeZone}}</p>
           <p class="margin-bottom-zero ellipsis"
              ng-if="WidgetEvent.event.data.isAllDay">
               All Day</p>
       </div>
     </div>
     <div class="padded text-center clearfix padding-bottom-ten">
-      <a class="text-primary">Add to Calendar</a>
+      <a class="text-primary" href="javascript:void(0)" ng-click="WidgetEvent.addEventsToCalendar(WidgetEvent.event)">Add to Calendar</a>
     </div>
     <hr
         class="margin-top-zero margin-bottom-zero margin-left-fifteen margin-right-fifteen"

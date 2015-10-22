@@ -87,27 +87,5 @@ describe('Unit: eventsManualPluginWidget widget app', function () {
     });
   });
 
-  describe('Unit: getTime filter', function () {
-    beforeEach(module('eventsManualPluginWidget'));
-    var filter;
-    beforeEach(inject(function (_$filter_) {
-      filter = _$filter_;
-    }));
 
-    it('it should pass if "getTime" filter returns time in AM PM format', function () {
-      expect(typeof filter('getTime')).toEqual('function');
-    });
-  });
-
-  describe('Unit: getTimeZone filter', function () {
-    beforeEach(module('eventsManualPluginWidget'));
-    var filter;
-    beforeEach(inject(function (_$filter_) {
-      filter = _$filter_;
-    }));
-
-    it('it should pass if "getTimeZone" filter returns timezone from given timestamp', function () {
-      expect(typeof filter('getTimeZone')).toEqual('function');
-    });
-  });
 });

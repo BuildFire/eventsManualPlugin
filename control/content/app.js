@@ -141,11 +141,6 @@
           });
       }
     })
-    .filter('getDateFromTimestamp', function () {
-      return function (input) {
-        return moment(new Date(input)).format('MMM D, YYYY')
-      };
-    })
     .run(['Location', function (Location) {
       // Handler to receive message from widget
       buildfire.messaging.onReceivedMessage = function (msg) {

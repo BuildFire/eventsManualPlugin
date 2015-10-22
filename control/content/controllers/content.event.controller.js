@@ -14,7 +14,7 @@
           "endDate": "",
           "isAllDay": "",
           "timezone": "",
-          "timeDisplay": {},
+          "timeDisplay": "",
           "repeat": {},
           "addressTitle": "",
           "address": {},
@@ -87,78 +87,78 @@
         };
 
         ContentEvent.TimeZoneDropdownOptions = [
-          {name: "(GMT -12:00) Eniwetok, Kwajalein", value: "-12.0"},
-          {name: "(GMT -11:00) Midway Island, Samoa", value: "-11.0"},
-          {name: "(GMT -10:00) Hawaii", value: "-10.0"},
-          {name: "(GMT -9:00) Alaska", value: "-9.0"},
-          {name: "(GMT -8:00) Pacific Time (US &amp; Canada)", value: "-8.0"},
-          {name: "(GMT -7:00) Mountain Time (US &amp; Canada)", value: "-7:00"},
+          {name: "(GMT -12:00) Eniwetok, Kwajalein", value: "-12:00"},
+          {name: "(GMT -11:00) Midway Island, Samoa", value: "-11:00"},
+          {name: "(GMT -10:00) Hawaii", value: "-10:00"},
+          {name: "(GMT -09:00) Alaska", value: "-09:00"},
+          {name: "(GMT -08:00) Pacific Time (US &amp; Canada)", value: "-08:00"},
+          {name: "(GMT -07:00) Mountain Time (US &amp; Canada)", value: "-07:00"},
           {
             name: "(GMT -6:00) Central Time (US &amp; Canada), Mexico City",
-            value: "-6:00"
+            value: "-06:00"
           },
           {
             name: "(GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima",
-            value: "-5:00"
+            value: "-05:00"
           },
           {
             name: "(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz",
-            value: "-4:00"
+            value: "-04:00"
           },
-          {name: "(GMT -3:30) Newfoundland", value: "-3:30"},
+          {name: "(GMT -3:30) Newfoundland", value: "-03:30"},
           {
             name: "(GMT -3:00) Brazil, Buenos Aires, Georgetown",
-            value: "-3:00"
+            value: "-03:00"
           },
-          {name: "(GMT -2:00) Mid-Atlantic", value: "-2:00"},
-          {name: "(GMT -1:00) Azores, Cape Verde Islands", value: "-1:00"},
+          {name: "(GMT -02:00) Mid-Atlantic", value: "-02:00"},
+          {name: "(GMT -01:00) Azores, Cape Verde Islands", value: "-01:00"},
           {
             name: "(GMT) Western Europe Time, London, Lisbon, Casablanca",
-            value: "0.0"
+            value: "00:00"
           },
           {
             name: "(GMT +1:00 hour) Brussels, Copenhagen, Madrid, Paris",
-            value: "1.0"
+            value: "+01:00"
           },
-          {name: "(GMT +2:00) Kaliningrad, South Africa", value: "2:00"},
+          {name: "(GMT +2:00) Kaliningrad, South Africa", value: "+02:00"},
           {
             name: "(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg",
-            value: "3:00"
+            value: "+03:00"
           },
-          {name: "(GMT +3:30) Tehran", value: "3:30"},
-          {name: "(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi", value: "4:00"},
-          {name: "(GMT +4:30) Kabul", value: "4:30"},
+          {name: "(GMT +3:30) Tehran", value: "+03:30"},
+          {name: "(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi", value: "+04:00"},
+          {name: "(GMT +4:30) Kabul", value: "+04:30"},
           {
             name: "(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent",
-            value: "5:00"
+            value: "+05:00"
           },
           {
             name: "(GMT +5:30) Bombay, Calcutta, Madras, New Delhi",
-            value: '5:30'
+            value: '+05:30'
           },
-          {name: "(GMT +5:45) Kathmandu", value: "5:45"},
-          {name: "(GMT +6:00) Almaty, Dhaka, Colombo", value: '6:00'},
-          {name: "(GMT +7:00) Bangkok, Hanoi, Jakarta", value: "7:00"},
+          {name: "(GMT +5:45) Kathmandu", value: "+05:45"},
+          {name: "(GMT +6:00) Almaty, Dhaka, Colombo", value: '+06:00'},
+          {name: "(GMT +7:00) Bangkok, Hanoi, Jakarta", value: "+07:00"},
           {
             name: "(GMT +8:00) Beijing, Perth, Singapore, Hong Kong",
-            value: "8:00"
+            value: "+08:00"
           },
           {
             name: "(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk",
-            value: "9:00"
+            value: "+09:00"
           },
-          {name: "(GMT +9:30) Adelaide, Darwin", value: "9:30"},
+          {name: "(GMT +09:30) Adelaide, Darwin", value: "+09:30"},
           {
             name: "(GMT +10:00) Eastern Australia, Guam, Vladivostok",
-            value: "10:00"
+            value: "+10:00"
           },
           {
             name: "(GMT +11:00) Magadan, Solomon Islands, New Caledonia",
-            value: "11:00"
+            value: "+11:00"
           },
           {
             name: "(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka",
-            value: "12:00"
+            value: "+12:00"
           }
 
         ];

@@ -28,8 +28,7 @@
       <div class="copy pull-right">
         <a class="text-primary" href="#/event/{{event.id}}"><span
             class="title ellipsis pull-left text-primary">{{event.data.title}}</span></a>
-        <span class="title ellipsis pull-left">{{event.data.startDate | getDateFromTimestamp
-          }}</span>
+        <span class="title ellipsis pull-left">{{event.data.startDate}}</span>
         <div class="pull-right">
           <span class="btn-icon btn-link-icon btn-primary"
                 ng-click="ContentHome.showDeepLink(event.data.deepLinkUrl)"></span>
