@@ -63,4 +63,38 @@ describe('Unit : event Manual Plugin widget.home.controller.js', function () {
       WidgetHome.getEvent();
     });
   });
+  describe('WidgetHome.getUTCZone', function () {
+    it('should invoke when WidgetHome.getUTCZone is called', function () {
+      WidgetHome.getUTCZone();
+    });
+  });
+  describe('WidgetHome.partOfTime', function () {
+    it('should invoke when WidgetHome.partOfTime is called', function () {
+      var format='HH', paramTime = '2015-10-23T03:24:07.391Z0.9960675491020083'
+      WidgetHome.partOfTime(format,paramTime);
+    });
+  });
+
+  describe('WidgetHome.convertToZone', function () {
+    it('should invoke when WidgetHome.convertToZone is called', function () {
+      var result={data: {
+        "title": "",
+        "listImage": "",
+        "deepLinkUrl": "",
+        "carouselImages": [],
+        "startDate": "",
+        "endDate": "",
+        "isAllDay": "",
+        "timezone": "",
+        "timeDisplay": "",
+        "repeat": {},
+        "addressTitle": "",
+        "address": {},
+        "description": "",
+        "links": []
+
+      }  };
+      WidgetHome.convertToZone(result);
+    });
+  });
 });
