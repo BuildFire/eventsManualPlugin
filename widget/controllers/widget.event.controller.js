@@ -212,11 +212,11 @@
 
         $rootScope.$on("Carousel:LOADED", function () {
           WidgetEvent.view = null;
-          if (!WidgetEvent.view) {
-            WidgetEvent.view = new buildfire.components.carousel.view("#carousel", []);
+           if (!WidgetEvent.view) {
+            WidgetEvent.view = new buildfire.components.carousel.view("#carousel", [],WidgetEvent.data.design.itemDetailsLayout=='Event_Item_1'?"WideScreen":"Square");
           }
           if (WidgetEvent.event.data && WidgetEvent.event.data.carouselImages) {
-            WidgetEvent.view.loadItems(WidgetEvent.event.data.carouselImages);
+            WidgetEvent.view.loadItems(WidgetEvent.event.data.carouselImages, null, WidgetEvent.data.design.itemDetailsLayout=='Event_Item_1'?"WideScreen":"Square");
           } else {
             WidgetEvent.view.loadItems([]);
           }

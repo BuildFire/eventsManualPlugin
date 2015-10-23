@@ -3,7 +3,7 @@
 */
 .main_view {
     position: relative;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 .body-scroll {
