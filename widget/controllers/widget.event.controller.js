@@ -174,7 +174,7 @@
                   WidgetEvent.event.data = event.data;
                   if (WidgetEvent.view) {
                     console.log("_____________________________");
-                    WidgetEvent.view.loadItems(WidgetEvent.event.data.carouselImages);
+                    WidgetEvent.view.loadItems(WidgetEvent.event.data.carouselImages, null, WidgetEvent.data.design.itemDetailsLayout=='Event_Item_1'?"WideScreen":"Square");
                   }
                   break;
               }
