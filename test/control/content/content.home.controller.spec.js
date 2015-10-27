@@ -54,6 +54,41 @@ describe('Unit : Event Manual Plugin content.home.controller.js', function () {
             ContentHome.safeHtml(html)
         });
     });
+    describe('ContentHome.getUTCZone', function () {
+        it('should invoke when ContentHome.getUTCZone is called', function () {
+            ContentHome.getUTCZone();
+        });
+    });
+    describe('ContentHome.partOfTime', function () {
+        it('should invoke when ContentHome.partOfTime is called', function () {
+            var format='HH', paramTime = '2015-10-23T03:24:07.391Z0.9960675491020083'
+            ContentHome.partOfTime(format,paramTime);
+        });
+    });
 
+    describe('ContentHome.convertToZone', function () {
+        it('should invoke when ContentHome.convertToZone is called', function () {
+            var result={
+                data: {
+                "title": "",
+                "listImage": "",
+                "deepLinkUrl": "",
+                "carouselImages": [],
+                "startDate": "",
+                "endDate": "",
+                "isAllDay": "",
+                "timezone": "",
+                "timeDisplay": "",
+                "repeat": {},
+                "addressTitle": "",
+                "address": {},
+                "description": "",
+                "links": []
+
+            }
+        };
+            ContentHome.convertToZone(result);
+        });
+    });
 })
 ;

@@ -14,11 +14,7 @@
           },
           content: {}
         };
-        DesignHome.data = {
-          design: {
-            itemDetailsLayout: null
-          }
-        };
+
         DesignHome.layouts = {
           itemDetailsLayout: [
             {name: "Event_Item_1"},
