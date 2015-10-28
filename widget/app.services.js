@@ -155,4 +155,15 @@
         }
       };
     }])
+    .factory('EventCache', [function () {
+      var event = null;
+      return {
+        setCache: function (data) {
+          event = data;
+        },
+        getCache: function () {
+          return event;
+        }
+      };
+    }])
 })(window.angular, window.buildfire);

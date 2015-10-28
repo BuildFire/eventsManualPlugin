@@ -100,19 +100,21 @@
         /*watch the change event and update in database*/
         $scope.$watch(function () {
           return DesignHome.data;
-        }, function (newObj) {
-          console.log("Updated Object:", newObj);
-          if (newObj)
-            Buildfire.datastore.save(DesignHome.data, TAG_NAMES.EVENTS_MANUAL_INFO, function (err, data) {
-              if (err) {
-                return DesignHome.data = angular.copy(DesignHomeMaster);
-              }
-              else if (data && data.obj) {
-                return DesignHomeMaster = data.obj;
+        }, function (oldObj,newObj) {
 
-              }
-              $scope.$digest();
-            });
+          if (oldObj != newObj && newObj) {
+          console.log("Updated Object:", newObj);
+          Buildfire.datastore.save(DesignHome.data, TAG_NAMES.EVENTS_MANUAL_INFO, function (err, data) {
+            if (err) {
+              return DesignHome.data = angular.copy(DesignHomeMaster);
+            }
+            else if (data && data.obj) {
+              return DesignHomeMaster = data.obj;
+
+            }
+            $scope.$digest();
+          });
+        }
         }, true);
 
       }]);

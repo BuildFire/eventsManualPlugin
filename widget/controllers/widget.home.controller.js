@@ -2,8 +2,8 @@
 
 (function (angular) {
   angular.module('eventsManualPluginWidget')
-    .controller('WidgetHomeCtrl', ['$scope', 'TAG_NAMES', 'LAYOUTS', 'DataStore', 'PAGINATION', 'Buildfire','Location',
-      function ($scope, TAG_NAMES, LAYOUTS, DataStore, PAGINATION, Buildfire,Location) {
+    .controller('WidgetHomeCtrl', ['$scope', 'TAG_NAMES', 'LAYOUTS', 'DataStore', 'PAGINATION', 'Buildfire', 'Location', 'EventCache',
+      function ($scope, TAG_NAMES, LAYOUTS, DataStore, PAGINATION, Buildfire, Location, EventCache) {
         var WidgetHome = this;
         WidgetHome.data = null;
         WidgetHome.swiped = [];
@@ -18,7 +18,7 @@
           sort: {"startDate": 1}
         };
         var currentDate = new Date();
-        var formattedDate = currentDate.getFullYear() + "-" + moment(currentDate).format("MM") + "-" + ("0" + currentDate.getDate()).slice(-2) + "T00:00:00";
+        var formattedDate = currentDate.getFullYear() + "-" + moment(currentDate).format("MM") + "-" + ("0" + currentDate.getDate()).slice(-2) + "T00:00:00" + moment(new Date()).format("Z");
         var timeStampInMiliSec = +new Date(formattedDate);
         var currentLayout = "";
 
@@ -165,6 +165,12 @@
           getManualEvents();
         };
 
+        /*This method is used to navigate to particular event details page*/
+        WidgetHome.openDetailsPage = function (event) {
+          EventCache.setCache(event);
+          Location.goTo('#/event/' + event.id);
+        };
+
         $scope.getDayClass = function (date, mode) {
 
           var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
@@ -189,7 +195,7 @@
                     WidgetHome.data.design.itemDetailsLayout = LAYOUTS.itemDetailsLayout[0].name;
                   }
 
-                  if (currentLayout && currentLayout != WidgetHome.data.design.itemDetailsLayout){
+                  if (currentLayout && currentLayout != WidgetHome.data.design.itemDetailsLayout) {
                     if (WidgetHome.events && WidgetHome.events.length) {
                       var id = WidgetHome.events[0].id;
                       Location.goTo("#/event/" + id);
@@ -197,7 +203,7 @@
                   }
 
 
-                    break;
+                  break;
                 case TAG_NAMES.EVENTS_MANUAL:
                   WidgetHome.events = [];
                   searchOptions = {
