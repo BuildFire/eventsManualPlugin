@@ -47,7 +47,7 @@
 
         ContentHome.partOfTime= function(format,paramTime){
           return moment(new Date(paramTime)).format(format);
-        }
+        };
 
         ContentHome.convertToZone=function(result){
           for(var   event=0; event<result.length; event++){
@@ -62,12 +62,12 @@
             result[event].data.startDate=moment(ContentHome.completeDateStart).utcOffset(result[event].data.timeDisplay=='SELECTED'&&result[event].data.timezone["value"]?result[event].data.timezone["value"]:ContentHome.getUTCZone()).format('MMM D, YYYY');
             result[event].data.endDate=moment(ContentHome.completeDateEnd).utcOffset(result[event].data.timeDisplay=='SELECTED'&&result[event].data.timezone["value"]?result[event].data.timezone["value"]:ContentHome.getUTCZone()).format('MMM D, YYYY');
            }
-        }
+        };
 
         ContentHome.getUTCZone=function(){
           //return moment(new Date()).utc().format("Z");
           return moment(new Date()).format("Z")
-        }
+        };
 
 
         /*
