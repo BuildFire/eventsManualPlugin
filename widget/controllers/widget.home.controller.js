@@ -18,7 +18,7 @@
           sort: {"startDate": 1}
         };
         var currentDate = new Date();
-        var formattedDate = currentDate.getFullYear() + "-" + moment(currentDate).format("MM") + "-" + ("0" + currentDate.getDate()).slice(-2) + "T00:00:00";
+        var formattedDate = currentDate.getFullYear() + "-" + moment(currentDate).format("MM") + "-" + ("0" + currentDate.getDate()).slice(-2) + "T00:00:00"+ moment(new Date()).format("Z");
         var timeStampInMiliSec = +new Date(formattedDate);
         var currentLayout = "";
 
