@@ -12,24 +12,24 @@
       </div>
       <div class="info-circle small bg-white">
         <div class="info-circle-inner">
-          <h3 class="margin-zero text-primary overlap-color-blue">
+          <h3 class="margin-zero text-primary">
             {{WidgetEvent.event.data.startDate | getMonth}}</h3>
 
-          <h1 class="margin-zero text-primary overlap-color-blue">
+          <h1 class="margin-zero text-primary">
             {{WidgetEvent.event.data.startDate |
             getDate}}</h1>
         </div>
       </div>
       <div class="info-text">
-        <p class="margin-bottom-zero ellipsis overlap-color-white">
+        <p class="margin-bottom-zero ellipsis">
           {{WidgetEvent.event.data.title}}</p>
 
-        <p class="margin-bottom-zero ellipsis overlap-color-white"
+        <p class="margin-bottom-zero ellipsis"
            ng-if="WidgetEvent.event.data.endTime && !WidgetEvent.event.data.isAllDay">
           {{WidgetEvent.event.data.startTime}} -
           {{WidgetEvent.event.data.endTime}}
           {{WidgetEvent.event.data.upadtedTtimeZone | getTimeZone}}</p>
-          <p class="margin-bottom-zero ellipsis overlap-color-white"
+          <p class="margin-bottom-zero ellipsis"
              ng-if="WidgetEvent.event.data.isAllDay">
               All Day</p>
       </div>

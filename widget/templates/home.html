@@ -14,8 +14,8 @@
         </div>
       </div>
     </div>
-    <div class="event-list">
-      <div ng-if="WidgetHome.data">
+    <div class="event-list" ng-if="WidgetHome.data">
+      <div>
         <div infinite-scroll="WidgetHome.loadMore()"
              infinite-scroll-distance="1"
              infinite-scroll-disabled="WidgetHome.busy">
@@ -37,16 +37,16 @@
             </div>
             <div class="event-date text-center pull-left margin-left-ten"
                  ng-if="event.data.startDate">
-              <h3 class="text-primary margin-zero overlap-color-blue">{{event.data.startDate
+              <h3 class="text-primary margin-zero">{{event.data.startDate
                 | getMonth}}</h3>
 
-              <h1 class="text-primary margin-zero overlap-color-blue">{{event.data.startDate
+              <h1 class="text-primary margin-zero">{{event.data.startDate
                 |getDate}}</h1>
             </div>
             <div class="event-info pull-left margin-left-ten">
               <a href="javascript:void(0)"
                  ng-click="WidgetHome.openDetailsPage(event)"><h4
-                  class="margin-bottom-zero text-primary ellipsis overlap-color-blue">
+                  class="margin-bottom-zero text-primary ellipsis">
                 {{event.data.title}}</h4></a>
 
               <p class="margin-zero ellipsis"
