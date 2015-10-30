@@ -106,11 +106,10 @@
           ContentHome.busy = false;
           searchOptions.skip = 0;
           if (search) {
-            regex = "\\b" + search + "\\b";
             searchOptions.filter = {
               "$or": [{
                 "data.title": {
-                  "$regex": regex,
+                  "$regex": search,
                   "$options": "i"
                 }
               }]
