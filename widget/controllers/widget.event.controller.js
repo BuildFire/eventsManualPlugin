@@ -36,7 +36,7 @@
             .add(WidgetEvent.partOfTime('HH', result.data.startTime), 'hour')
             .add(WidgetEvent.partOfTime('mm', result.data.startTime), 'minute')
             .add(WidgetEvent.partOfTime('ss', result.data.startTime), 'second');
-          if (result.data.endDate){
+          if (result.data.endDate&&result.data.endTime){
             WidgetEvent.completeDateEnd = moment(new Date(result.data.endDate))
                 .add(WidgetEvent.partOfTime('HH', result.data.endTime), 'hour')
                 .add(WidgetEvent.partOfTime('mm', result.data.endTime), 'minute')
