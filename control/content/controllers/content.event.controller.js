@@ -34,6 +34,8 @@
         ContentEvent.isValidEvent = function (event) {
           if (event.isAllDay)
             return (event.startDate && event.title);
+          else if (event.endTime)
+            return (event.startDate && event.title && event.startTime && !(+new Date(event.startTime) == +new Date(event.endTime)));
           else
             return (event.startDate && event.title && event.startTime);
         };
@@ -91,8 +93,14 @@
           {name: "(GMT -11:00) Midway Island, Samoa", value: "-11:00"},
           {name: "(GMT -10:00) Hawaii", value: "-10:00"},
           {name: "(GMT -09:00) Alaska", value: "-09:00"},
-          {name: "(GMT -08:00) Pacific Time (US &amp; Canada)", value: "-08:00"},
-          {name: "(GMT -07:00) Mountain Time (US &amp; Canada)", value: "-07:00"},
+          {
+            name: "(GMT -08:00) Pacific Time (US &amp; Canada)",
+            value: "-08:00"
+          },
+          {
+            name: "(GMT -07:00) Mountain Time (US &amp; Canada)",
+            value: "-07:00"
+          },
           {
             name: "(GMT -6:00) Central Time (US &amp; Canada), Mexico City",
             value: "-06:00"
@@ -126,7 +134,10 @@
             value: "+03:00"
           },
           {name: "(GMT +3:30) Tehran", value: "+03:30"},
-          {name: "(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi", value: "+04:00"},
+          {
+            name: "(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi",
+            value: "+04:00"
+          },
           {name: "(GMT +4:30) Kabul", value: "+04:30"},
           {
             name: "(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent",
@@ -376,7 +387,10 @@
         };
 
         /* Build fire thumbnail component to add thumbnail image*/
-        var listImage = new Buildfire.components.images.thumbnail("#listImage", {title: "List Image",dimensionsLabel:"500x500"});
+        var listImage = new Buildfire.components.images.thumbnail("#listImage", {
+          title: "List Image",
+          dimensionsLabel: "500x500"
+        });
 
         listImage.onChange = function (url) {
           ContentEvent.event.data.listImage = url;
