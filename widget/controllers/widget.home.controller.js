@@ -69,6 +69,16 @@
             Buildfire.spinner.hide();
             console.log("Error fetching events");
           };
+          var successEventsAll = function (resultAll) {
+                WidgetHome.allEvents = [];
+                WidgetHome.convertToZone(resultAll);
+                WidgetHome.allEvents = resultAll;
+              },
+              errorEventsAll = function (error) {
+                console.log("error", error)
+              };
+
+          DataStore.search({}, TAG_NAMES.EVENTS_MANUAL).then(successEventsAll, errorEventsAll);
           searchOptions.filter = {"$or": [{"data.startDate": {"$gt": timeStampInMiliSec}}, {"data.startDate": {"$eq": timeStampInMiliSec}}]};
           DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
@@ -93,16 +103,7 @@
                 console.error('Error while getting data', err);
               }
             };
-          var successEventsAll = function (resultAll) {
-              WidgetHome.allEvents = [];
-              WidgetHome.convertToZone(resultAll);
-              WidgetHome.allEvents = resultAll;
-            },
-            errorEventsAll = function (error) {
-              console.log("error", error)
-            };
 
-          DataStore.search({}, TAG_NAMES.EVENTS_MANUAL).then(successEventsAll, errorEventsAll);
           DataStore.get(TAG_NAMES.EVENTS_MANUAL_INFO).then(success, error);
         };
 
@@ -206,11 +207,13 @@
                   break;
                 case TAG_NAMES.EVENTS_MANUAL:
                   WidgetHome.events = [];
+                     WidgetHome.allEvents = null;
                   searchOptions = {
                     skip: 0,
                     limit: PAGINATION.eventsCount,
                     sort: {"startDate": 1}
                   };
+                    WidgetHome.busy = false;
                   WidgetHome.loadMore();
                   break;
               }
