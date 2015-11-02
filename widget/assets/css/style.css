@@ -11,7 +11,7 @@
 }
 
 .btn {
-    padding: 9px 16px;
+    padding: 9px 8px;
     border: none;
 }
 
@@ -90,8 +90,3 @@
     min-height: 192px !important;
 }
 
-.holder{
-    overflow-y: auto;
-    max-height: 100%;
-    position: absolute !important;
-}
