@@ -41,10 +41,9 @@
     </div>
     <div class="plugin-banner has-info-bar location-map clearfix">
       <div class="plugin-slide map-holder">
-        <p style="position:relative; top:100px; color:#fff; text-align:center;"
-           ng-if="!WidgetEvent.event.data.address.location">
+        <p ng-if="!WidgetEvent.event.data.address.location">
 
-        <div google-map style="height: 192px"
+        <div google-map class="mapSize"
              ng-if="WidgetEvent.event.data.address.location"
              coordinates="WidgetEvent.event.data.address.location_coordinates"></div>
       </div>

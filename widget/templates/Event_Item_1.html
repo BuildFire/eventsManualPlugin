@@ -38,10 +38,9 @@
     </div>
     <div class="plugin-banner has-info-bar location-map clearfix">
       <div class="plugin-slide map-holder">
-        <p style="position:relative; top:100px; color:#fff; text-align:center;"
-           ng-if="!WidgetEvent.event.data.address.location">
+        <p ng-if="!WidgetEvent.event.data.address.location">
 
-        <div google-map style="height: 192px"
+        <div google-map class="mapSize"
              ng-if="WidgetEvent.event.data.address.location"
              coordinates="WidgetEvent.event.data.address.location_coordinates"></div>
       </div>
@@ -50,7 +49,7 @@
            class="margin-bottom-zero ellipsis col-xs-12">
           {{WidgetEvent.event.data.addressTitle}}</p>
          <p ng-hide="WidgetEvent.event.data.addressTitle"
-           class="margin-bottom-zero ellipsis col-xs-12"> <a class ="text-primary" ng-click="WidgetEvent.onAddressClick(WidgetEvent.event.data.address.location_coordinates[0],WidgetEvent.event.data.address.location_coordinates[1])" style="color: white !important;">
+           class="margin-bottom-zero ellipsis col-xs-12"> <a class ="text-primary textMapOverlayColor" ng-click="WidgetEvent.onAddressClick(WidgetEvent.event.data.address.location_coordinates[0],WidgetEvent.event.data.address.location_coordinates[1])">
           {{WidgetEvent.event.data.address.location}}</a></p>
       </div>
     </div>

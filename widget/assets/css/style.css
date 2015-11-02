@@ -90,3 +90,9 @@
     min-height: 192px !important;
 }
 
+.mapSize{
+    height: 192px;
+}
+.textMapOverlayColor{
+    color: white !important;"
+}

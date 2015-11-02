@@ -2,8 +2,7 @@
   <div id="carousel"></div>
   <!-- Show If No images -->
   <div class="well text-center margin-bottom-zero border-none"
-       ng-hide="ContentEvent.event.data.carouselImages.length"
-       style="margin-top: 15px">
+       ng-hide="ContentEvent.event.data.carouselImages.length">
     <p class="margin-zero">No images found.</p>
   </div>
   <hr class="none">
@@ -574,7 +573,7 @@
     <div class="main col-md-9 pull-right">
       <div google-map dragged-fn="ContentEvent.setDraggedLocation(data)"
            coordinates="ContentEvent.currentCoordinates"
-           style="height: 200px; position: relative;"></div>
+           class="mapSize"></div>
     </div>
   </div>
   <hr class="none">
