@@ -12,10 +12,10 @@
       </div>
       <div class="info-circle small bg-primary">
         <div class="info-circle-inner">
-          <h3 class="margin-zero overlap-color-white">{{WidgetEvent.event.data.startDate |
+          <h3 class="margin-zero">{{WidgetEvent.event.data.startDate |
             getMonth}}</h3>
 
-          <h1 class="margin-zero overlap-color-white">{{WidgetEvent.event.data.startDate |
+          <h1 class="margin-zero">{{WidgetEvent.event.data.startDate |
             getDate}}</h1>
         </div>
       </div>
@@ -49,20 +49,20 @@
           .title}}</a>
       </div>
     </div>
-    <p class="text-center text-primary"
+    <p class="text-center text-primary text-overlay"
        ng-show="WidgetEvent.event.data.addressTitle">
       {{WidgetEvent.event.data.addressTitle}}</p>
 
     <p class="text-center text-primary"
        ng-hide="WidgetEvent.event.data.addressTitle">
-        <a class ="text-primary" ng-click="WidgetEvent.onAddressClick(WidgetEvent.event.data.address.location_coordinates[0],WidgetEvent.event.data.address.location_coordinates[1])">{{WidgetEvent.event.data.address.location}}</a></p>
+        <a class ="text-primary text-overlay" ng-click="WidgetEvent.onAddressClick(WidgetEvent.event.data.address.location_coordinates[0],WidgetEvent.event.data.address.location_coordinates[1])">{{WidgetEvent.event.data.address.location}}</a></p>
 
     <div class="plugin-banner has-info-bar location-map clearfix">
       <div class="plugin-slide map-holder">
-        <p style="position:relative; top:100px; color:#fff; text-align:center;"
+        <p
            ng-if="!WidgetEvent.event.data.address.location">
 
-        <div google-map style="height: 192px"
+        <div google-map class="mapSize"
              ng-if="WidgetEvent.event.data.address.location"
              coordinates="WidgetEvent.event.data.address.location_coordinates"></div>
       </div>

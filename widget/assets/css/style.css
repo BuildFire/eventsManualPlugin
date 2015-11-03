@@ -11,7 +11,7 @@
 }
 
 .btn {
-    padding: 9px 16px;
+    padding: 9px 8px;
     border: none;
 }
 
@@ -86,19 +86,13 @@
     text-align: center;
 }
 
-.overlap-color-blue{
-    color:#09A3EE !important
-}
-
-.overlap-color-white{
-    color:#ffffff !important
-}
 .map-holder{
     min-height: 192px !important;
 }
 
-.holder{
-    overflow-y: auto;
-    max-height: 100%;
-    position: absolute !important;
+.mapSize{
+    height: 192px;
+}
+.textMapOverlayColor{
+    color: white !important;"
 }

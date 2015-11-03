@@ -12,25 +12,25 @@
       </div>
       <div class="info-circle bg-white">
         <div class="info-circle-inner">
-          <h3 class="margin-zero text-primary overlap-color-blue">
+          <h3 class="margin-zero text-primary">
             {{WidgetEvent.event.data.startDate | getMonth}}</h3>
 
-          <h1 class="margin-zero text-primary overlap-color-blue">
+          <h1 class="margin-zero text-primary">
             {{WidgetEvent.event.data.startDate |
             getDate}}</h1>
         </div>
       </div>
       <div class="info-bar bg-primary padding-top-five padding-bottom-five">
         <div class="col-xs-12 text-left pull-left">
-          <p class="margin-bottom-zero ellipsis overlap-color-white">
+          <p class="margin-bottom-zero ellipsis">
             {{WidgetEvent.event.data.title}}</p>
 
-          <p class="margin-bottom-zero ellipsis overlap-color-white"
+          <p class="margin-bottom-zero ellipsis"
              ng-if="WidgetEvent.event.data.endTime && !WidgetEvent.event.data.isAllDay">
             {{WidgetEvent.event.data.startTime}} -
             {{WidgetEvent.event.data.endTime}}
             {{WidgetEvent.event.data.upadtedTtimeZone | getTimeZone}}</p>
-          <p class="margin-bottom-zero ellipsis overlap-color-white"
+          <p class="margin-bottom-zero ellipsis"
              ng-if="WidgetEvent.event.data.isAllDay">
             All Day</p>
         </div>
@@ -41,10 +41,9 @@
     </div>
     <div class="plugin-banner has-info-bar location-map clearfix">
       <div class="plugin-slide map-holder">
-        <p style="position:relative; top:100px; color:#fff; text-align:center;"
-           ng-if="!WidgetEvent.event.data.address.location">
+        <p ng-if="!WidgetEvent.event.data.address.location">
 
-        <div google-map style="height: 192px"
+        <div google-map class="mapSize"
              ng-if="WidgetEvent.event.data.address.location"
              coordinates="WidgetEvent.event.data.address.location_coordinates"></div>
       </div>

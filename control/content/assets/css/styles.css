@@ -17,3 +17,8 @@
 .slideRelative{
     position: relative;
 }
+
+.mapSize{
+    height: 200px;
+    position: relative;
+}

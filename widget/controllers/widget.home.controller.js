@@ -37,19 +37,26 @@
               .add(WidgetHome.partOfTime('HH', result[event].data.startTime), 'hour')
               .add(WidgetHome.partOfTime('mm', result[event].data.startTime), 'minute')
               .add(WidgetHome.partOfTime('ss', result[event].data.startTime), 'second');
+            if (result[event].data.endDate&&result[event].data.endTime){
             WidgetHome.completeDateEnd = moment(new Date(result[event].data.endDate))
               .add(WidgetHome.partOfTime('HH', result[event].data.endTime), 'hour')
               .add(WidgetHome.partOfTime('mm', result[event].data.endTime), 'minute')
               .add(WidgetHome.partOfTime('ss', result[event].data.endTime), 'second');
+              result[event].data.endDate = moment(WidgetHome.completeDateEnd)
+                  .utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : WidgetHome.getUTCZone()).format('MMM D, YYYY');
+              result[event].data.endTime = moment(WidgetHome.completeDateEnd)
+                  .utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : WidgetHome.getUTCZone()).format('hh:mm A');
+            }
+            else
+            {
+              result[event].data.endDate="";
+              result[event].data.endTime="";
+            }
             result[event].data.startDate = moment(WidgetHome.completeDateStart)
               .utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : WidgetHome.getUTCZone()).format('MMM D, YYYY');
             result[event].data.startTime = moment(WidgetHome.completeDateStart)
               .utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : WidgetHome.getUTCZone()).format('hh:mm A');
-            result[event].data.endDate = moment(WidgetHome.completeDateEnd)
-              .utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : WidgetHome.getUTCZone()).format('MMM D, YYYY');
-            result[event].data.endTime = moment(WidgetHome.completeDateEnd)
-              .utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : WidgetHome.getUTCZone()).format('hh:mm A');
-            result[event].data.upadtedTtimeZone = moment(WidgetHome.completeDateEnd)
+                      result[event].data.upadtedTtimeZone = moment(WidgetHome.completeDateStart)
               .utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : WidgetHome.getUTCZone()).format('Z');
           }
 
@@ -69,6 +76,16 @@
             Buildfire.spinner.hide();
             console.log("Error fetching events");
           };
+          var successEventsAll = function (resultAll) {
+                WidgetHome.allEvents = [];
+                WidgetHome.convertToZone(resultAll);
+                WidgetHome.allEvents = resultAll;
+              },
+              errorEventsAll = function (error) {
+                console.log("error", error)
+              };
+
+          DataStore.search({}, TAG_NAMES.EVENTS_MANUAL).then(successEventsAll, errorEventsAll);
           searchOptions.filter = {"$or": [{"data.startDate": {"$gt": timeStampInMiliSec}}, {"data.startDate": {"$eq": timeStampInMiliSec}}]};
           DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
@@ -93,16 +110,7 @@
                 console.error('Error while getting data', err);
               }
             };
-          var successEventsAll = function (resultAll) {
-              WidgetHome.allEvents = [];
-              WidgetHome.convertToZone(resultAll);
-              WidgetHome.allEvents = resultAll;
-            },
-            errorEventsAll = function (error) {
-              console.log("error", error)
-            };
 
-          DataStore.search({}, TAG_NAMES.EVENTS_MANUAL).then(successEventsAll, errorEventsAll);
           DataStore.get(TAG_NAMES.EVENTS_MANUAL_INFO).then(success, error);
         };
 
@@ -206,11 +214,13 @@
                   break;
                 case TAG_NAMES.EVENTS_MANUAL:
                   WidgetHome.events = [];
+                     WidgetHome.allEvents = null;
                   searchOptions = {
                     skip: 0,
                     limit: PAGINATION.eventsCount,
                     sort: {"startDate": 1}
                   };
+                    WidgetHome.busy = false;
                   WidgetHome.loadMore();
                   break;
               }
