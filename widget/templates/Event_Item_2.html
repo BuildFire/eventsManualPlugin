@@ -39,7 +39,7 @@
     <div class="padded text-center clearfix">
       <a class="text-primary" href="javascript:void(0)" ng-click="WidgetEvent.addEventsToCalendar(WidgetEvent.event)">Add to Calendar</a>
     </div>
-    <div class="plugin-banner has-info-bar location-map clearfix">
+    <div class="plugin-banner has-info-bar location-map clearfix" ng-if="WidgetEvent.event.data.address.location_coordinates">
       <div class="plugin-slide map-holder">
         <p ng-if="!WidgetEvent.event.data.address.location">
 
@@ -49,7 +49,7 @@
       </div>
     </div>
     <div class="text-left padded padding-bottom-zero clearfix text-center">
-      <p ng-show="WidgetEvent.event.data.addressTitle"
+      <p ng-show="WidgetEvent.event.data.address.location_coordinates && WidgetEvent.event.data.addressTitle"
          class="margin-bottom-zero ellipsis text-primary col-xs-12">
         {{WidgetEvent.event.data.addressTitle}}</p>
 
