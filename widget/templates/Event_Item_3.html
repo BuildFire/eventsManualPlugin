@@ -51,14 +51,14 @@
       </div>
     </div>
     <p class="text-center text-primary text-overlay"
-       ng-if="WidgetEvent.event.data.addressTitle">
+       ng-if="WidgetEvent.event.data.address.location && WidgetEvent.event.data.addressTitle">
       {{WidgetEvent.event.data.addressTitle}}</p>
 
     <p class="text-center text-primary"
        ng-if="!WidgetEvent.event.data.addressTitle"><a class ="text-primary text-overlay" ng-click="WidgetEvent.onAddressClick(WidgetEvent.event.data.address.location_coordinates[0],WidgetEvent.event.data.address.location_coordinates[1])">
       {{WidgetEvent.event.data.address.location}}</a></p>
 
-    <div class="plugin-banner has-info-bar location-map clearfix">
+    <div class="plugin-banner has-info-bar location-map clearfix" ng-if="WidgetEvent.event.data.address.location_coordinates">
       <div class="plugin-slide map-holder">
         <p
            ng-if="!WidgetEvent.event.data.address.location">
