@@ -50,8 +50,9 @@
     </div>
     <div class="text-left padded padding-bottom-zero clearfix text-center">
       <p ng-show="WidgetEvent.event.data.address.location_coordinates && WidgetEvent.event.data.addressTitle"
-         class="margin-bottom-zero ellipsis text-primary col-xs-12">
-        {{WidgetEvent.event.data.addressTitle}}</p>
+         class="titleBarTextAndIcons margin-bottom-zero ellipsis text-primary col-xs-12">
+        <a class="titleBarTextAndIcons" ng-click="WidgetEvent.onAddressClick(WidgetEvent.event.data.address.location_coordinates[0],WidgetEvent.event.data.address.location_coordinates[1])">
+          {{WidgetEvent.event.data.addressTitle}}</a></p>
 
       <p ng-hide="WidgetEvent.event.data.addressTitle"
          class="margin-bottom-zero ellipsis col-xs-12 text-primary"><a class ="text-primary" ng-click="WidgetEvent.onAddressClick(WidgetEvent.event.data.address.location_coordinates[0],WidgetEvent.event.data.address.location_coordinates[1])">
