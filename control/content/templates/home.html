@@ -13,7 +13,7 @@
 <div class="item">
   <div infinite-scroll="ContentHome.loadMore()"
        infinite-scroll-distance="1"
-       data-infinite-container="body"
+       data-infinite-container=".infinite-scroll-parent"
        infinite-scroll-disabled="ContentHome.busy">
   <div ng-if="ContentHome.events.length" class="draggable-list-view wide-list has-btn-link no-sort-icon">
     <div class="d-item double-line square-icon clearfix" ng-repeat="event in ContentHome.events">

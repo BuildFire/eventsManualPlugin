@@ -18,6 +18,7 @@
       <div>
         <div infinite-scroll="WidgetHome.loadMore()"
              infinite-scroll-distance="1"
+             data-infinite-container=".infinite-scroll-parent"
              infinite-scroll-disabled="WidgetHome.busy">
           <div class="event-item clearfix"
                ng-swipe-right="WidgetHome.addEvents($event, $index, true)"
