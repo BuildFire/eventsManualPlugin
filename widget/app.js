@@ -12,9 +12,7 @@
 
       $routeProvider
         .when('/', {
-          templateUrl: 'templates/home.html',
-          controllerAs: 'WidgetHome',
-          controller: 'WidgetHomeCtrl'
+          template: '<div></div>'
         })
         .when('/event/:id', {
           templateUrl: 'templates/eventDetails.html',
@@ -50,50 +48,50 @@
     })
     .filter('getTimeZone', function () {
 
-        var timeZoneObbr =
-        {
-          "+00:00": "GMT",
-          "-01:00": "EGT",
-          "-10:00": "CKT",
-          "+01:00": "WAT",
-          "+10:00": "AEST",
-          "-11:00": "SST",
-          "-12:00": "Y",
-          "+10:30": "ACDT",
-          "+11:00": "AEDT",
-          "-02:00": "BRST",
-          "-02:30": "NDT",
-          "-03:00": "ADT",
-          "+12:00": "NZST",
-          "+12:45": "CHAST",
-          "-03:30": "NST",
-          "+13:00": "WST",
-          "+13:45": "CHADT",
-          "+14:00": "LINT",
-          "+02:00": "EET",
-          "+03:00": "AST",
-          "+03:30": "IRST",
-          "+04:00": "GET",
-          "-04:00": "AST",
-          "+04:30": "IRDT",
-          "+05:00": "PKT",
-          "-04:30": "VET",
-          "+05:30": "IST",
-          "+05:45": "NPT",
-          "+06:00": "BST",
-          "-05:00": "EST",
-          "-06:00": "CST",
-          "+06:30": "MMT",
-          "-07:00": "MST",
-          "+07:00": "ICT",
-          "-08:00": "PST",
-          "+08:00": "CST",
-          "-09:00": "AKST",
-          "+08:45": "ACWST",
-          "+09:00": "JST",
-          "-09:30": "MART",
-          "+09:30": "ACST"
-        }
+      var timeZoneObbr =
+      {
+        "+00:00": "GMT",
+        "-01:00": "EGT",
+        "-10:00": "CKT",
+        "+01:00": "WAT",
+        "+10:00": "AEST",
+        "-11:00": "SST",
+        "-12:00": "Y",
+        "+10:30": "ACDT",
+        "+11:00": "AEDT",
+        "-02:00": "BRST",
+        "-02:30": "NDT",
+        "-03:00": "ADT",
+        "+12:00": "NZST",
+        "+12:45": "CHAST",
+        "-03:30": "NST",
+        "+13:00": "WST",
+        "+13:45": "CHADT",
+        "+14:00": "LINT",
+        "+02:00": "EET",
+        "+03:00": "AST",
+        "+03:30": "IRST",
+        "+04:00": "GET",
+        "-04:00": "AST",
+        "+04:30": "IRDT",
+        "+05:00": "PKT",
+        "-04:30": "VET",
+        "+05:30": "IST",
+        "+05:45": "NPT",
+        "+06:00": "BST",
+        "-05:00": "EST",
+        "-06:00": "CST",
+        "+06:30": "MMT",
+        "-07:00": "MST",
+        "+07:00": "ICT",
+        "-08:00": "PST",
+        "+08:00": "CST",
+        "-09:00": "AKST",
+        "+08:45": "ACWST",
+        "+09:00": "JST",
+        "-09:30": "MART",
+        "+09:30": "ACST"
+      }
       return function (input) {
         return timeZoneObbr[input];
       };
@@ -142,19 +140,19 @@
                 map.setMapTypeId("Report Error Hide Style");
 
                 marker.addListener('click', function () {
-                 if (buildfire.context.device && buildfire.context.device.platform == 'ios')
-                   window.open("maps://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
-                   else
-                   window.open("http://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
+                  if (buildfire.context.device && buildfire.context.device.platform == 'ios')
+                    window.open("maps://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
+                  else
+                    window.open("http://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
 
-                 });
+                });
               }
             }
           }, true);
         }
       }
     })
-    .run(['Location', '$location', function (Location, $location) {
+    .run(['Location', '$location', '$rootScope', function (Location, $location, $rootScope) {
 
       buildfire.messaging.onReceivedMessage = function (msg) {
         switch (msg.type) {
@@ -170,15 +168,14 @@
       };
 
       buildfire.navigation.onBackButtonClick = function () {
-        if ($location.path() != "/") {
-          buildfire.messaging.sendMessageToControl({});
-          Location.goToHome();
+        var reg = /^\/event/;
+        if (reg.test($location.path())) {
+          $rootScope.showFeed = true;
+          Location.goTo('#/');
         }
-        else{
+        else {
           buildfire.navigation.navigateHome();
         }
       };
-
     }]);
-
 })(window.angular, window.buildfire);
