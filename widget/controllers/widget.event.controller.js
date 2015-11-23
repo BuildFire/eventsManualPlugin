@@ -61,14 +61,17 @@
         };
         var getEventDetails = function (url) {
           var success = function (result) {
+              $rootScope.showFeed = false;
               WidgetEvent.convertToZone(result);
               WidgetEvent.event = result;
             }
             , error = function (err) {
+              $rootScope.showFeed = false;
               console.error('Error In Fetching Event', err);
             };
           if ($routeParams.id) {
             if (EventCache.getCache()) {
+              $rootScope.showFeed = false;
               WidgetEvent.convertToZone(EventCache.getCache());
               WidgetEvent.event = EventCache.getCache();
             }
@@ -223,6 +226,7 @@
 
         $scope.$on("$destroy", function () {
           DataStore.clearListener();
+          $rootScope.$broadcast('ROUTE_CHANGED');
         });
 
         $rootScope.$on("Carousel:LOADED", function () {

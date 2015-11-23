@@ -28,3 +28,12 @@
     width: 72%;
     margin-left: 145px;
 }
+
+.item-scroll{
+    overflow-y: scroll;
+    height: 513px;
+}
+
+.overflowY-auto{
+    overflow-y: auto;
+}

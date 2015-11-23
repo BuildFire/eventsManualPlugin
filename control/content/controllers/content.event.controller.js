@@ -439,7 +439,7 @@
         };
 
         ContentEvent.gotToHome = function () {
-          $location.path('/');
+          $location.path('#/');
         };
 
         ContentEvent.setEndDay = function () {

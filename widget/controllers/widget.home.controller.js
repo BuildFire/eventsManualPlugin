@@ -2,8 +2,8 @@
 
 (function (angular) {
   angular.module('eventsManualPluginWidget')
-    .controller('WidgetHomeCtrl', ['$scope', 'TAG_NAMES', 'LAYOUTS', 'DataStore', 'PAGINATION', 'Buildfire', 'Location', 'EventCache',
-      function ($scope, TAG_NAMES, LAYOUTS, DataStore, PAGINATION, Buildfire, Location, EventCache) {
+    .controller('WidgetHomeCtrl', ['$scope', 'TAG_NAMES', 'LAYOUTS', 'DataStore', 'PAGINATION', 'Buildfire', 'Location', 'EventCache', '$rootScope',
+      function ($scope, TAG_NAMES, LAYOUTS, DataStore, PAGINATION, Buildfire, Location, EventCache, $rootScope) {
         var WidgetHome = this;
         WidgetHome.data = null;
         WidgetHome.swiped = [];
@@ -12,6 +12,7 @@
         WidgetHome.busy = false;
         WidgetHome.clickEvent = false;
         $scope.dt = new Date();
+        $rootScope.showFeed = true;
         var searchOptions = {
           skip: 0,
           limit: PAGINATION.eventsCount,
@@ -37,26 +38,25 @@
               .add(WidgetHome.partOfTime('HH', result[event].data.startTime), 'hour')
               .add(WidgetHome.partOfTime('mm', result[event].data.startTime), 'minute')
               .add(WidgetHome.partOfTime('ss', result[event].data.startTime), 'second');
-            if (result[event].data.endDate&&result[event].data.endTime){
-            WidgetHome.completeDateEnd = moment(new Date(result[event].data.endDate))
-              .add(WidgetHome.partOfTime('HH', result[event].data.endTime), 'hour')
-              .add(WidgetHome.partOfTime('mm', result[event].data.endTime), 'minute')
-              .add(WidgetHome.partOfTime('ss', result[event].data.endTime), 'second');
+            if (result[event].data.endDate && result[event].data.endTime) {
+              WidgetHome.completeDateEnd = moment(new Date(result[event].data.endDate))
+                .add(WidgetHome.partOfTime('HH', result[event].data.endTime), 'hour')
+                .add(WidgetHome.partOfTime('mm', result[event].data.endTime), 'minute')
+                .add(WidgetHome.partOfTime('ss', result[event].data.endTime), 'second');
               result[event].data.endDate = moment(WidgetHome.completeDateEnd)
-                  .utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : WidgetHome.getUTCZone()).format('MMM D, YYYY');
+                .utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : WidgetHome.getUTCZone()).format('MMM D, YYYY');
               result[event].data.endTime = moment(WidgetHome.completeDateEnd)
-                  .utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : WidgetHome.getUTCZone()).format('hh:mm A');
+                .utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : WidgetHome.getUTCZone()).format('hh:mm A');
             }
-            else
-            {
-              result[event].data.endDate="";
-              result[event].data.endTime="";
+            else {
+              result[event].data.endDate = "";
+              result[event].data.endTime = "";
             }
             result[event].data.startDate = moment(WidgetHome.completeDateStart)
               .utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : WidgetHome.getUTCZone()).format('MMM D, YYYY');
             result[event].data.startTime = moment(WidgetHome.completeDateStart)
               .utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : WidgetHome.getUTCZone()).format('hh:mm A');
-                      result[event].data.upadtedTtimeZone = moment(WidgetHome.completeDateStart)
+            result[event].data.upadtedTtimeZone = moment(WidgetHome.completeDateStart)
               .utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : WidgetHome.getUTCZone()).format('Z');
           }
 
@@ -77,13 +77,13 @@
             console.log("Error fetching events");
           };
           var successEventsAll = function (resultAll) {
-                WidgetHome.allEvents = [];
-                WidgetHome.convertToZone(resultAll);
-                WidgetHome.allEvents = resultAll;
-              },
-              errorEventsAll = function (error) {
-                console.log("error", error)
-              };
+              WidgetHome.allEvents = [];
+              WidgetHome.convertToZone(resultAll);
+              WidgetHome.allEvents = resultAll;
+            },
+            errorEventsAll = function (error) {
+              console.log("error", error)
+            };
 
           DataStore.search({}, TAG_NAMES.EVENTS_MANUAL).then(successEventsAll, errorEventsAll);
           searchOptions.filter = {"$or": [{"data.startDate": {"$gt": timeStampInMiliSec}}, {"data.startDate": {"$eq": timeStampInMiliSec}}]};
@@ -214,13 +214,13 @@
                   break;
                 case TAG_NAMES.EVENTS_MANUAL:
                   WidgetHome.events = [];
-                     WidgetHome.allEvents = null;
+                  WidgetHome.allEvents = null;
                   searchOptions = {
                     skip: 0,
                     limit: PAGINATION.eventsCount,
                     sort: {"startDate": 1}
                   };
-                    WidgetHome.busy = false;
+                  WidgetHome.busy = false;
                   WidgetHome.loadMore();
                   break;
               }
@@ -236,6 +236,10 @@
 
         $scope.$on("$destroy", function () {
           DataStore.clearListener();
+        });
+
+        $rootScope.$on("ROUTE_CHANGED", function (e) {
+          DataStore.onUpdate().then(null, null, onUpdateCallback);
         });
 
         init();
