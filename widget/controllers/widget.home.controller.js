@@ -22,6 +22,7 @@
         var formattedDate = currentDate.getFullYear() + "-" + moment(currentDate).format("MM") + "-" + ("0" + currentDate.getDate()).slice(-2) + "T00:00:00" + moment(new Date()).format("Z");
         var timeStampInMiliSec = +new Date(formattedDate);
         var currentLayout = "";
+        WidgetHome.NoDataFound = false;
 
         WidgetHome.getUTCZone = function () {
           //return moment(new Date()).utc().format("Z");
@@ -62,6 +63,7 @@
 
         };
         var getManualEvents = function () {
+          WidgetHome.NoDataFound = false;
           Buildfire.spinner.show();
           var successEvents = function (result) {
             Buildfire.spinner.hide();
@@ -72,6 +74,10 @@
               WidgetHome.busy = false;
             }
             WidgetHome.clickEvent = false;
+            if(result.length)
+              WidgetHome.NoDataFound = false;
+            else
+              WidgetHome.NoDataFound = true;
           }, errorEvents = function () {
             Buildfire.spinner.hide();
             console.log("Error fetching events");
