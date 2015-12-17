@@ -1,5 +1,5 @@
 'use strict';
-(function (angular) {
+(function (angular, buildfire) {
   angular
     .module('eventsManualPluginContent')
     .controller('ContentEventCtrl', ['$scope', '$routeParams', 'Buildfire', 'DataStore', 'TAG_NAMES', 'ADDRESS_TYPE', '$location', 'Utils', '$timeout',
@@ -22,6 +22,9 @@
           "links": []
 
         };
+
+        //Scroll current view to top when page loaded.
+        buildfire.navigation.scrollTop();
 
         ContentEvent.event = {
           data: angular.copy(_data)
@@ -466,4 +469,4 @@
         }, updateItemsWithDelay, true);
 
       }]);
-})(window.angular);
+})(window.angular, window.buildfire);
