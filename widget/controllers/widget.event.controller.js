@@ -1,6 +1,6 @@
 'use strict';
 
-(function (angular, buildfire) {
+(function (angular, buildfire, window) {
   angular.module('eventsManualPluginWidget')
     .controller('WidgetEventCtrl', ['$scope', 'DataStore', 'TAG_NAMES', 'LAYOUTS', '$routeParams', '$sce', '$rootScope', 'Buildfire', '$location', 'EventCache',
       function ($scope, DataStore, TAG_NAMES, LAYOUTS, $routeParams, $sce, $rootScope, Buildfire, $location, EventCache) {
@@ -226,10 +226,8 @@
 
 
         WidgetEvent.listeners["Carousel:LOADED"] = $rootScope.$on("Carousel:LOADED", function () {
-          WidgetEvent.view = null;
-          if (!WidgetEvent.view) {
-             WidgetEvent.view = new buildfire.components.carousel.view("#carousel", [], WidgetEvent.data.design.itemDetailsLayout == 'Event_Item_1' ? "WideScreen" : "Square");
-          }
+          WidgetEvent.view = new buildfire.components.carousel.view("#carousel", [], WidgetEvent.data.design.itemDetailsLayout == 'Event_Item_1' ? "WideScreen" : "Square");
+
           if (WidgetEvent.event.data && WidgetEvent.event.data.carouselImages) {
             WidgetEvent.view.loadItems(WidgetEvent.event.data.carouselImages, null, WidgetEvent.data.design.itemDetailsLayout == 'Event_Item_1' ? "WideScreen" : "Square");
           } else {
@@ -242,16 +240,12 @@
             window.open("maps://maps.google.com/maps?daddr=" + lat + "," + long);
           else
             window.open("http://maps.google.com/maps?daddr=" + lat + "," + long);
-        }
+        };
 
 
         $scope.$on("$destroy", function () {
          DataStore.clearListener();
           $rootScope.$broadcast('ROUTE_CHANGED');
-          if (WidgetEvent.view) {
-            WidgetEvent.view._destroySlider();
-            WidgetEvent.view._removeAll();
-          }
           for (var i in WidgetEvent.listeners) {
             if (WidgetEvent.listeners.hasOwnProperty(i)) {
               WidgetEvent.listeners[i]();
@@ -260,4 +254,4 @@
         });
 
       }]);
-})(window.angular, window.buildfire);
+})(window.angular, window.buildfire, window);
