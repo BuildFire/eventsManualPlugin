@@ -1,6 +1,6 @@
 'use strict';
 
-(function (angular, buildfire) {
+(function (angular, buildfire, window) {
   angular.module('eventsManualPluginWidget')
     .controller('WidgetEventCtrl', ['$scope', 'DataStore', 'TAG_NAMES', 'LAYOUTS', '$routeParams', '$sce', '$rootScope', 'Buildfire', '$location', 'EventCache',
       function ($scope, DataStore, TAG_NAMES, LAYOUTS, $routeParams, $sce, $rootScope, Buildfire, $location, EventCache) {
@@ -22,6 +22,7 @@
           });
         }
 
+        WidgetEvent.listeners = {};
         WidgetEvent.getUTCZone = function () {
           //return moment(new Date()).utc().format("Z");
           return moment(new Date()).format("Z")
@@ -72,8 +73,7 @@
           if ($routeParams.id) {
             if (EventCache.getCache()) {
               $rootScope.showFeed = false;
-              WidgetEvent.convertToZone(EventCache.getCache());
-              WidgetEvent.event = EventCache.getCache();
+               WidgetEvent.event = EventCache.getCache();
             }
             else
               DataStore.getById($routeParams.id, TAG_NAMES.EVENTS_MANUAL).then(success, error);
@@ -224,16 +224,10 @@
 
         DataStore.onUpdate().then(null, null, onUpdateCallback);
 
-        $scope.$on("$destroy", function () {
-          DataStore.clearListener();
-          $rootScope.$broadcast('ROUTE_CHANGED');
-        });
 
-        $rootScope.$on("Carousel:LOADED", function () {
-          WidgetEvent.view = null;
-          if (!WidgetEvent.view) {
-            WidgetEvent.view = new buildfire.components.carousel.view("#carousel", [], WidgetEvent.data.design.itemDetailsLayout == 'Event_Item_1' ? "WideScreen" : "Square");
-          }
+        WidgetEvent.listeners["Carousel:LOADED"] = $rootScope.$on("Carousel:LOADED", function () {
+          WidgetEvent.view = new buildfire.components.carousel.view("#carousel", [], WidgetEvent.data.design.itemDetailsLayout == 'Event_Item_1' ? "WideScreen" : "Square");
+
           if (WidgetEvent.event.data && WidgetEvent.event.data.carouselImages) {
             WidgetEvent.view.loadItems(WidgetEvent.event.data.carouselImages, null, WidgetEvent.data.design.itemDetailsLayout == 'Event_Item_1' ? "WideScreen" : "Square");
           } else {
@@ -246,7 +240,18 @@
             window.open("maps://maps.google.com/maps?daddr=" + lat + "," + long);
           else
             window.open("http://maps.google.com/maps?daddr=" + lat + "," + long);
-        }
+        };
+
+
+        $scope.$on("$destroy", function () {
+         DataStore.clearListener();
+          $rootScope.$broadcast('ROUTE_CHANGED');
+          for (var i in WidgetEvent.listeners) {
+            if (WidgetEvent.listeners.hasOwnProperty(i)) {
+              WidgetEvent.listeners[i]();
+            }
+          }
+        });
 
       }]);
-})(window.angular, window.buildfire);
+})(window.angular, window.buildfire, window);
