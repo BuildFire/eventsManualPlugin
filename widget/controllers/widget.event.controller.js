@@ -16,6 +16,7 @@
         var _searchObj = $location.search();
 
         if ($routeParams.id && !_searchObj.stopSwitch) {
+          $rootScope.showFeed = false;
           buildfire.messaging.sendMessageToControl({
             id: $routeParams.id,
             type: 'OpenItem'

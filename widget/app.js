@@ -172,6 +172,7 @@
       buildfire.navigation.onBackButtonClick = function () {
         var reg = /^\/event/;
         if (reg.test($location.path())) {
+          buildfire.messaging.sendMessageToControl({});
           $rootScope.showFeed = true;
           Location.goTo('#/');
         }
