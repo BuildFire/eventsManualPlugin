@@ -1,5 +1,5 @@
 describe('Unit : Event Manual Plugin content.home.controller.js', function () {
-    var ContentHome, scope, $rootScope, $controller, Buildfire, ActionItems, TAG_NAMES, STATUS_CODE, LAYOUTS, STATUS_MESSAGES, CONTENT_TYPE, q, Utils;
+    var ContentHome, scope, $rootScope, $controller, Buildfire, ActionItems, TAG_NAMES, STATUS_CODE, LAYOUTS, STATUS_MESSAGES, CONTENT_TYPE, q, Utils,buildfire;
     beforeEach(module('eventsManualPluginContent'));
     var editor;
     beforeEach(inject(function (_$rootScope_, _$q_, _$controller_, _TAG_NAMES_, _STATUS_CODE_, _LAYOUTS_, _STATUS_MESSAGES_) {
@@ -23,9 +23,16 @@ describe('Unit : Event Manual Plugin content.home.controller.js', function () {
                 }
             }
         };
+        buildfire = {
+            navigation:{
+            scrollTop: function(){}
+           }
+        };
+
         ActionItems = jasmine.createSpyObj('ActionItems', ['showDialog']);
         Utils = jasmine.createSpyObj('Utils', ['validLongLats']);
         Buildfire.components.carousel = jasmine.createSpyObj('Buildfire.components.carousel', ['editor','onAddItems']);
+        buildfire.navigation = jasmine.createSpyObj('buildfire.navigation', ['scrollTop']);
 
     }));
 

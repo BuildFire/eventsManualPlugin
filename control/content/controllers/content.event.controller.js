@@ -24,8 +24,9 @@
         };
 
         //Scroll current view to top when page loaded.
-        buildfire.navigation.scrollTop();
-
+        if(buildfire.navigation.scrollTop) {
+          buildfire.navigation.scrollTop();
+        }
         ContentEvent.event = {
           data: angular.copy(_data)
         };

@@ -96,11 +96,13 @@
         return timeZoneObbr[input];
       };
     })
-    .directive("buildFireCarousel", ["$rootScope", function ($rootScope) {
+    .directive("buildFireCarousel", ["$rootScope", "$timeout", function ($rootScope, $timeout) {
       return {
         restrict: 'A',
         link: function (scope, elem, attrs) {
-          $rootScope.$broadcast("Carousel:LOADED");
+          $timeout(function() {
+            $rootScope.$broadcast("Carousel:LOADED");
+          });
         }
       };
     }])
@@ -170,6 +172,7 @@
       buildfire.navigation.onBackButtonClick = function () {
         var reg = /^\/event/;
         if (reg.test($location.path())) {
+          buildfire.messaging.sendMessageToControl({});
           $rootScope.showFeed = true;
           Location.goTo('#/');
         }

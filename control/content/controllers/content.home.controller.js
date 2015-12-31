@@ -21,7 +21,9 @@
         var ContentHome = this;
 
         //Scroll current view to top when page loaded.
-        buildfire.navigation.scrollTop();
+        if(buildfire.navigation.scrollTop) {
+          buildfire.navigation.scrollTop();
+        }
 
         ContentHome.searchEvent = null;
         /*
@@ -132,7 +134,9 @@
             err = function (err) {
               console.log(err)
             };
-          buildfire.navigation.scrollTop();
+          if(buildfire.navigation.scrollTop) {
+            buildfire.navigation.scrollTop();
+          }
 
           var modalInstance = $modal.open({
             templateUrl: 'templates/modals/remove-event.html',
