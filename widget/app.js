@@ -1,6 +1,6 @@
 'use strict';
 
-(function (angular, buildfire) {
+(function (angular, buildfire,window) {
   angular.module('eventsManualPluginWidget', ['ngRoute', 'ngTouch', 'ui.bootstrap', 'infinite-scroll', 'ngAnimate'])
     .config(['$routeProvider', '$compileProvider', function ($routeProvider, $compileProvider) {
 
@@ -100,7 +100,7 @@
       return {
         restrict: 'A',
         link: function (scope, elem, attrs) {
-          $timeout(function() {
+          $timeout(function () {
             $rootScope.$broadcast("Carousel:LOADED");
           });
         }
@@ -142,11 +142,15 @@
                 map.setMapTypeId("Report Error Hide Style");
 
                 marker.addListener('click', function () {
-                  if (buildfire.context.device && buildfire.context.device.platform == 'ios')
-                    window.open("maps://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
-                  else
-                    window.open("http://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
 
+                  buildfire.getContext(function (err, context) {
+                    if (context) {
+                      if (context.device && context.device.platform == 'ios')
+                        window.open("maps://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
+                      else
+                        window.open("http://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
+                    }
+                  });
                 });
               }
             }
@@ -181,4 +185,4 @@
         }
       };
     }]);
-})(window.angular, window.buildfire);
+})(window.angular, window.buildfire, window);

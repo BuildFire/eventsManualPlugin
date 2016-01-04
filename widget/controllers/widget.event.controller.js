@@ -38,20 +38,19 @@
             .add(WidgetEvent.partOfTime('HH', result.data.startTime), 'hour')
             .add(WidgetEvent.partOfTime('mm', result.data.startTime), 'minute')
             .add(WidgetEvent.partOfTime('ss', result.data.startTime), 'second');
-          if (result.data.endDate&&result.data.endTime){
+          if (result.data.endDate && result.data.endTime) {
             WidgetEvent.completeDateEnd = moment(new Date(result.data.endDate))
-                .add(WidgetEvent.partOfTime('HH', result.data.endTime), 'hour')
-                .add(WidgetEvent.partOfTime('mm', result.data.endTime), 'minute')
-                .add(WidgetEvent.partOfTime('ss', result.data.endTime), 'second');
+              .add(WidgetEvent.partOfTime('HH', result.data.endTime), 'hour')
+              .add(WidgetEvent.partOfTime('mm', result.data.endTime), 'minute')
+              .add(WidgetEvent.partOfTime('ss', result.data.endTime), 'second');
             result.data.endDate = moment(WidgetEvent.completeDateEnd)
-                .utcOffset(result.data.timeDisplay == 'SELECTED' && result.data.timezone["value"] ? result.data.timezone["value"] : WidgetEvent.getUTCZone()).format('MMM D, YYYY');
+              .utcOffset(result.data.timeDisplay == 'SELECTED' && result.data.timezone["value"] ? result.data.timezone["value"] : WidgetEvent.getUTCZone()).format('MMM D, YYYY');
             result.data.endTime = moment(WidgetEvent.completeDateEnd)
-                .utcOffset(result.data.timeDisplay == 'SELECTED' && result.data.timezone["value"] ? result.data.timezone["value"] : WidgetEvent.getUTCZone()).format('hh:mm A');
+              .utcOffset(result.data.timeDisplay == 'SELECTED' && result.data.timezone["value"] ? result.data.timezone["value"] : WidgetEvent.getUTCZone()).format('hh:mm A');
           }
-          else
-          {
-            result.data.endDate="";
-            result.data.endTime="";
+          else {
+            result.data.endDate = "";
+            result.data.endTime = "";
           }
           result.data.startDate = moment(WidgetEvent.completeDateStart)
             .utcOffset(result.data.timeDisplay == 'SELECTED' && result.data.timezone["value"] ? result.data.timezone["value"] : WidgetEvent.getUTCZone()).format('MMM D, YYYY');
@@ -74,7 +73,7 @@
           if ($routeParams.id) {
             if (EventCache.getCache()) {
               $rootScope.showFeed = false;
-               WidgetEvent.event = EventCache.getCache();
+              WidgetEvent.event = EventCache.getCache();
             }
             else
               DataStore.getById($routeParams.id, TAG_NAMES.EVENTS_MANUAL).then(success, error);
@@ -237,15 +236,19 @@
         });
 
         WidgetEvent.onAddressClick = function (long, lat) {
-          if (buildfire.context.device && buildfire.context.device.platform == 'ios')
-            window.open("maps://maps.google.com/maps?daddr=" + lat + "," + long);
-          else
-            window.open("http://maps.google.com/maps?daddr=" + lat + "," + long);
+          buildfire.getContext(function (err, context) {
+            if (context) {
+              if (context.device && context.device.platform == 'ios')
+                window.open("maps://maps.google.com/maps?daddr=" + lat + "," + long);
+              else
+                window.open("http://maps.google.com/maps?daddr=" + lat + "," + long);
+            }
+          });
         };
 
 
         $scope.$on("$destroy", function () {
-         DataStore.clearListener();
+          DataStore.clearListener();
           $rootScope.$broadcast('ROUTE_CHANGED');
           for (var i in WidgetEvent.listeners) {
             if (WidgetEvent.listeners.hasOwnProperty(i)) {
