@@ -1,21 +1,21 @@
 <div class="holder padding-zero">
   <div class="events-plugin event-layout4">
-    <div class="plugin-banner clearfix border-bottom-grey"
+    <div class="plugin-banner clearfix"
          ng-if="WidgetEvent.event">
       <div id="carousel" ng-if="WidgetEvent.event.data.carouselImages.length"
            build-fire-carousel=""></div>
       <div class="plugin-slider text-center"
            ng-if="!WidgetEvent.event.data.carouselImages.length">
         <div class="plugin-slide">
-          <img src="http://www.placehold.it/1000x800.jpg">
+          <img src="assets/images/1x1.png">
         </div>
       </div>
       <div class="info-circle small bg-primary">
         <div class="info-circle-inner">
-          <h3 class="margin-zero overlap-color-white">{{WidgetEvent.event.data.startDate |
+          <h3 class="margin-zero">{{WidgetEvent.event.data.startDate |
             getMonth}}</h3>
 
-          <h1 class="margin-zero overlap-color-white">{{WidgetEvent.event.data.startDate |
+          <h1 class="margin-zero">{{WidgetEvent.event.data.startDate |
             getDate}}</h1>
         </div>
       </div>
@@ -25,16 +25,16 @@
 
         <p class="margin-bottom-zero ellipsis"
            ng-if="WidgetEvent.event.data.endTime && !WidgetEvent.event.data.isAllDay">
-          {{WidgetEvent.event.data.startTime | getTime}} -
-          {{WidgetEvent.event.data.endTime | getTime}}
-          {{WidgetEvent.event.data.endTime | getTimeZone}}</p>
+          {{WidgetEvent.event.data.startTime}} -
+          {{WidgetEvent.event.data.endTime}}
+          {{WidgetEvent.event.data.upadtedTtimeZone | getTimeZone}}</p>
           <p class="margin-bottom-zero ellipsis"
              ng-if="WidgetEvent.event.data.isAllDay">
               All Day</p>
       </div>
     </div>
     <div class="padded text-center clearfix padding-bottom-ten">
-      <a class="text-primary">Add to Calendar</a>
+      <a class="text-primary" href="javascript:void(0)" ng-click="WidgetEvent.addEventsToCalendar(WidgetEvent.event)">Add to Calendar</a>
     </div>
     <hr
         class="margin-top-zero margin-bottom-zero margin-left-fifteen margin-right-fifteen"
@@ -49,20 +49,20 @@
           .title}}</a>
       </div>
     </div>
-    <p class="text-center text-primary"
-       ng-show="WidgetEvent.event.data.addressTitle">
+    <p class="text-center text-primary text-overlay"
+       ng-show="WidgetEvent.event.data.address.location_coordinates && WidgetEvent.event.data.addressTitle">
       {{WidgetEvent.event.data.addressTitle}}</p>
 
     <p class="text-center text-primary"
        ng-hide="WidgetEvent.event.data.addressTitle">
-        <a class ="text-primary" ng-click="WidgetEvent.onAddressClick(WidgetEvent.event.data.address.location_coordinates[0],WidgetEvent.event.data.address.location_coordinates[1])">{{WidgetEvent.event.data.address.location}}</a></p>
+        <a class ="text-primary text-overlay" ng-click="WidgetEvent.onAddressClick(WidgetEvent.event.data.address.location_coordinates[0],WidgetEvent.event.data.address.location_coordinates[1])">{{WidgetEvent.event.data.address.location}}</a></p>
 
-    <div class="plugin-banner has-info-bar location-map clearfix">
+    <div class="plugin-banner has-info-bar location-map clearfix" ng-if="WidgetEvent.event.data.address.location_coordinates">
       <div class="plugin-slide map-holder">
-        <p style="position:relative; top:100px; color:#fff; text-align:center;"
+        <p
            ng-if="!WidgetEvent.event.data.address.location">
 
-        <div google-map style="height: 192px"
+        <div google-map class="mapSize"
              ng-if="WidgetEvent.event.data.address.location"
              coordinates="WidgetEvent.event.data.address.location_coordinates"></div>
       </div>

@@ -60,17 +60,4 @@ describe('Unit: eventsManualPluginContent content app', function () {
     });
   });
 
-  describe('Unit: getDateFromTimestamp filter', function () {
-    beforeEach(module('eventsManualPluginContent'));
-    var filter;
-    beforeEach(inject(function (_$filter_) {
-      filter = _$filter_;
-    }));
-
-    it('it should pass if "getDateFromTimestamp" filter returns formatted date from given timestamp', function () {
-      var result;
-      result = filter('getDateFromTimestamp')(1444289669939);
-      expect(result).toEqual('Oct 8, 2015');
-    });
-  });
 });

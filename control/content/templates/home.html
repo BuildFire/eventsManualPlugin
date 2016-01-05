@@ -1,7 +1,3 @@
-<style>
-
-</style>
-
 <div class="item clearfix row">
   <div class="col-md-3 pull-left padding-right-zero">
     <a class="btn btn-success stretch" href="#/event">Add New Event</a>
@@ -14,22 +10,23 @@
   </div>
 </div>
 <hr class="none">
-<div class="item">
+<div class="item item-scroll infinite-scroll-parent ">
   <div infinite-scroll="ContentHome.loadMore()"
        infinite-scroll-distance="1"
-       data-infinite-container="body"
+       data-infinite-container=".infinite-scroll-parent"
        infinite-scroll-disabled="ContentHome.busy">
   <div ng-if="ContentHome.events.length" class="draggable-list-view wide-list has-btn-link no-sort-icon">
     <div class="d-item double-line square-icon clearfix" ng-repeat="event in ContentHome.events">
       <div class="media-holder pull-left">
-        <img
-            ng-src="{{event.data.listImage || 'http://www.placehold.it/40x30' | getImageUrl : 40:30}}">
+        <img ng-if="event.data.listImage"
+             ng-src="{{event.data.listImage | getImageUrl : 40:30}}">
+        <img ng-if="!event.data.listImage"
+             src="assets/images/1x1.png">
       </div>
       <div class="copy pull-right">
         <a class="text-primary" href="#/event/{{event.id}}"><span
             class="title ellipsis pull-left text-primary">{{event.data.title}}</span></a>
-        <span class="title ellipsis pull-left">{{event.data.startDate | getDateFromTimestamp
-          }}</span>
+        <span class="title ellipsis pull-left">{{event.data.startDate}}</span>
         <div class="pull-right">
           <span class="btn-icon btn-link-icon btn-primary"
                 ng-click="ContentHome.showDeepLink(event.data.deepLinkUrl)"></span>

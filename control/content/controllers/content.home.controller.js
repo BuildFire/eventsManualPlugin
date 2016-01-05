@@ -1,6 +1,6 @@
 'use strict';
 
-(function (angular) {
+(function (angular, buildfire) {
   angular
     .module('eventsManualPluginContent')
     .controller('ContentHomeCtrl', ['$scope', 'TAG_NAMES', 'STATUS_CODE', 'DataStore', 'LAYOUTS', '$sce', 'PAGINATION', 'Buildfire', '$modal',
@@ -19,6 +19,12 @@
         };
         var regex;
         var ContentHome = this;
+
+        //Scroll current view to top when page loaded.
+        if(buildfire.navigation.scrollTop) {
+          buildfire.navigation.scrollTop();
+        }
+
         ContentHome.searchEvent = null;
         /*
          * ContentHome.events used to store the list of events fetched from datastore.
@@ -41,9 +47,34 @@
           ContentHome.masterData = angular.copy(data);
         };
 
-        var isUnchanged = function(data) {
+        var isUnchanged = function (data) {
           return angular.equals(data, ContentHome.masterData);
         };
+
+        ContentHome.partOfTime = function (format, paramTime) {
+          return moment(new Date(paramTime)).format(format);
+        };
+
+        ContentHome.convertToZone = function (result) {
+          for (var event = 0; event < result.length; event++) {
+            ContentHome.completeDateStart = moment(new Date(result[event].data.startDate))
+              .add(ContentHome.partOfTime('HH', result[event].data.startTime), 'hour')
+              .add(ContentHome.partOfTime('mm', result[event].data.startTime), 'minute')
+              .add(ContentHome.partOfTime('ss', result[event].data.startTime), 'second');
+            ContentHome.completeDateEnd = moment(new Date(result[event].data.endDate))
+              .add(ContentHome.partOfTime('HH', result[event].data.endTime), 'hour')
+              .add(ContentHome.partOfTime('mm', result[event].data.endTime), 'minute')
+              .add(ContentHome.partOfTime('ss', result[event].data.endTime), 'second');
+            result[event].data.startDate = moment(ContentHome.completeDateStart).utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : ContentHome.getUTCZone()).format('MMM D, YYYY');
+            result[event].data.endDate = moment(ContentHome.completeDateEnd).utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : ContentHome.getUTCZone()).format('MMM D, YYYY');
+          }
+        };
+
+        ContentHome.getUTCZone = function () {
+          //return moment(new Date()).utc().format("Z");
+          return moment(new Date()).format("Z")
+        };
+
 
         /*
          * Go pull any previously saved data
@@ -81,11 +112,10 @@
           ContentHome.busy = false;
           searchOptions.skip = 0;
           if (search) {
-            regex = "\\b" + search + "\\b";
             searchOptions.filter = {
               "$or": [{
                 "data.title": {
-                  "$regex": regex,
+                  "$regex": search,
                   "$options": "i"
                 }
               }]
@@ -104,6 +134,10 @@
             err = function (err) {
               console.log(err)
             };
+          if(buildfire.navigation.scrollTop) {
+            buildfire.navigation.scrollTop();
+          }
+
           var modalInstance = $modal.open({
             templateUrl: 'templates/modals/remove-event.html',
             controller: 'RemoveEventPopupCtrl',
@@ -183,6 +217,7 @@
           Buildfire.spinner.show();
           var successEvents = function (result) {
             Buildfire.spinner.hide();
+            ContentHome.convertToZone(result);
             ContentHome.events = ContentHome.events.length ? ContentHome.events.concat(result) : result;
             searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
             if (result.length == PAGINATION.eventsCount) {
@@ -210,4 +245,4 @@
         }, saveDataWithDelay, true);
 
       }]);
-})(window.angular);
+})(window.angular, window.buildfire);

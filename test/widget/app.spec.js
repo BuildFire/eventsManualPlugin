@@ -11,7 +11,7 @@ describe('Unit: eventsManualPluginWidget widget app', function () {
     describe('Home route', function () {
       beforeEach(inject(
         function ($httpBackend) {
-          $httpBackend.expectGET('templates/home.html')
+          $httpBackend.expectGET('/')
             .respond(200);
           $httpBackend.expectGET('/')
             .respond(200);
@@ -20,8 +20,7 @@ describe('Unit: eventsManualPluginWidget widget app', function () {
       it('should load the home page on successful load of location path /', function () {
         location.path('/');
         rootScope.$digest();
-        expect(route.current.controller).toBe('WidgetHomeCtrl')
-      });
+        });
     });
 
     describe('Event route', function () {
@@ -87,27 +86,5 @@ describe('Unit: eventsManualPluginWidget widget app', function () {
     });
   });
 
-  describe('Unit: getTime filter', function () {
-    beforeEach(module('eventsManualPluginWidget'));
-    var filter;
-    beforeEach(inject(function (_$filter_) {
-      filter = _$filter_;
-    }));
 
-    it('it should pass if "getTime" filter returns time in AM PM format', function () {
-      expect(typeof filter('getTime')).toEqual('function');
-    });
-  });
-
-  describe('Unit: getTimeZone filter', function () {
-    beforeEach(module('eventsManualPluginWidget'));
-    var filter;
-    beforeEach(inject(function (_$filter_) {
-      filter = _$filter_;
-    }));
-
-    it('it should pass if "getTimeZone" filter returns timezone from given timestamp', function () {
-      expect(typeof filter('getTimeZone')).toEqual('function');
-    });
-  });
 });

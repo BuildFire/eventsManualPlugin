@@ -1,9 +1,9 @@
 'use strict';
 
-(function (angular, buildfire) {
+(function (angular, buildfire, window) {
   angular.module('eventsManualPluginWidget')
-    .controller('WidgetEventCtrl', ['$scope', 'DataStore', 'TAG_NAMES', 'LAYOUTS', '$routeParams', '$sce', '$rootScope', 'Buildfire', '$location',
-      function ($scope, DataStore, TAG_NAMES, LAYOUTS, $routeParams, $sce, $rootScope, Buildfire, $location) {
+    .controller('WidgetEventCtrl', ['$scope', 'DataStore', 'TAG_NAMES', 'LAYOUTS', '$routeParams', '$sce', '$rootScope', 'Buildfire', '$location', 'EventCache',
+      function ($scope, DataStore, TAG_NAMES, LAYOUTS, $routeParams, $sce, $rootScope, Buildfire, $location, EventCache) {
 
         var WidgetEvent = this;
         WidgetEvent.data = {};
@@ -16,21 +16,68 @@
         var _searchObj = $location.search();
 
         if ($routeParams.id && !_searchObj.stopSwitch) {
+          $rootScope.showFeed = false;
           buildfire.messaging.sendMessageToControl({
             id: $routeParams.id,
             type: 'OpenItem'
           });
         }
 
+        WidgetEvent.listeners = {};
+        WidgetEvent.getUTCZone = function () {
+          //return moment(new Date()).utc().format("Z");
+          return moment(new Date()).format("Z")
+        };
+
+        WidgetEvent.partOfTime = function (format, paramTime) {
+          return moment(new Date(paramTime)).format(format);
+        };
+
+        WidgetEvent.convertToZone = function (result) {
+          WidgetEvent.completeDateStart = moment(new Date(result.data.startDate))
+            .add(WidgetEvent.partOfTime('HH', result.data.startTime), 'hour')
+            .add(WidgetEvent.partOfTime('mm', result.data.startTime), 'minute')
+            .add(WidgetEvent.partOfTime('ss', result.data.startTime), 'second');
+          if (result.data.endDate && result.data.endTime) {
+            WidgetEvent.completeDateEnd = moment(new Date(result.data.endDate))
+              .add(WidgetEvent.partOfTime('HH', result.data.endTime), 'hour')
+              .add(WidgetEvent.partOfTime('mm', result.data.endTime), 'minute')
+              .add(WidgetEvent.partOfTime('ss', result.data.endTime), 'second');
+            result.data.endDate = moment(WidgetEvent.completeDateEnd)
+              .utcOffset(result.data.timeDisplay == 'SELECTED' && result.data.timezone["value"] ? result.data.timezone["value"] : WidgetEvent.getUTCZone()).format('MMM D, YYYY');
+            result.data.endTime = moment(WidgetEvent.completeDateEnd)
+              .utcOffset(result.data.timeDisplay == 'SELECTED' && result.data.timezone["value"] ? result.data.timezone["value"] : WidgetEvent.getUTCZone()).format('hh:mm A');
+          }
+          else {
+            result.data.endDate = "";
+            result.data.endTime = "";
+          }
+          result.data.startDate = moment(WidgetEvent.completeDateStart)
+            .utcOffset(result.data.timeDisplay == 'SELECTED' && result.data.timezone["value"] ? result.data.timezone["value"] : WidgetEvent.getUTCZone()).format('MMM D, YYYY');
+          result.data.startTime = moment(WidgetEvent.completeDateStart)
+            .utcOffset(result.data.timeDisplay == 'SELECTED' && result.data.timezone["value"] ? result.data.timezone["value"] : WidgetEvent.getUTCZone()).format('hh:mm A');
+          result.data.upadtedTtimeZone = moment(WidgetEvent.completeDateStart)
+            .utcOffset(result.data.timeDisplay == 'SELECTED' && result.data.timezone["value"] ? result.data.timezone["value"] : WidgetEvent.getUTCZone()).format('Z');
+
+        };
         var getEventDetails = function (url) {
           var success = function (result) {
+              $rootScope.showFeed = false;
+              WidgetEvent.convertToZone(result);
               WidgetEvent.event = result;
             }
             , error = function (err) {
+              $rootScope.showFeed = false;
               console.error('Error In Fetching Event', err);
             };
-          if ($routeParams.id)
-            DataStore.getById($routeParams.id, TAG_NAMES.EVENTS_MANUAL).then(success, error);
+          if ($routeParams.id) {
+            if (EventCache.getCache()) {
+              $rootScope.showFeed = false;
+              WidgetEvent.event = EventCache.getCache();
+            }
+            else
+              DataStore.getById($routeParams.id, TAG_NAMES.EVENTS_MANUAL).then(success, error);
+          }
         };
 
         /*declare the device width heights*/
@@ -38,7 +85,7 @@
         WidgetEvent.deviceWidth = window.innerWidth;
 
         /*initialize the device width heights*/
-        var initDeviceSize = function(callback) {
+        var initDeviceSize = function (callback) {
           WidgetEvent.deviceHeight = window.innerHeight;
           WidgetEvent.deviceWidth = window.innerWidth;
           if (callback) {
@@ -88,6 +135,41 @@
           return !(description == '<p><br data-mce-bogus="1"></p>');
         };
 
+        WidgetEvent.addEventsToCalendar = function (event) {
+          /*Add to calendar event will add here*/
+          alert(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
+          alert("inCal:" + buildfire.device.calendar);
+          if (buildfire.device && buildfire.device.calendar) {
+            buildfire.device.calendar.addEvent(
+              {
+                title: event.data.title
+                , location: event.data.address.location
+                , notes: event.data.description
+                , startDate: new Date(event.data.startDate)
+                , endDate: new Date(event.data.endDate)
+                , options: {
+                firstReminderMinutes: 120
+                ,
+                secondReminderMinutes: 5
+                ,
+                recurrence: event.data.repeat.repeatType
+                ,
+                recurrenceEndDate: event.data.repeat.repeatType ? new Date(event.data.repeat.endOn) : new Date(2025, 6, 1, 0, 0, 0, 0, 0)
+              }
+              }
+              ,
+              function (err, result) {
+                alert("Done");
+                if (err)
+                  alert("******************" + err);
+                else
+                  alert('worked ' + JSON.stringify(result));
+              }
+            );
+          }
+          console.log(">>>>>>>>", event);
+        };
+
         /*update data on change event*/
         var onUpdateCallback = function (event) {
           setTimeout(function () {
@@ -106,10 +188,11 @@
                   break;
                 case TAG_NAMES.EVENTS_MANUAL:
                   if (event.data)
-                    WidgetEvent.event.data = event.data;
+                    WidgetEvent.convertToZone(event);
+                  WidgetEvent.event.data = event.data;
                   if (WidgetEvent.view) {
                     console.log("_____________________________");
-                    WidgetEvent.view.loadItems(WidgetEvent.event.data.carouselImages);
+                    WidgetEvent.view.loadItems(WidgetEvent.event.data.carouselImages, null, WidgetEvent.data.design.itemDetailsLayout == 'Event_Item_1' ? "WideScreen" : "Square");
                   }
                   break;
               }
@@ -141,28 +224,38 @@
 
         DataStore.onUpdate().then(null, null, onUpdateCallback);
 
-        $scope.$on("$destroy", function () {
-          DataStore.clearListener();
-        });
 
-        $rootScope.$on("Carousel:LOADED", function () {
-          WidgetEvent.view = null;
-          if (!WidgetEvent.view) {
-            WidgetEvent.view = new buildfire.components.carousel.view("#carousel", []);
-          }
+        WidgetEvent.listeners["Carousel:LOADED"] = $rootScope.$on("Carousel:LOADED", function () {
+          WidgetEvent.view = new buildfire.components.carousel.view("#carousel", [], WidgetEvent.data.design.itemDetailsLayout == 'Event_Item_1' ? "WideScreen" : "Square");
+
           if (WidgetEvent.event.data && WidgetEvent.event.data.carouselImages) {
-            WidgetEvent.view.loadItems(WidgetEvent.event.data.carouselImages);
+            WidgetEvent.view.loadItems(WidgetEvent.event.data.carouselImages, null, WidgetEvent.data.design.itemDetailsLayout == 'Event_Item_1' ? "WideScreen" : "Square");
           } else {
             WidgetEvent.view.loadItems([]);
           }
         });
 
-        WidgetEvent.onAddressClick = function (long,lat) {
-          if (buildfire.context.device && buildfire.context.device.platform == 'ios')
-            window.open("maps://maps.google.com/maps?daddr=" + lat + "," + long);
-          else
-            window.open("http://maps.google.com/maps?daddr=" + lat + "," + long);
-        }
+        WidgetEvent.onAddressClick = function (long, lat) {
+          buildfire.getContext(function (err, context) {
+            if (context) {
+              if (context.device && context.device.platform == 'ios')
+                window.open("maps://maps.google.com/maps?daddr=" + lat + "," + long);
+              else
+                window.open("http://maps.google.com/maps?daddr=" + lat + "," + long);
+            }
+          });
+        };
+
+
+        $scope.$on("$destroy", function () {
+          DataStore.clearListener();
+          $rootScope.$broadcast('ROUTE_CHANGED');
+          for (var i in WidgetEvent.listeners) {
+            if (WidgetEvent.listeners.hasOwnProperty(i)) {
+              WidgetEvent.listeners[i]();
+            }
+          }
+        });
 
       }]);
-})(window.angular, window.buildfire);
+})(window.angular, window.buildfire, window);

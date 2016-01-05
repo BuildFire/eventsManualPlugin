@@ -50,12 +50,6 @@ describe('Unit : eventsManualPluginDesign design.home.controller.js', function (
   });
 
 
-  describe('changeLayout', function () {
-    it('should change the value when called for list', function () {
-      DesignHome.changeListLayout('test');
-      expect(DesignHome.data.design["itemDetailsLayout"]).toEqual('test');
-    });
-  });
   describe('Variable Unit: DesignHome.layouts', function () {
     it('it should pass if DesignHome.layouts match the result', function () {
       expect(DesignHome.layouts).toEqual({
