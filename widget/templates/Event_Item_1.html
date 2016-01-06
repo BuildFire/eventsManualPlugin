@@ -4,12 +4,6 @@
          ng-if="WidgetEvent.event">
       <div id="carousel" ng-if="WidgetEvent.event.data.carouselImages.length"
            build-fire-carousel=""></div>
-      <div class="plugin-slider text-center"
-           ng-if="!WidgetEvent.event.data.carouselImages.length">
-        <div class="plugin-slide">
-          <img src="assets/images/16x9.png">
-        </div>
-      </div>
     </div>
     <div class="padded event-intro clearfix padding-bottom-five">
       <div class="event-date text-center pull-left">
