@@ -139,6 +139,8 @@
           /*Add to calendar event will add here*/
           alert(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
           alert("inCal:" + buildfire.device.calendar);
+          console.log('~~~~~~~~~~ buildfire.device.calendar~~~~~~~~~~', buildfire.device.calendar);
+          console.log('~~~~~~~~~~ buildfire.device.calendar.addEvent~~~~~~~~~~', buildfire.device.calendar.addEvent);
           if (buildfire.device && buildfire.device.calendar) {
             buildfire.device.calendar.addEvent(
               {
