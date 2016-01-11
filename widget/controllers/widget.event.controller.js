@@ -163,11 +163,11 @@
               }
               ,
               function (err, result) {
-                alert("Done");
+                console.log("~~~~~~~~~~~~~~Done~~~~~~~~~~");
                 if (err)
-                  alert("******************" + err);
+                  console.log("~~~~~~~~~~~~~~~~~~" + err);
                 else
-                  alert('worked ' + JSON.stringify(result));
+                  console.log('~~~~~~~~~~~~~worked ' + JSON.stringify(result));
               }
             );
           }
