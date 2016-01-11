@@ -96,5 +96,60 @@ describe('Unit : event Manual Plugin widget.home.controller.js', function () {
       }  };
       WidgetHome.convertToZone(result);
     });
+
+    it('should invoke when WidgetHome.convertToZone is called', function () {
+      var result={data: {
+        "title": "",
+        "listImage": "",
+        "deepLinkUrl": "",
+        "carouselImages": [],
+        "startDate": "",
+        "endDate": "1212111212",
+        "isAllDay": "",
+        "timezone": "",
+        "timeDisplay": "",
+        "repeat": {},
+        "addressTitle": "",
+        "address": {},
+        "description": "",
+        "links": [],
+        "endTime": "1212112121"
+
+      }  };
+      WidgetHome.convertToZone(result);
+    });
+
+
+  });
+
+
+  describe('WidgetHome.addEvents', function () {
+    it('should invoke when WidgetHome.addEvents is called', function () {
+      WidgetHome.addEvents({},0,{});
+    });
+  });
+
+  describe('WidgetHome.loadMore', function () {
+    it('should invoke when WidgetHome.loadMore is called', function () {
+      WidgetHome.loadMore();
+    });
+  });
+
+  describe('WidgetHome.openDetailsPage', function () {
+    it('should invoke when WidgetHome.openDetailsPage is called', function () {
+      WidgetHome.openDetailsPage({});
+    });
+  });
+
+  describe('scope.getDayClass', function () {
+    it('should invoke when scope.getDayClass is called', function () {
+      WidgetHome.allEvents={};
+      WidgetHome.allEvents.length=0;
+     /* WidgetHome.allEvents={};
+      WidgetHome.allEvents.length=12;
+      WidgetHome.allEvents[0].data= null;
+      WidgetHome.allEvents[0].data.startDate='12121';*/
+      scope.getDayClass('1212112',{});
+    });
   });
 });

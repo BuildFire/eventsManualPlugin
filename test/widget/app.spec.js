@@ -1,4 +1,5 @@
 describe('Unit: eventsManualPluginWidget widget app', function () {
+
   describe('Unit: app routes', function () {
     beforeEach(module('eventsManualPluginWidget'));
     var location, route, rootScope;
@@ -83,6 +84,36 @@ describe('Unit: eventsManualPluginWidget widget app', function () {
       var result;
       result = filter('getMonth')(1444289669939);
       expect(result).toEqual('OCT');
+    });
+  });
+
+  describe('Unit: getTimeZone filter', function () {
+    beforeEach(module('eventsManualPluginWidget'));
+    var filter;
+    beforeEach(inject(function (_$filter_) {
+      filter = _$filter_;
+    }));
+
+    it('it should pass if "getTimeZone" filter returns month from given timestamp', function () {
+      var result;
+      result = filter('getTimeZone')('+00:00');
+      expect(result).toEqual('GMT');
+    });
+  });
+
+  describe('Unit: run()', function () {
+    var Buildfire;
+    beforeEach(module('eventsManualPluginWidget'));
+    beforeEach(inject(function () {
+      Buildfire = jasmine.createSpyObj('Buildfire', ['getContext']);
+      Buildfire.messaging = jasmine.createSpyObj('messaging', ['onReceivedMessage', 'onUpdate']);
+      Buildfire.navigation = jasmine.createSpyObj('navigation', ['onBackButtonClick', 'login']);
+    }));
+
+    it('it should call the run methods', function () {
+      var msg={};
+      msg.type='AddNewItem';
+        Buildfire.messaging.onReceivedMessage(msg);
     });
   });
 
