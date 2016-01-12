@@ -13,80 +13,134 @@ describe('Unit: eventsManualPluginWidget: Services', function () {
         });
     });
 
-    describe('Unit : DataStore Factory', function () {
-        var DataStore, Buildfire, STATUS_MESSAGES, STATUS_CODE, q,$rootScope;
-        beforeEach(module('eventsManualPluginContent', function ($provide) {
-            $provide.service('Buildfire', function () {
-                this.datastore = jasmine.createSpyObj('datastore', ['get', 'save']);
-                this.datastore.get.and.callFake(function (_tagName, callback) {
-                    if (_tagName) {
-                        callback(null, 'Success');
-                    } else {
-                        callback('Error', null);
-                    }
-                });
+    describe('Unit : eventsManualPluginWidget  services', function () {
+        describe('Unit: Buildfire Provider', function () {
+            var Buildfire;
+            var SocialDataStore;
+            var Location;
+            var EventCache;
+            beforeEach(module('eventsManualPluginWidget'));
 
-                this.datastore.save.and.callFake(function (_item, _tagName, callback) {
-                    if (!_item || !typeof callback === 'function') {
-                        callback('Error', null);
-                    } else {
-                        callback(null, 'Success');
-                    }
-                });
+            beforeEach(inject(function (_Buildfire_,DataStore,_Location_,_EventCache_) {
+                Buildfire = _Buildfire_;
+                SocialDataStore = DataStore;
+                Location=_Location_;
+                EventCache=_EventCache_;
+            }));
+
+            it('Buildfire should exist and be an object', function () {
+                expect(typeof Buildfire).toEqual('object');
             });
-        }));
-        beforeEach(inject(function (_$rootScope_,_DataStore_, _STATUS_CODE_, _STATUS_MESSAGES_, _Buildfire_) {
-            $rootScope=_$rootScope_;
-            DataStore = _DataStore_;
-            STATUS_CODE = _STATUS_CODE_;
-            STATUS_MESSAGES = _STATUS_MESSAGES_;
-            Buildfire = _Buildfire_;
+
+            it('EventCache should exist and be an object', function () {
+                expect(typeof EventCache).toEqual('object');
+            });
 
 
-        }));
-        it('DataStore should exist and be an object', function () {
-            expect(typeof DataStore).toEqual('object');
-        });
-        it('DataStore.get should exist and be a function', function () {
-            expect(typeof DataStore.get).toEqual('function');
-        });
-        it('DataStore.getById should exist and be a function', function () {
-            expect(typeof DataStore.getById).toEqual('function');
-        });
-        it('DataStore.insert should exist and be a function', function () {
-            expect(typeof DataStore.insert).toEqual('function');
-        });
-        it('DataStore.update should exist and be a function', function () {
-            expect(typeof DataStore.update).toEqual('function');
-        });
-        it('DataStore.save should exist and be a function', function () {
-            expect(typeof DataStore.save).toEqual('function');
-        });
-        it('DataStore.get should return error', function () {
-            var result = ''
-                , success = function (response) {
-                    result = response;
-                }
-                , error = function (err) {
-                    result = err;
-                };
-            DataStore.get(null).then(success, error);
-            $rootScope.$digest();
-            expect(result).toEqual('Error');
-        });
-        it('DataStore.get should return success', function () {
-            var result = ''
-                , success = function (response) {
-                    result = response;
-                }
-                , error = function (err) {
-                    result = err;
-                };
-            DataStore.get('Events_Manual_Info').then(success, error);
-            $rootScope.$digest();
-            expect(result).toEqual('Success');
+            it('EventCache.setCache should be a function', function () {
+                console.info(">>>>>>>>>>",EventCache.setCache);
+                expect(typeof EventCache.setCache).toEqual('function');
+            });
+
+
+            it('EventCache.setCache should be called', function () {
+                console.info(">>>>>>>>>>",EventCache.setCache);
+               EventCache.setCache({});
+            });
+
+
+            it('EventCache.getCache should be a function', function () {
+                console.info(">>>>>>>>>>",EventCache.getCache);
+                expect(typeof EventCache.getCache).toEqual('function');
+            });
+
+            it('EventCache.getCache should be called', function () {
+                console.info(">>>>>>>>>>",EventCache.getCache);
+                EventCache.getCache();
+            });
+
+            it('Location should exist and be an object', function () {
+                expect(typeof Location).toEqual('object');
+            });
+
+
+            it('Location.go should be a function', function () {
+                console.info(">>>>>>>>>>",Location.goTo);
+                expect(typeof Location.goTo).toEqual('function');
+            });
+
+            it('Location.goTo called', function () {
+                console.info("Location.goTo Called ???????????????");
+                Location.goTo('#!@!');
+
+            });
+            it('Location.goToHome should be a function', function () {
+                console.info(">>>>>>>>>>",Location.go);
+                expect(typeof Location.goToHome).toEqual('function');
+            });
+
+            xit('Location.goToHome called', function () {
+                console.info("Location.go Called ???????????????");
+                Location.goToHome();
+            });
+
+
+            it('SocialDataStore should exist and be an object', function () {
+                console.info(">>>>>>>>>>",SocialDataStore.addApplication);
+                expect(typeof SocialDataStore.get).toEqual('function');
+            });
+
+            it('SocialDataStor get called', function () {
+                console.info("SocialDataStor.addApplication Called ???????????????");
+                SocialDataStore.get('_comment');
+
+            });
+
+            it('SocialDataStor getById called', function () {
+                console.info("SocialDataStor.getById Called ???????????????");
+                SocialDataStore.getById('123','sas12')
+
+            });
+
+            it('SocialDataStor insert called', function () {
+                console.info("SocialDataStor getPosts Called ???????????????");
+                SocialDataStore.insert  ([],'_comment');
+
+            });
+
+            it('SocialDataStor update called', function () {
+                console.info("SocialDataStor update Called ???????????????");
+                SocialDataStore.update('asasa',[],'_comment');
+
+            });
+            it('SocialDataStor save called', function () {
+                console.info("SocialDataStor save Called ???????????????");
+                SocialDataStore.save([], '_comment');
+
+            });
+
+            it('SocialDataStor onUpdate called', function () {
+                console.info("SocialDataStor onUpdate Called ???????????????");
+                SocialDataStore.onUpdate();
+
+            });
+
+            it('SocialDataStor banUser called', function () {
+                console.info("SocialDataStor banUser Called ???????????????");
+                SocialDataStore.search('121wasa', '_comment');
+
+            });
+            it('SocialDataStor clearListener called', function () {
+                console.info("SocialDataStor clearListener Called ???????????????");
+                SocialDataStore.clearListener();
+
+            });
+
         });
 
-    })
+
+    });
+
+
 
 });
