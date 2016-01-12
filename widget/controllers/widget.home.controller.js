@@ -11,6 +11,7 @@
         WidgetHome.allEvents = null;
         WidgetHome.busy = false;
         WidgetHome.clickEvent = false;
+        WidgetHome.calledDate= null;
         $scope.dt = new Date();
         $rootScope.showFeed = true;
         var searchOptions = {
@@ -69,7 +70,7 @@
           var successEvents = function (result) {
             Buildfire.spinner.hide();
             WidgetHome.convertToZone(result);
-            WidgetHome.events = {};
+            WidgetHome.events = [];
             WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(result) : result;
             searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
             if (result.length == PAGINATION.eventsCount) {
@@ -87,7 +88,7 @@
           };
           var successEventsAll = function (resultAll) {
               WidgetHome.allEvents = [];
-              WidgetHome.convertToZone(resultAll);
+             // WidgetHome.convertToZone(resultAll);
               WidgetHome.allEvents = resultAll;
             },
             errorEventsAll = function (error) {
@@ -119,7 +120,6 @@
                 console.error('Error while getting data', err);
               }
             };
-
           DataStore.get(TAG_NAMES.EVENTS_MANUAL_INFO).then(success, error);
         };
 
@@ -127,14 +127,15 @@
          * Fetch user's data from datastore
          */
         WidgetHome.getEvent = function () {
-          WidgetHome.clickEvent = true;
-          WidgetHome.events = {};
-          searchOptions.skip = 0;
-          WidgetHome.busy = false;
-          WidgetHome.disabled = true;
           formattedDate = $scope.dt.getFullYear() + "-" + moment($scope.dt).format("MM") + "-" + ("0" + $scope.dt.getDate()).slice(-2) + "T00:00:00" + WidgetHome.getUTCZone();
           timeStampInMiliSec = +new Date(formattedDate);
-          if(WidgetHome.isCalled){
+          if(WidgetHome.calledDate !== timeStampInMiliSec){
+            WidgetHome.clickEvent = true;
+            WidgetHome.events = null;
+            searchOptions.skip = 0;
+            WidgetHome.busy = false;
+            WidgetHome.disabled = true;
+            WidgetHome.calledDate = timeStampInMiliSec;
           WidgetHome.loadMore();
           }
         };
