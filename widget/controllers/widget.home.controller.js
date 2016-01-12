@@ -88,7 +88,7 @@
           };
           var successEventsAll = function (resultAll) {
               WidgetHome.allEvents = [];
-              WidgetHome.convertToZone(resultAll);
+             // WidgetHome.convertToZone(resultAll);
               WidgetHome.allEvents = resultAll;
             },
             errorEventsAll = function (error) {
