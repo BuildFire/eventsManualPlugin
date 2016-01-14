@@ -1,5 +1,5 @@
 describe('Unit : event Manual Plugin widget.manual.controller.js', function () {
-  var WidgetEvent, scope, $rootScope, $controller, Buildfire, ActionItems, TAG_NAMES, STATUS_CODE, LAYOUTS, STATUS_MESSAGES, CONTENT_TYPE, q;
+  var DataStore, WidgetEvent, scope, $rootScope, $controller, Buildfire, ActionItems, TAG_NAMES, STATUS_CODE, LAYOUTS, STATUS_MESSAGES, CONTENT_TYPE, q;
   beforeEach(module('eventsManualPluginWidget'));
   var editor;
   beforeEach(inject(function (_$rootScope_, _$q_, _$controller_, _TAG_NAMES_, _STATUS_CODE_, _LAYOUTS_, _STATUS_MESSAGES_) {
@@ -25,6 +25,10 @@ describe('Unit : event Manual Plugin widget.manual.controller.js', function () {
     };
     ActionItems = jasmine.createSpyObj('ActionItems', ['showDialog']);
     Buildfire.components.carousel = jasmine.createSpyObj('Buildfire.components.carousel', ['editor', 'onAddItems']);
+    Buildfire.imageLib= jasmine.createSpyObj('imageLib', ['cropImage', '']);
+    Buildfire.imageLib= jasmine.createSpyObj('imageLib', ['cropImage', '']);
+
+    DataStore = jasmine.createSpyObj('DataStore', ['get']);
 
   }));
 
@@ -39,9 +43,13 @@ describe('Unit : event Manual Plugin widget.manual.controller.js', function () {
       CONTENT_TYPE: CONTENT_TYPE,
       LAYOUTS: LAYOUTS
     });
+
+
   });
 
   describe('Units: units should be Defined', function () {
+
+
   });
 
   describe('$destroy', function () {
@@ -92,5 +100,75 @@ describe('Unit : event Manual Plugin widget.manual.controller.js', function () {
       }  };
       WidgetEvent.convertToZone(result);
     });
+
+    it('should invoke when WidgetEvent.convertToZone is called with endtime', function () {
+      var result={data: {
+        "title": "",
+        "listImage": "",
+        "deepLinkUrl": "",
+        "carouselImages": [],
+        "startDate": "",
+        "endDate": "21121212",
+        "isAllDay": "",
+        "timezone": "",
+        "timeDisplay": "",
+        "repeat": {},
+        "addressTitle": "",
+        "address": {},
+        "description": "",
+        "links": [],
+        "endTime":"1212121"
+
+      }  };
+      WidgetEvent.convertToZone(result);
+    });
   });
+
+
+  describe('WidgetEvent.cropImage', function () {
+    it('should invoke when WidgetEvent.cropImage is called', function () {
+      var setting={};
+      setting.height='212';
+      setting.width='212';
+      WidgetEvent.cropImage('/asa/asa',setting);
+    });
+  });
+
+  describe('WidgetEvent.safeHtml', function () {
+    it('should invoke when WidgetEvent.safeHtml is called', function () {
+
+      WidgetEvent.safeHtml('dasdas');
+    });
+  });
+
+  describe('WidgetEvent.executeActionItem', function () {
+    it('should invoke when WidgetEvent.executeActionItem is called', function () {
+
+      WidgetEvent.executeActionItem({});
+    });
+  });
+
+  describe('WidgetEvent.showDescription', function () {
+    it('should invoke when WidgetEvent.showDescription is called', function () {
+
+      WidgetEvent.showDescription({});
+    });
+  });
+
+  xdescribe('WidgetEvent.addEventsToCalendar', function () {
+    it('should invoke when WidgetEvent.addEventsToCalendar is called', function () {
+
+      WidgetEvent.addEventsToCalendar({});
+    });
+  });
+
+  describe('WidgetEvent.onAddressClick', function () {
+    it('should invoke when WidgetEvent.onAddressClick is called', function () {
+
+      WidgetEvent.onAddressClick(121,121);
+    });
+  });
+
+
+
 });

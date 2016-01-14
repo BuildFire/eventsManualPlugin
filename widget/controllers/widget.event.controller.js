@@ -139,6 +139,10 @@
           /*Add to calendar event will add here*/
           alert(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
           alert("inCal:" + buildfire.device.calendar);
+          console.log('~~~~~~~~~~ buildfire.device.calendar~~~~~~~~~~', buildfire.device.calendar);
+          console.log('~~~~~~~~~~ buildfire.device.calendar.addEvent~~~~~~~~~~', buildfire.device.calendar.addEvent);
+          console.log('~~~~~~~~~~event~~~~~~~~~~', event);
+
           if (buildfire.device && buildfire.device.calendar) {
             buildfire.device.calendar.addEvent(
               {
@@ -159,11 +163,11 @@
               }
               ,
               function (err, result) {
-                alert("Done");
+                console.log("~~~~~~~~~~~~~~Done~~~~~~~~~~");
                 if (err)
-                  alert("******************" + err);
+                  console.log("~~~~~~~~~~~~~~~~~~" + err);
                 else
-                  alert('worked ' + JSON.stringify(result));
+                  console.log('~~~~~~~~~~~~~worked ' + JSON.stringify(result));
               }
             );
           }
