@@ -72,6 +72,7 @@
             WidgetHome.convertToZone(result);
             WidgetHome.events = [];
             WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(result) : result;
+            console.log("aaaaaaaaaaaa",WidgetHome.events)
             searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
             if (result.length == PAGINATION.eventsCount) {
               WidgetHome.busy = false;
