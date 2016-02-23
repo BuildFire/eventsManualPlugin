@@ -21,7 +21,7 @@
         var ContentHome = this;
 
         //Scroll current view to top when page loaded.
-        if(buildfire.navigation.scrollTop) {
+        if (buildfire.navigation.scrollTop) {
           buildfire.navigation.scrollTop();
         }
 
@@ -36,7 +36,7 @@
          * ContentHome.data used to store EventsInfo which from datastore.
          */
         ContentHome.masterData = null;
-        ContentHome.data = angular.copy(_data);
+        //ContentHome.data = angular.copy(_data);
 
         /*
          * create an artificial delay so api isnt called on every character entered
@@ -83,11 +83,13 @@
           var success = function (result) {
               console.info('Init success result:', result);
               ContentHome.data = result.data;
-              if (ContentHome.data) {
+              if (!ContentHome.data) {
+                ContentHome.data = angular.copy(_data);
+              } else {
                 if (!ContentHome.data.content)
                   ContentHome.data.content = {};
-                updateMasterItem(ContentHome.data);
               }
+              updateMasterItem(ContentHome.data);
               if (tmrDelay)clearTimeout(tmrDelay);
             }
             , error = function (err) {
@@ -134,7 +136,7 @@
             err = function (err) {
               console.log(err)
             };
-          if(buildfire.navigation.scrollTop) {
+          if (buildfire.navigation.scrollTop) {
             buildfire.navigation.scrollTop();
           }
 
