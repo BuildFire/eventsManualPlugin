@@ -1,6 +1,6 @@
 'use strict';
 
-(function (angular) {
+(function (angular, buildfire) {
   angular.module('eventsManualPluginWidget')
     .controller('WidgetHomeCtrl', ['$scope', 'TAG_NAMES', 'LAYOUTS', 'DataStore', 'PAGINATION', 'Buildfire', 'Location', 'EventCache', '$rootScope',
       function ($scope, TAG_NAMES, LAYOUTS, DataStore, PAGINATION, Buildfire, Location, EventCache, $rootScope) {
@@ -247,15 +247,41 @@
          */
         DataStore.onUpdate().then(null, null, onUpdateCallback);
 
+        buildfire.datastore.onRefresh(function () {
+          WidgetHome.clickEvent = true;
+          WidgetHome.events = null;
+          WidgetHome.allEvents = null;
+          searchOptions.skip = 0;
+          WidgetHome.busy = false;
+          WidgetHome.disabled = true;
+          $scope.dt = new Date();
+          formattedDate = currentDate.getFullYear() + "-" + moment(currentDate).format("MM") + "-" + ("0" + currentDate.getDate()).slice(-2) + "T00:00:00" + moment(new Date()).format("Z");
+          timeStampInMiliSec = +new Date(formattedDate);
+          WidgetHome.loadMore();
+        });
+
+
         $scope.$on("$destroy", function () {
           DataStore.clearListener();
         });
 
         $rootScope.$on("ROUTE_CHANGED", function (e) {
+          buildfire.datastore.onRefresh(function () {
+            WidgetHome.clickEvent = true;
+            WidgetHome.events = null;
+            WidgetHome.allEvents = null;
+            searchOptions.skip = 0;
+            WidgetHome.busy = false;
+            WidgetHome.disabled = true;
+            $scope.dt = new Date();
+            formattedDate = currentDate.getFullYear() + "-" + moment(currentDate).format("MM") + "-" + ("0" + currentDate.getDate()).slice(-2) + "T00:00:00" + moment(new Date()).format("Z");
+            timeStampInMiliSec = +new Date(formattedDate);
+            WidgetHome.loadMore();
+          });
           DataStore.onUpdate().then(null, null, onUpdateCallback);
         });
 
         init();
 
       }])
-})(window.angular);
+})(window.angular, window.buildfire);
