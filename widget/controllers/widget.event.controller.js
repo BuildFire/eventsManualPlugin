@@ -249,7 +249,9 @@
             }
           });
         };
+        buildfire.datastore.onRefresh(function () {
 
+        });
 
         $scope.$on("$destroy", function () {
           DataStore.clearListener();
