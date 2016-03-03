@@ -149,7 +149,7 @@
            /*Add to calendar event will add here*/
            var eventStartDate = new Date(event.data.startDate);
           var eventEndDate = new Date(event.data.endDate);
-          alert("inCal fff:" + buildfire.device.calendar);
+          console.log("inCal:" + buildfire.device.calendar);
           if (buildfire.device && buildfire.device.calendar) {
             buildfire.device.calendar.addEvent(
               {
@@ -157,7 +157,7 @@
                 , location: event.data.address.location
                 , notes: event.data.description
                 , startDate: new Date(eventStartDate.getFullYear(), eventStartDate.getMonth(), eventStartDate.getDate(), 0, 0, 0)
-                , endDate: new Date(eventEndDate.getFullYear(), eventEndDate.getMonth(), eventEndDate.getDate()+2, 0, 0, 0)
+                , endDate: new Date(eventEndDate.getFullYear(), eventEndDate.getMonth(), eventEndDate.getDate(), 0, 0, 0)
                 , options: {
                 firstReminderMinutes: 120
                 ,
