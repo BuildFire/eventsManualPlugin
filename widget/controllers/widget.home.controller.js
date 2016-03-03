@@ -146,17 +146,18 @@
         };
 
         WidgetHome.addEventsToCalendar = function (event) {
-          /*Add to calendar event will add here*/
-          alert(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
-          alert("inCal:" + buildfire.device.calendar);
+           /*Add to calendar event will add here*/
+           var eventStartDate = new Date(event.data.startDate);
+          var eventEndDate = new Date(event.data.endDate);
+          alert("inCal fff:" + buildfire.device.calendar);
           if (buildfire.device && buildfire.device.calendar) {
             buildfire.device.calendar.addEvent(
               {
                 title: event.data.title
                 , location: event.data.address.location
                 , notes: event.data.description
-                , startDate: new Date(event.data.startDate)
-                , endDate: new Date(event.data.endDate)
+                , startDate: new Date(eventStartDate.getFullYear(), eventStartDate.getMonth(), eventStartDate.getDate(), 0, 0, 0)
+                , endDate: new Date(eventEndDate.getFullYear(), eventEndDate.getMonth(), eventEndDate.getDate()+2, 0, 0, 0)
                 , options: {
                 firstReminderMinutes: 120
                 ,
@@ -169,11 +170,10 @@
               }
               ,
               function (err, result) {
-                alert("Done");
-                if (err)
-                  alert("******************" + err);
+               if (err)
+                  console.log("******************" + err);
                 else
-                  alert('worked ' + JSON.stringify(result));
+                  console.log('worked ' + JSON.stringify(result));
               }
             );
           }
