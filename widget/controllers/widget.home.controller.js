@@ -148,8 +148,14 @@
         WidgetHome.addEventsToCalendar = function (event) {
            /*Add to calendar event will add here*/
            var eventStartDate = new Date(event.data.startDate);
-          var eventEndDate = new Date(event.data.endDate);
-          console.log("inCal:" + buildfire.device.calendar);
+          var eventEndDate;
+          if(event.data.endDate==''){
+            eventEndDate = new Date(event.data.startDate)
+          }
+          else {
+            eventEndDate = new Date(event.data.endDate);
+          }
+          console.log("inCal:", eventEndDate);
           if (buildfire.device && buildfire.device.calendar) {
             buildfire.device.calendar.addEvent(
               {
