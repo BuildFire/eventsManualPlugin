@@ -137,38 +137,40 @@
 
         WidgetEvent.addEventsToCalendar = function (event) {
           /*Add to calendar event will add here*/
-          alert(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
-          alert("inCal:" + buildfire.device.calendar);
-          console.log('~~~~~~~~~~ buildfire.device.calendar~~~~~~~~~~', buildfire.device.calendar);
-          console.log('~~~~~~~~~~ buildfire.device.calendar.addEvent~~~~~~~~~~', buildfire.device.calendar.addEvent);
-          console.log('~~~~~~~~~~event~~~~~~~~~~', event);
-
+          var eventStartDate = new Date(event.data.startDate);
+          var eventEndDate;
+          if(event.data.endDate==''){
+            eventEndDate = new Date(event.data.startDate)
+          }
+          else {
+            eventEndDate = new Date(event.data.endDate);
+          }
+          console.log("inCal:", eventEndDate);
           if (buildfire.device && buildfire.device.calendar) {
             buildfire.device.calendar.addEvent(
-              {
-                title: event.data.title
-                , location: event.data.address.location
-                , notes: event.data.description
-                , startDate: new Date(event.data.startDate)
-                , endDate: new Date(event.data.endDate)
-                , options: {
-                firstReminderMinutes: 120
+                {
+                  title: event.data.title
+                  , location: event.data.address.location
+                  , notes: event.data.description
+                  , startDate: new Date(eventStartDate.getFullYear(), eventStartDate.getMonth(), eventStartDate.getDate(), 0, 0, 0)
+                  , endDate: new Date(eventEndDate.getFullYear(), eventEndDate.getMonth(), eventEndDate.getDate(), 0, 0, 0)
+                  , options: {
+                  firstReminderMinutes: 120
+                  ,
+                  secondReminderMinutes: 5
+                  ,
+                  recurrence: event.data.repeat.repeatType
+                  ,
+                  recurrenceEndDate: event.data.repeat.repeatType ? new Date(event.data.repeat.endOn) : new Date(2025, 6, 1, 0, 0, 0, 0, 0)
+                }
+                }
                 ,
-                secondReminderMinutes: 5
-                ,
-                recurrence: event.data.repeat.repeatType
-                ,
-                recurrenceEndDate: event.data.repeat.repeatType ? new Date(event.data.repeat.endOn) : new Date(2025, 6, 1, 0, 0, 0, 0, 0)
-              }
-              }
-              ,
-              function (err, result) {
-                console.log("~~~~~~~~~~~~~~Done~~~~~~~~~~");
-                if (err)
-                  console.log("~~~~~~~~~~~~~~~~~~" + err);
-                else
-                  console.log('~~~~~~~~~~~~~worked ' + JSON.stringify(result));
-              }
+                function (err, result) {
+                  if (err)
+                    console.log("******************" + err);
+                  else
+                    console.log('worked ' + JSON.stringify(result));
+                }
             );
           }
           console.log(">>>>>>>>", event);
