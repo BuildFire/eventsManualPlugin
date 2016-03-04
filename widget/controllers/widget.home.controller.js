@@ -176,7 +176,9 @@
           }
         //  console.log("------------------",WidgetHome.getAddedEventToLocalStorage(event.id))
         //  WidgetHome.setAddedEventToLocalStorage(event.id);
-
+          if(WidgetHome.getAddedEventToLocalStorage(event.id)==-1){
+            alert("Event already added in calendar");
+          }
           console.log("inCal3:", eventEndDate, event);
           if (buildfire.device && buildfire.device.calendar && WidgetHome.getAddedEventToLocalStorage(event.id)==-1) {
             buildfire.device.calendar.addEvent(
@@ -204,6 +206,7 @@
                  WidgetHome.swiped[i] = false;
                  console.log('worked ' + JSON.stringify(result));
                  WidgetHome.setAddedEventToLocalStorage(event.id);
+                 alert("Event added to calendar");
                  $scope.$digest();
                }
               }
