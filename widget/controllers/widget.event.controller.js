@@ -135,40 +135,68 @@
           return !(description == '<p><br data-mce-bogus="1"></p>');
         };
 
+        WidgetEvent.setAddedEventToLocalStorage= function(eventId){
+          var addedEvents = [];
+          addedEvents = JSON.parse(localStorage.getItem('localAddedEvents'));
+          if(!addedEvents){
+            addedEvents=[];
+          }
+          addedEvents.push(eventId);
+          localStorage.setItem('localAddedEvents', JSON.stringify(addedEvents));
+        }
+
+        WidgetEvent.getAddedEventToLocalStorage = function(eventId){
+          var localStorageSavedEvents = [];
+          localStorageSavedEvents = JSON.parse(localStorage.getItem('localAddedEvents'));
+          if(!localStorageSavedEvents){
+            localStorageSavedEvents=[];
+          }
+          return localStorageSavedEvents.indexOf(eventId);
+        }
+
         WidgetEvent.addEventsToCalendar = function (event) {
           /*Add to calendar event will add here*/
-          alert(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
-          alert("inCal:" + buildfire.device.calendar);
-          console.log('~~~~~~~~~~ buildfire.device.calendar~~~~~~~~~~', buildfire.device.calendar);
-          console.log('~~~~~~~~~~ buildfire.device.calendar.addEvent~~~~~~~~~~', buildfire.device.calendar.addEvent);
-          console.log('~~~~~~~~~~event~~~~~~~~~~', event);
-
-          if (buildfire.device && buildfire.device.calendar) {
+          var eventStartDate = new Date(event.data.startDate+" "+event.data.startTime);
+          var eventEndDate;
+          if(event.data.endDate==''){
+            eventEndDate = new Date(event.data.startDate+" "+"11:59 PM")
+          }
+          else {
+            eventEndDate = new Date(event.data.endDate+" "+event.data.endTime);
+          }
+          if(WidgetEvent.getAddedEventToLocalStorage(event.id)!=-1){
+            alert("Event already added in calendar");
+          }
+          console.log("inCal3:", eventEndDate, event);
+          if (buildfire.device && buildfire.device.calendar && WidgetEvent.getAddedEventToLocalStorage(event.id)==-1) {
             buildfire.device.calendar.addEvent(
-              {
-                title: event.data.title
-                , location: event.data.address.location
-                , notes: event.data.description
-                , startDate: new Date(event.data.startDate)
-                , endDate: new Date(event.data.endDate)
-                , options: {
-                firstReminderMinutes: 120
+                {
+                  title: event.data.title
+                  , location: event.data.address.location
+                  , notes: event.data.description
+                  , startDate: new Date(eventStartDate.getFullYear(), eventStartDate.getMonth(), eventStartDate.getDate(), eventStartDate.getHours(), eventStartDate.getMinutes(), eventStartDate.getSeconds())
+                  , endDate: new Date(eventEndDate.getFullYear(), eventEndDate.getMonth(), eventEndDate.getDate(), eventEndDate.getHours(), eventEndDate.getMinutes(), eventEndDate.getSeconds())
+                  , options: {
+                  firstReminderMinutes: 120
+                  ,
+                  secondReminderMinutes: 5
+                  ,
+                  recurrence: event.data.repeat.repeatType
+                  ,
+                  recurrenceEndDate: event.data.repeat.repeatType ? new Date(event.data.repeat.endOn) : new Date(2025, 6, 1, 0, 0, 0, 0, 0)
+                }
+                }
                 ,
-                secondReminderMinutes: 5
-                ,
-                recurrence: event.data.repeat.repeatType
-                ,
-                recurrenceEndDate: event.data.repeat.repeatType ? new Date(event.data.repeat.endOn) : new Date(2025, 6, 1, 0, 0, 0, 0, 0)
-              }
-              }
-              ,
-              function (err, result) {
-                console.log("~~~~~~~~~~~~~~Done~~~~~~~~~~");
-                if (err)
-                  console.log("~~~~~~~~~~~~~~~~~~" + err);
-                else
-                  console.log('~~~~~~~~~~~~~worked ' + JSON.stringify(result));
-              }
+                function (err, result) {
+                  if (err)
+                    console.log("******************" + err);
+                  else {
+                    console.log('worked ' + JSON.stringify(result));
+                    WidgetEvent.setAddedEventToLocalStorage(event.id);
+                    alert("Event added to calendar");
+                    $scope.$digest();
+                  }
+                }
             );
           }
           console.log(">>>>>>>>", event);

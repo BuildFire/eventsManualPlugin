@@ -145,18 +145,49 @@
           toggle ? WidgetHome.swiped[i] = true : WidgetHome.swiped[i] = false;
         };
 
-        WidgetHome.addEventsToCalendar = function (event) {
-          /*Add to calendar event will add here*/
-          alert(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
-          alert("inCal:" + buildfire.device.calendar);
-          if (buildfire.device && buildfire.device.calendar) {
+        WidgetHome.setAddedEventToLocalStorage= function(eventId){
+          var addedEvents = [];
+          addedEvents = JSON.parse(localStorage.getItem('localAddedEvents'));
+          if(!addedEvents){
+            addedEvents=[];
+          }
+          addedEvents.push(eventId);
+          localStorage.setItem('localAddedEvents', JSON.stringify(addedEvents));
+        }
+
+        WidgetHome.getAddedEventToLocalStorage = function(eventId){
+          var localStorageSavedEvents = [];
+          localStorageSavedEvents = JSON.parse(localStorage.getItem('localAddedEvents'));
+          if(!localStorageSavedEvents){
+            localStorageSavedEvents=[];
+          }
+          return localStorageSavedEvents.indexOf(eventId);
+        }
+
+        WidgetHome.addEventsToCalendar = function (event, i) {
+           /*Add to calendar event will add here*/
+          var eventStartDate = new Date(event.data.startDate+" "+event.data.startTime);
+          var eventEndDate;
+          if(event.data.endDate==''){
+            eventEndDate = new Date(event.data.startDate+" "+"11:59 PM")
+          }
+          else {
+            eventEndDate = new Date(event.data.endDate+" "+event.data.endTime);
+          }
+        //  console.log("------------------",WidgetHome.getAddedEventToLocalStorage(event.id))
+        //  WidgetHome.setAddedEventToLocalStorage(event.id);
+          if(WidgetHome.getAddedEventToLocalStorage(event.id)!=-1){
+            alert("Event already added in calendar");
+          }
+          console.log("inCal3:", eventEndDate, event);
+          if (buildfire.device && buildfire.device.calendar && WidgetHome.getAddedEventToLocalStorage(event.id)==-1) {
             buildfire.device.calendar.addEvent(
               {
                 title: event.data.title
                 , location: event.data.address.location
                 , notes: event.data.description
-                , startDate: new Date(event.data.startDate)
-                , endDate: new Date(event.data.endDate)
+                , startDate: new Date(eventStartDate.getFullYear(), eventStartDate.getMonth(), eventStartDate.getDate(), eventStartDate.getHours(), eventStartDate.getMinutes(), eventStartDate.getSeconds())
+                , endDate: new Date(eventEndDate.getFullYear(), eventEndDate.getMonth(), eventEndDate.getDate(), eventEndDate.getHours(), eventEndDate.getMinutes(), eventEndDate.getSeconds())
                 , options: {
                 firstReminderMinutes: 120
                 ,
@@ -169,11 +200,15 @@
               }
               ,
               function (err, result) {
-                alert("Done");
-                if (err)
-                  alert("******************" + err);
-                else
-                  alert('worked ' + JSON.stringify(result));
+               if (err)
+                  console.log("******************" + err);
+                else {
+                 WidgetHome.swiped[i] = false;
+                 console.log('worked ' + JSON.stringify(result));
+                 WidgetHome.setAddedEventToLocalStorage(event.id);
+                 alert("Event added to calendar");
+                 $scope.$digest();
+               }
               }
             );
           }
