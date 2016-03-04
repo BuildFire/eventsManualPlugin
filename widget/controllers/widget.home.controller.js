@@ -147,23 +147,24 @@
 
         WidgetHome.addEventsToCalendar = function (event) {
            /*Add to calendar event will add here*/
-           var eventStartDate = new Date(event.data.startDate);
+          var eventStartDate = new Date(event.data.startDate+" "+event.data.startTime);
           var eventEndDate;
           if(event.data.endDate==''){
-            eventEndDate = new Date(event.data.startDate)
+            eventEndDate = new Date(event.data.startDate+" "+"11:59 PM")
           }
           else {
-            eventEndDate = new Date(event.data.endDate);
+            eventEndDate = new Date(event.data.endDate+" "+event.data.endTime);
           }
-          console.log("inCal:", eventEndDate);
+
+          console.log("inCal3:", eventEndDate, event);
           if (buildfire.device && buildfire.device.calendar) {
             buildfire.device.calendar.addEvent(
               {
                 title: event.data.title
                 , location: event.data.address.location
                 , notes: event.data.description
-                , startDate: new Date(eventStartDate.getFullYear(), eventStartDate.getMonth(), eventStartDate.getDate(), 0, 0, 0)
-                , endDate: new Date(eventEndDate.getFullYear(), eventEndDate.getMonth(), eventEndDate.getDate(), 0, 0, 0)
+                , startDate: new Date(eventStartDate.getFullYear(), eventStartDate.getMonth(), eventStartDate.getDate(), eventStartDate.getHours(), eventStartDate.getMinutes(), eventStartDate.getSeconds())
+                , endDate: new Date(eventEndDate.getFullYear(), eventEndDate.getMonth(), eventEndDate.getDate(), eventEndDate.getHours(), eventEndDate.getMinutes(), eventEndDate.getSeconds())
                 , options: {
                 firstReminderMinutes: 120
                 ,
