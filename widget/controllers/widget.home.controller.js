@@ -145,7 +145,7 @@
           toggle ? WidgetHome.swiped[i] = true : WidgetHome.swiped[i] = false;
         };
 
-        WidgetHome.addEventsToCalendar = function (event) {
+        WidgetHome.addEventsToCalendar = function (event, i) {
            /*Add to calendar event will add here*/
           var eventStartDate = new Date(event.data.startDate+" "+event.data.startTime);
           var eventEndDate;
@@ -179,8 +179,11 @@
               function (err, result) {
                if (err)
                   console.log("******************" + err);
-                else
-                  console.log('worked ' + JSON.stringify(result));
+                else {
+                 WidgetHome.swiped[i] = false;
+                 console.log('worked ' + JSON.stringify(result));
+                  $scope.$digest();
+               }
               }
             );
           }
