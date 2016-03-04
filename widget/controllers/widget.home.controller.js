@@ -176,7 +176,7 @@
           }
         //  console.log("------------------",WidgetHome.getAddedEventToLocalStorage(event.id))
         //  WidgetHome.setAddedEventToLocalStorage(event.id);
-          if(WidgetHome.getAddedEventToLocalStorage(event.id)==-1){
+          if(WidgetHome.getAddedEventToLocalStorage(event.id)!=-1){
             alert("Event already added in calendar");
           }
           console.log("inCal3:", eventEndDate, event);

@@ -164,7 +164,7 @@
           else {
             eventEndDate = new Date(event.data.endDate+" "+event.data.endTime);
           }
-          if(WidgetEvent.getAddedEventToLocalStorage(event.id)==-1){
+          if(WidgetEvent.getAddedEventToLocalStorage(event.id)!=-1){
             alert("Event already added in calendar");
           }
           console.log("inCal3:", eventEndDate, event);
