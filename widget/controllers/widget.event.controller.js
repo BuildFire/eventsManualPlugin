@@ -135,6 +135,25 @@
           return !(description == '<p><br data-mce-bogus="1"></p>');
         };
 
+        WidgetEvent.setAddedEventToLocalStorage= function(eventId){
+          var addedEvents = [];
+          addedEvents = JSON.parse(localStorage.getItem('localAddedEvents'));
+          if(!addedEvents){
+            addedEvents=[];
+          }
+          addedEvents.push(eventId);
+          localStorage.setItem('localAddedEvents', JSON.stringify(addedEvents));
+        }
+
+        WidgetEvent.getAddedEventToLocalStorage = function(eventId){
+          var localStorageSavedEvents = [];
+          localStorageSavedEvents = JSON.parse(localStorage.getItem('localAddedEvents'));
+          if(!localStorageSavedEvents){
+            localStorageSavedEvents=[];
+          }
+          return localStorageSavedEvents.indexOf(eventId);
+        }
+
         WidgetEvent.addEventsToCalendar = function (event) {
           /*Add to calendar event will add here*/
           var eventStartDate = new Date(event.data.startDate+" "+event.data.startTime);
@@ -147,7 +166,7 @@
           }
 
           console.log("inCal3:", eventEndDate, event);
-          if (buildfire.device && buildfire.device.calendar) {
+          if (buildfire.device && buildfire.device.calendar && WidgetEvent.getAddedEventToLocalStorage(event.id)==-1) {
             buildfire.device.calendar.addEvent(
                 {
                   title: event.data.title
@@ -169,8 +188,11 @@
                 function (err, result) {
                   if (err)
                     console.log("******************" + err);
-                  else
+                  else {
                     console.log('worked ' + JSON.stringify(result));
+                    WidgetEvent.setAddedEventToLocalStorage(event.id);
+                    $scope.$digest();
+                  }
                 }
             );
           }

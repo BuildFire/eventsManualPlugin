@@ -145,6 +145,25 @@
           toggle ? WidgetHome.swiped[i] = true : WidgetHome.swiped[i] = false;
         };
 
+        WidgetHome.setAddedEventToLocalStorage= function(eventId){
+          var addedEvents = [];
+          addedEvents = JSON.parse(localStorage.getItem('localAddedEvents'));
+          if(!addedEvents){
+            addedEvents=[];
+          }
+          addedEvents.push(eventId);
+          localStorage.setItem('localAddedEvents', JSON.stringify(addedEvents));
+        }
+
+        WidgetHome.getAddedEventToLocalStorage = function(eventId){
+          var localStorageSavedEvents = [];
+          localStorageSavedEvents = JSON.parse(localStorage.getItem('localAddedEvents'));
+          if(!localStorageSavedEvents){
+            localStorageSavedEvents=[];
+          }
+          return localStorageSavedEvents.indexOf(eventId);
+        }
+
         WidgetHome.addEventsToCalendar = function (event, i) {
            /*Add to calendar event will add here*/
           var eventStartDate = new Date(event.data.startDate+" "+event.data.startTime);
@@ -155,9 +174,11 @@
           else {
             eventEndDate = new Date(event.data.endDate+" "+event.data.endTime);
           }
+        //  console.log("------------------",WidgetHome.getAddedEventToLocalStorage(event.id))
+        //  WidgetHome.setAddedEventToLocalStorage(event.id);
 
           console.log("inCal3:", eventEndDate, event);
-          if (buildfire.device && buildfire.device.calendar) {
+          if (buildfire.device && buildfire.device.calendar && WidgetHome.getAddedEventToLocalStorage(event.id)==-1) {
             buildfire.device.calendar.addEvent(
               {
                 title: event.data.title
@@ -182,7 +203,8 @@
                 else {
                  WidgetHome.swiped[i] = false;
                  console.log('worked ' + JSON.stringify(result));
-                  $scope.$digest();
+                 WidgetHome.setAddedEventToLocalStorage(event.id);
+                 $scope.$digest();
                }
               }
             );
