@@ -23,6 +23,7 @@
 
         };
 
+        buildfire.history.push('Event', { elementToShow: 'Event' });
         //Scroll current view to top when page loaded.
         if(buildfire.navigation.scrollTop) {
           buildfire.navigation.scrollTop();
@@ -443,6 +444,7 @@
         };
 
         ContentEvent.gotToHome = function () {
+          buildfire.history.pop();
           $location.path('#/');
         };
 

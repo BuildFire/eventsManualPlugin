@@ -178,6 +178,7 @@
         if (reg.test($location.path())) {
           buildfire.messaging.sendMessageToControl({});
           $rootScope.showFeed = true;
+          buildfire.history.pop();
           Location.goTo('#/');
         }
         else {

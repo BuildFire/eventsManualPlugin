@@ -141,7 +141,7 @@
           });
       }
     })
-    .run(['Location', function (Location) {
+    .run(['Location', '$rootScope', function (Location, $rootScope) {
       // Handler to receive message from widget
       buildfire.messaging.onReceivedMessage = function (msg) {
         switch (msg.type) {
@@ -151,6 +151,14 @@
           default:
             Location.goToHome();
         }
+
       };
+
+        buildfire.history.onPop(function(data, err){
+          var pluginName=""
+           if(data.label ==  $rootScope.pluginName ){
+            Location.goToHome();
+          }
+        })
     }]);
 })(window.angular,window.buildfire);
