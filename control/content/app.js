@@ -149,6 +149,7 @@
             Location.goTo("#/event/" + msg.id);
             break;
           default:
+            buildfire.history.pop();
             Location.goToHome();
         }
 
@@ -156,8 +157,7 @@
 
         buildfire.history.onPop(function(data, err){
            if(data.label !=  "Event" ){
-             buildfire.history.pop();
-             Location.goToHome();
+            Location.goToHome();
           }
         })
     }]);
