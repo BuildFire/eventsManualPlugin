@@ -156,7 +156,8 @@
 
         buildfire.history.onPop(function(data, err){
            if(data.label !=  "Event" ){
-            Location.goToHome();
+             buildfire.history.pop();
+             Location.goToHome();
           }
         })
     }]);
