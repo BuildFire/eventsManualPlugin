@@ -177,7 +177,7 @@
         var reg = /^\/event/;
         if (reg.test($location.path())) {
           buildfire.messaging.sendMessageToControl({});
-          buildfire.history.pop();
+       //   buildfire.history.pop();
           $rootScope.showFeed = true;
           Location.goTo('#/');
         }
