@@ -141,7 +141,7 @@
           });
       }
     })
-    .run(['Location', function (Location) {
+    .run(['Location', '$rootScope', function (Location, $rootScope) {
       // Handler to receive message from widget
       buildfire.messaging.onReceivedMessage = function (msg) {
         switch (msg.type) {
@@ -149,8 +149,16 @@
             Location.goTo("#/event/" + msg.id);
             break;
           default:
+            buildfire.history.pop();
             Location.goToHome();
         }
+
       };
+
+        buildfire.history.onPop(function(data, err){
+           if(data.label !=  "Event" ){
+            Location.goToHome();
+          }
+        })
     }]);
 })(window.angular,window.buildfire);

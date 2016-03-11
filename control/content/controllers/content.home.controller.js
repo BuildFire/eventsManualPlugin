@@ -3,8 +3,8 @@
 (function (angular, buildfire) {
   angular
     .module('eventsManualPluginContent')
-    .controller('ContentHomeCtrl', ['$scope', 'TAG_NAMES', 'STATUS_CODE', 'DataStore', 'LAYOUTS', '$sce', 'PAGINATION', 'Buildfire', '$modal',
-      function ($scope, TAG_NAMES, STATUS_CODE, DataStore, LAYOUTS, $sce, PAGINATION, Buildfire, $modal) {
+    .controller('ContentHomeCtrl', ['$scope', 'TAG_NAMES', 'STATUS_CODE', 'DataStore', 'LAYOUTS', '$sce', 'PAGINATION', 'Buildfire', '$modal','$rootScope',
+      function ($scope, TAG_NAMES, STATUS_CODE, DataStore, LAYOUTS, $sce, PAGINATION, Buildfire, $modal, $rootScope) {
         var _data = {
           "content": {},
           "design": {
@@ -19,6 +19,10 @@
         };
         var regex;
         var ContentHome = this;
+      //  buildfire.history.push('Home', { elementToShow: 'Home' });
+        //buildfire.history.get({},function(err,data){
+        //  $rootScope.pluginName = data[0].label;
+        //});
 
         //Scroll current view to top when page loaded.
         if (buildfire.navigation.scrollTop) {
@@ -238,7 +242,10 @@
         init();
 
         updateMasterItem(_data);
-
+          ContentHome.gotToHome = function () {
+              buildfire.history.pop();
+              $location.path('#/');
+          };
         /*
          * watch for changes in data and trigger the saveDataWithDelay function on change
          * */
