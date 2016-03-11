@@ -155,8 +155,7 @@
       };
 
         buildfire.history.onPop(function(data, err){
-          var pluginName=""
-           if(data.label ==  $rootScope.pluginName ){
+           if(data.label !=  "Event" ){
             Location.goToHome();
           }
         })
