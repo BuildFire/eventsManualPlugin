@@ -42,6 +42,7 @@
         ng-if="WidgetEvent.showDescription(WidgetEvent.event.data.description)">
     <div class="text-left padded padding-bottom-zeroclearfix"
          ng-if="WidgetEvent.showDescription(WidgetEvent.event.data.description) || WidgetEvent.event.data.links.length">
+        <p ng-if="WidgetEvent.event.data.title.length>42">{{WidgetEvent.event.data.title}}</p>
       <p ng-bind-html="WidgetEvent.safeHtml(WidgetEvent.event.data.description)"></p>
 
       <div class="dynamic-links border-bottom-grey">

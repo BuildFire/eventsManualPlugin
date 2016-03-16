@@ -59,6 +59,7 @@
         {{WidgetEvent.event.data.address.location}}</a></p>
 <br>
       <hr class="small" ng-if="WidgetEvent.showDescription(WidgetEvent.event.data.description)">
+        <p ng-if="WidgetEvent.event.data.title.length>42">{{WidgetEvent.event.data.title}}</p>
       <p ng-bind-html="WidgetEvent.safeHtml(WidgetEvent.event.data.description)"></p>
 
       <div class="dynamic-links">

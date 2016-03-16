@@ -16,7 +16,8 @@
           |
           getDate}}</h1>
       </div>
-      <div class="event-info pull-left margin-left-fifteen">
+
+      <div class="event-info pull-left margin-left-fifteen titleWidth70">
         <p class="ellipsis margin-zero">{{WidgetEvent.event.data.title}}</p>
 
         <p class="margin-zero"
@@ -49,6 +50,7 @@
       </div>
     </div>
     <div class="text-left padded padding-bottom-zero clearfix">
+        <p ng-if="WidgetEvent.event.data.title.length>35">{{WidgetEvent.event.data.title}}</p>
       <p ng-bind-html="WidgetEvent.safeHtml(WidgetEvent.event.data.description)"></p>
 
       <div class="dynamic-links">
