@@ -121,9 +121,9 @@
 .events-plugin .event-list .event-item .event-info h4{
 	margin-top:7px;
 }
-.events-plugin .event-list .event-item .event-info{
-	max-width:70%;
-}
+/*.events-plugin .event-list .event-item .event-info{*/
+	/*max-width:50%;*/
+/*}*/
 .events-plugin .event-list .event-item .event-info p{
 	line-height:19px;
 }
@@ -346,4 +346,10 @@
 
 .mapSize{
     height: 192px;
+}
+.titleWidth70{
+	max-width: 70%;
+}
+.titleWidth50{
+	max-width: 50%;
 }

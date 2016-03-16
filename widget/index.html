@@ -87,7 +87,7 @@
                   <h1 class="text-primary margin-zero">{{event.data.startDate
                     |getDate}}</h1>
                 </div>
-                <div class="event-info pull-left margin-left-ten">
+                <div class="event-info pull-left margin-left-ten" ng-class="event.data.listImage?'titleWidth50':'titleWidth70'">
                   <a href="javascript:void(0)"
                      ng-click="WidgetHome.openDetailsPage(event)"><h4
                       class="margin-bottom-zero text-primary ellipsis">
