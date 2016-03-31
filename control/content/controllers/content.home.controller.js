@@ -120,7 +120,7 @@
           if (search) {
             searchOptions.filter = {
               "$or": [{
-                "data.title": {
+                "$json.title": {
                   "$regex": search,
                   "$options": "i"
                 }
@@ -128,7 +128,7 @@
             };
           }
           else {
-            searchOptions.filter = {"data.title": {"$regex": '/*'}};
+            searchOptions.filter = {"$json.title": {"$regex": '/*'}};
           }
           ContentHome.loadMore();
         };

@@ -97,7 +97,7 @@
             };
 
           DataStore.search({}, TAG_NAMES.EVENTS_MANUAL).then(successEventsAll, errorEventsAll);
-          searchOptions.filter = {"$or": [{"data.startDate": {"$gt": timeStampInMiliSec}}, {"data.startDate": {"$eq": timeStampInMiliSec}}]};
+          searchOptions.filter = {"$or": [{"$json.startDate": {"$gt": timeStampInMiliSec}}, {"$json.startDate": {"$eq": timeStampInMiliSec}}]};
           DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
 
@@ -153,7 +153,7 @@
           }
           addedEvents.push(eventId);
           localStorage.setItem('localAddedEvents', JSON.stringify(addedEvents));
-        }
+        };
 
         WidgetHome.getAddedEventToLocalStorage = function(eventId){
           var localStorageSavedEvents = [];
