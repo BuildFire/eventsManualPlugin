@@ -160,7 +160,7 @@
         })
         .run(['Location', '$location', '$rootScope', function (Location, $location, $rootScope) {
 
-            /*buildfire.messaging.onReceivedMessage = function (msg) {
+            buildfire.messaging.onReceivedMessage = function (msg) {
                 console.log('$location--------------------------------------------', $location,msg);
                 switch (msg.type) {
                     case 'AddNewItem':
@@ -173,7 +173,7 @@
                         if ($location.$$path != '/')
                             Location.goToHome();
                 }
-            };*/
+            };
 
             buildfire.navigation.onBackButtonClick = function () {
                 var reg = /^\/event/;
