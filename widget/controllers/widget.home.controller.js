@@ -4,6 +4,7 @@
   angular.module('eventsManualPluginWidget')
     .controller('WidgetHomeCtrl', ['$scope', 'TAG_NAMES', 'LAYOUTS', 'DataStore', 'PAGINATION', 'Buildfire', 'Location', 'EventCache', '$rootScope',
       function ($scope, TAG_NAMES, LAYOUTS, DataStore, PAGINATION, Buildfire, Location, EventCache, $rootScope) {
+       console.log('Widget Home controller loaded------------------');
         var WidgetHome = this;
         WidgetHome.data = null;
         WidgetHome.swiped = [];

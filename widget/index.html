@@ -40,7 +40,7 @@
   <link rel="stylesheet" href="../../../styles/transitionAnimation.css">
 </head>
 <body class="body-scroll">
-<div class="content relative slide infinite-scroll-parent">
+<div class="content relative slide infinite-scroll-parent" ng-show="showFeed">
   <div ng-controller="WidgetHomeCtrl as WidgetHome">
     <div class="holder padding-zero">
       <div class="events-plugin">
@@ -110,6 +110,7 @@
     </div>
   </div>
 </div>
-<div ng-view="" class="slide content" ng-hide="showFeed"></div>
+<div ng-view="" class="slide content" ng-hide="showFeed">
+</div>
 </body>
 </html>
