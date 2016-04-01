@@ -177,7 +177,7 @@
 
             buildfire.navigation.onBackButtonClick = function () {
                 var reg = /^\/event/;
-                if (reg.test($location.path())) {
+                if (reg.test($location.path()) && $rootScope.showFeed==false) {
                     buildfire.messaging.sendMessageToControl({});
                     //   buildfire.history.pop();
                     $rootScope.showFeed = true;
