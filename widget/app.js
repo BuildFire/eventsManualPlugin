@@ -170,7 +170,7 @@
                         Location.goTo("#/event/" + msg.id);
                         break;
                     default:
-                        if ($location.$$path != '/')
+                        if ($rootScope.showFeed == false)
                             Location.goToHome();
                 }
             };
