@@ -84,18 +84,19 @@
          * Go pull any previously saved data
          * */
         var init = function () {
-          var success = function (result) {
-              console.info('Init success result:', result);
-              ContentHome.data = result.data;
-              if (!ContentHome.data) {
-                ContentHome.data = angular.copy(_data);
-              } else {
-                if (!ContentHome.data.content)
-                  ContentHome.data.content = {};
-              }
-              updateMasterItem(ContentHome.data);
-              if (tmrDelay)clearTimeout(tmrDelay);
-            }
+              var success = function (result) {
+
+                  console.info('Init success result:', result);
+                  ContentHome.data = result.data;
+                  if (!ContentHome.data) {
+                    ContentHome.data = angular.copy(_data);
+                  } else {
+                    if (!ContentHome.data.content)
+                      ContentHome.data.content = {};
+                  }
+                  updateMasterItem(ContentHome.data);
+                  if (tmrDelay)clearTimeout(tmrDelay);
+                }
             , error = function (err) {
               if (err && err.code !== STATUS_CODE.NOT_FOUND) {
                 console.error('Error while getting data', err);
@@ -222,6 +223,9 @@
         var getManualEvents = function () {
           Buildfire.spinner.show();
           var successEvents = function (result) {
+            console.log("============", result)
+              if (result.length) {
+                console.log("============", result)
             Buildfire.spinner.hide();
             ContentHome.convertToZone(result);
             ContentHome.events = ContentHome.events.length ? ContentHome.events.concat(result) : result;
@@ -229,7 +233,34 @@
             if (result.length == PAGINATION.eventsCount) {
               ContentHome.busy = false;
             }
-          }, errorEvents = function () {
+          }
+          else
+          {
+;            ContentHome.dummyData = [{
+              data: {
+                address: {},
+                addressTitle: "",
+                carouselImages: [],
+                dateCreated: 1451982804551,
+                deepLinkUrl: "",
+                description: "",
+                endDate: 1461522600000,
+                isAllDay: true,
+                links: [],
+                listImage: "",
+                repeat: {},
+                startDate: 1461522600000,
+                timeDisplay: "",
+                timezone: "",
+                title: "Lorem Ipsum Event"
+              }
+            }]
+            ContentHome.convertToZone(ContentHome.dummyData);
+            ContentHome.events = ContentHome.dummyData
+            searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
+            console.log("============", ContentHome.events)
+          }
+        } , errorEvents = function () {
             Buildfire.spinner.hide();
             console.log("Error fetching events");
           };
