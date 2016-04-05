@@ -69,29 +69,82 @@
           WidgetHome.NoDataFound = false;
           Buildfire.spinner.show();
           var successEvents = function (result) {
-            Buildfire.spinner.hide();
-            WidgetHome.convertToZone(result);
-            WidgetHome.events = [];
-            WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(result) : result;
-            console.log("aaaaaaaaaaaa",WidgetHome.events)
-            searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
-            if (result.length == PAGINATION.eventsCount) {
-              WidgetHome.busy = false;
-            }
-            WidgetHome.clickEvent = false;
-            if(result.length)
-              WidgetHome.NoDataFound = false;
-            else
-              WidgetHome.NoDataFound = true;
-            WidgetHome.isCalled = true;
+              if(result.length){
+                  Buildfire.spinner.hide();
+                  console.log("==============5", result)
+              WidgetHome.convertToZone(result);
+              WidgetHome.events = [];
+              WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(result) : result;
+
+              searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
+              if (result.length == PAGINATION.eventsCount) {
+                  WidgetHome.busy = false;
+              }
+              WidgetHome.clickEvent = false;
+              if (result.length)
+                  WidgetHome.NoDataFound = false;
+              else
+                  WidgetHome.NoDataFound = true;
+              WidgetHome.isCalled = true;
+          }
+              else
+              {
+                 WidgetHome.dummyData = [{
+                  data: {
+                      address: {},
+                      addressTitle: "",
+                      carouselImages: [],
+                      dateCreated: 1451982804551,
+                      deepLinkUrl: "",
+                      description: "",
+                      endDate: 1461522600000,
+                      isAllDay: true,
+                      links: [],
+                      listImage: "",
+                      repeat: {},
+                      startDate: 1461522600000,
+                      timeDisplay: "",
+                      timezone: "",
+                      title: "Lorem Ipsum Event"
+                  }
+              }]
+                  WidgetHome.convertToZone(WidgetHome.dummyData);
+                  WidgetHome.events = WidgetHome.dummyData
+                  searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
+                  console.log("============11", WidgetHome.events)
+              }
           }, errorEvents = function () {
             Buildfire.spinner.hide();
             console.log("Error fetching events");
           };
           var successEventsAll = function (resultAll) {
-              WidgetHome.allEvents = [];
-             // WidgetHome.convertToZone(resultAll);
-              WidgetHome.allEvents = resultAll;
+              if(resultAll.length) {
+                  WidgetHome.allEvents = [];
+                  console.log("==================",resultAll)
+                  // WidgetHome.convertToZone(resultAll);
+                  WidgetHome.allEvents = resultAll;
+              }else{
+                  WidgetHome.dummyData = [{
+                      data: {
+                          address: {},
+                          addressTitle: "",
+                          carouselImages: [],
+                          dateCreated: 1451982804551,
+                          deepLinkUrl: "",
+                          description: "",
+                          endDate: 1461522600000,
+                          isAllDay: true,
+                          links: [],
+                          listImage: "",
+                          repeat: {},
+                          startDate: 1461522600000,
+                          timeDisplay: "",
+                          timezone: "",
+                          title: "Lorem Ipsum Event"
+                      }
+                  }]
+                  WidgetHome.allEvents = WidgetHome.dummyData
+              }
             },
             errorEventsAll = function (error) {
               console.log("error", error)
