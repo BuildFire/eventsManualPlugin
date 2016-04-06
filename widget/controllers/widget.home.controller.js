@@ -69,7 +69,6 @@
           WidgetHome.NoDataFound = false;
           Buildfire.spinner.show();
           var successEvents = function (result) {
-              if(result.length){
                   Buildfire.spinner.hide();
                   console.log("==============5", result)
               WidgetHome.convertToZone(result);
@@ -86,33 +85,6 @@
               else
                   WidgetHome.NoDataFound = true;
               WidgetHome.isCalled = true;
-          }
-              else
-              {
-                 WidgetHome.dummyData = [{
-                  data: {
-                      address: {},
-                      addressTitle: "",
-                      carouselImages: [],
-                      dateCreated: 1451982804551,
-                      deepLinkUrl: "",
-                      description: "",
-                      endDate: 1461522600000,
-                      isAllDay: true,
-                      links: [],
-                      listImage: "",
-                      repeat: {},
-                      startDate: 1461522600000,
-                      timeDisplay: "",
-                      timezone: "",
-                      title: "Lorem Ipsum Event"
-                  }
-              }]
-                  WidgetHome.convertToZone(WidgetHome.dummyData);
-                  WidgetHome.events = WidgetHome.dummyData
-                  searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
-                  console.log("============11", WidgetHome.events)
-              }
           }, errorEvents = function () {
             Buildfire.spinner.hide();
             console.log("Error fetching events");
@@ -144,6 +116,12 @@
                       }
                   }]
                   WidgetHome.allEvents = WidgetHome.dummyData
+                  WidgetHome.clickEvent = false;
+                  WidgetHome.NoDataFound = false;
+                  WidgetHome.convertToZone(WidgetHome.dummyData);
+                  WidgetHome.events = WidgetHome.dummyData
+                  searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
+                  console.log("============11", WidgetHome.events)
               }
             },
             errorEventsAll = function (error) {
