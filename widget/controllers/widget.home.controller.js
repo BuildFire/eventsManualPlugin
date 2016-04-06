@@ -88,6 +88,25 @@
                   WidgetHome.isCalled = true;
               }
               else{
+                  WidgetHome.dummyData = [{
+                      data: {
+                          address: {},
+                          addressTitle: "",
+                          carouselImages: [],
+                          dateCreated: 1451982804551,
+                          deepLinkUrl: "",
+                          description: "",
+                          endDate: 1461522600000,
+                          isAllDay: true,
+                          links: [],
+                          listImage: "",
+                          repeat: {},
+                          startDate: 1461522600000,
+                          timeDisplay: "",
+                          timezone: "",
+                          title: "Lorem Ipsum Event"
+                      }
+                  }]
                   WidgetHome.clickEvent = false;
                   WidgetHome.NoDataFound = false;
                   WidgetHome.convertToZone(WidgetHome.dummyData);
