@@ -69,28 +69,39 @@
           WidgetHome.NoDataFound = false;
           Buildfire.spinner.show();
           var successEvents = function (result) {
+              if(result.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
                   Buildfire.spinner.hide();
                   console.log("==============5", result)
-              WidgetHome.convertToZone(result);
-              WidgetHome.events = [];
-              WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(result) : result;
+                  WidgetHome.convertToZone(result);
+                  WidgetHome.events = [];
+                  WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(result) : result;
 
-              searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
-              if (result.length == PAGINATION.eventsCount) {
-                  WidgetHome.busy = false;
+                  searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
+                  if (result.length == PAGINATION.eventsCount) {
+                      WidgetHome.busy = false;
+                  }
+                  WidgetHome.clickEvent = false;
+                  if (result.length)
+                      WidgetHome.NoDataFound = false;
+                  else
+                      WidgetHome.NoDataFound = true;
+                  WidgetHome.isCalled = true;
               }
-              WidgetHome.clickEvent = false;
-              if (result.length)
+              else{
+                  WidgetHome.clickEvent = false;
                   WidgetHome.NoDataFound = false;
-              else
-                  WidgetHome.NoDataFound = true;
-              WidgetHome.isCalled = true;
+                  WidgetHome.convertToZone(WidgetHome.dummyData);
+                  WidgetHome.events = WidgetHome.dummyData
+                  searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
+                  console.log("============11", WidgetHome.events)
+              }
           }, errorEvents = function () {
             Buildfire.spinner.hide();
             console.log("Error fetching events");
           };
           var successEventsAll = function (resultAll) {
-              if(resultAll.length) {
+              console.log("============",JSON.parse(localStorage.getItem("pluginLoadedFirst")))
+              if(resultAll.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
                   WidgetHome.allEvents = [];
                   console.log("==================",resultAll)
                   // WidgetHome.convertToZone(resultAll);
@@ -116,12 +127,7 @@
                       }
                   }]
                   WidgetHome.allEvents = WidgetHome.dummyData
-                  WidgetHome.clickEvent = false;
-                  WidgetHome.NoDataFound = false;
-                  WidgetHome.convertToZone(WidgetHome.dummyData);
-                  WidgetHome.events = WidgetHome.dummyData
-                  searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
-                  console.log("============11", WidgetHome.events)
+                  localStorage.setItem('pluginLoadedFirst', false);
               }
             },
             errorEventsAll = function (error) {

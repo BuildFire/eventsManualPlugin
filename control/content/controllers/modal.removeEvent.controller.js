@@ -10,6 +10,7 @@
           RemoveEventPopup.eventsManualData = eventsManualData;
         }
         RemoveEventPopup.ok = function () {
+          localStorage.setItem('pluginLoadedFirst', true);
           $modalInstance.close('yes');
         };
         RemoveEventPopup.cancel = function () {

@@ -227,6 +227,7 @@
         ContentEvent.addNewEvent = function () {
           ContentEvent.isNewEventInserted = true;
           ContentEvent.event.data.dateCreated = +new Date();
+          localStorage.setItem('pluginLoadedFirst', true);
           var successEvents = function (result) {
             console.log("Inserted", result.id);
             ContentEvent.isUpdating = false;

@@ -224,7 +224,7 @@
           Buildfire.spinner.show();
           var successEvents = function (result) {
             console.log("============", result)
-              if (result.length) {
+              if (result.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
                 console.log("============", result)
             Buildfire.spinner.hide();
             ContentHome.convertToZone(result);
