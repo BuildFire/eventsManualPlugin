@@ -106,11 +106,11 @@
                           timezone: "",
                           title: "Lorem Ipsum Event"
                       }
-                  }]
+                  }];
                   WidgetHome.clickEvent = false;
                   WidgetHome.NoDataFound = false;
                   WidgetHome.convertToZone(WidgetHome.dummyData);
-                  WidgetHome.events = WidgetHome.dummyData
+                  WidgetHome.events = WidgetHome.dummyData;
                   searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
                   console.log("============11", WidgetHome.events)
               }
@@ -119,10 +119,9 @@
             console.log("Error fetching events");
           };
           var successEventsAll = function (resultAll) {
-              console.log("============",JSON.parse(localStorage.getItem("pluginLoadedFirst")))
               if(resultAll.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
                   WidgetHome.allEvents = [];
-                  console.log("==================",resultAll)
+                  console.log("==================",resultAll);
                   // WidgetHome.convertToZone(resultAll);
                   WidgetHome.allEvents = resultAll;
               }else{
@@ -144,8 +143,8 @@
                           timezone: "",
                           title: "Lorem Ipsum Event"
                       }
-                  }]
-                  WidgetHome.allEvents = WidgetHome.dummyData
+                  }];
+                  WidgetHome.allEvents = WidgetHome.dummyData;
                   localStorage.setItem('pluginLoadedFirst', false);
               }
             },
@@ -219,7 +218,7 @@
             localStorageSavedEvents=[];
           }
           return localStorageSavedEvents.indexOf(eventId);
-        }
+        };
 
         WidgetHome.addEventsToCalendar = function (event, i) {
            /*Add to calendar event will add here*/
