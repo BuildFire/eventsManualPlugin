@@ -89,7 +89,13 @@
               }
               else{
                   if(!result.length && !JSON.parse(localStorage.getItem("pluginLoadedFirst"))){
+                      WidgetHome.NoDataFound = false;
+                  }
+                  if(!result.length && JSON.parse(localStorage.getItem("pluginLoadedFirst"))){
                       WidgetHome.NoDataFound = true;
+                  }
+                  if(result.length && !JSON.parse(localStorage.getItem("pluginLoadedFirst"))){
+                      WidgetHome.NoDataFound = false;
                   }
                   WidgetHome.clickEvent = false;
                   WidgetHome.dummyData = [{
