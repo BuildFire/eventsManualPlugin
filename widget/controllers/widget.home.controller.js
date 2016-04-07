@@ -69,6 +69,10 @@
           WidgetHome.NoDataFound = false;
           Buildfire.spinner.show();
           var successEvents = function (result) {
+              if (result.length)
+                  WidgetHome.NoDataFound = false;
+              else
+                  WidgetHome.NoDataFound = true;
               if(result.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
                   Buildfire.spinner.hide();
                   console.log("==============5", result)
@@ -81,13 +85,13 @@
                       WidgetHome.busy = false;
                   }
                   WidgetHome.clickEvent = false;
-                  if (result.length)
-                      WidgetHome.NoDataFound = false;
-                  else
-                      WidgetHome.NoDataFound = true;
                   WidgetHome.isCalled = true;
               }
               else{
+                  if(!result.length && !JSON.parse(localStorage.getItem("pluginLoadedFirst"))){
+                      WidgetHome.NoDataFound = true;
+                  }
+                  WidgetHome.clickEvent = false;
                   WidgetHome.dummyData = [{
                       data: {
                           address: {},
@@ -107,12 +111,7 @@
                           title: "Lorem Ipsum Event"
                       }
                   }]
-                  WidgetHome.clickEvent = false;
-                  WidgetHome.NoDataFound = false;
-                  WidgetHome.convertToZone(WidgetHome.dummyData);
-                  WidgetHome.events = WidgetHome.dummyData
-                  searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
-                  console.log("============11", WidgetHome.events)
+
               }
           }, errorEvents = function () {
             Buildfire.spinner.hide();
@@ -146,6 +145,11 @@
                       }
                   }]
                   WidgetHome.allEvents = WidgetHome.dummyData
+                  WidgetHome.NoDataFound = false;
+                  WidgetHome.convertToZone(WidgetHome.dummyData);
+                  WidgetHome.events = WidgetHome.dummyData
+                  searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
+                  console.log("============11", WidgetHome.events)
                   localStorage.setItem('pluginLoadedFirst', false);
               }
             },

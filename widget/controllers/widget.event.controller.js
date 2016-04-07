@@ -283,7 +283,7 @@
 
         $scope.$on("$destroy", function () {
           DataStore.clearListener();
-         //$rootScope.$broadcast('ROUTE_CHANGED');
+         $rootScope.$broadcast('ROUTE_CHANGED');
           for (var i in WidgetEvent.listeners) {
             if (WidgetEvent.listeners.hasOwnProperty(i)) {
               WidgetEvent.listeners[i]();
