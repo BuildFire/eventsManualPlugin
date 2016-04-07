@@ -118,10 +118,9 @@
             console.log("Error fetching events");
           };
           var successEventsAll = function (resultAll) {
-              console.log("============",JSON.parse(localStorage.getItem("pluginLoadedFirst")))
               if(resultAll.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
                   WidgetHome.allEvents = [];
-                  console.log("==================",resultAll)
+                  console.log("==================",resultAll);
                   // WidgetHome.convertToZone(resultAll);
                   WidgetHome.allEvents = resultAll;
               }else{
@@ -223,7 +222,7 @@
             localStorageSavedEvents=[];
           }
           return localStorageSavedEvents.indexOf(eventId);
-        }
+        };
 
         WidgetHome.addEventsToCalendar = function (event, i) {
            /*Add to calendar event will add here*/

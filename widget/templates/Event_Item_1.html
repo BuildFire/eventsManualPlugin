@@ -3,7 +3,7 @@
     <div class="plugin-banner clearfix"
          ng-if="WidgetEvent.event">
       <div id="carousel" ng-if="WidgetEvent.event.data.carouselImages.length"
-           build-fire-carousel=""></div>
+           build-fire-carousel="" ng-style="WidgetHome.data.content.images.length > 0 ? {'min-height': (9 * deviceWidth / 16) + 'px' } : {}"></div>
     </div>
     <div class="padded event-intro clearfix padding-bottom-five">
       <div class="event-date text-center pull-left">

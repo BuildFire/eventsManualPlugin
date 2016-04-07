@@ -75,9 +75,11 @@
                 <span class="icon icon-menu rotate-90 pull-left"></span>
 
                 <div
-                    class="event-media pull-left margin-left-ten"  ng-if="event.data.listImage">
-                  <img class="border-radius-three"
+                    class="event-media pull-left margin-left-ten">
+                  <img class="border-radius-three" ng-if="event.data.listImage"
                        ng-src="{{event.data.listImage | getImageUrl : 60:60}}">
+                  <img class="border-radius-three"  ng-if="!event.data.listImage"
+                       src="../../../styles/media/holder-1x1.png">
                 </div>
                 <div class="event-date text-center pull-left margin-left-ten"
                      ng-if="event.data.startDate">
