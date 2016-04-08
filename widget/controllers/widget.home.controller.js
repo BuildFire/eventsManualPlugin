@@ -69,15 +69,12 @@
           WidgetHome.NoDataFound = false;
           Buildfire.spinner.show();
           var successEvents = function (result) {
-              if (result.length)
-                  WidgetHome.NoDataFound = false;
-              else
-                  WidgetHome.NoDataFound = true;
+
               if(result.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
                   Buildfire.spinner.hide();
                   console.log("==============5", result)
                   WidgetHome.convertToZone(result);
-                  WidgetHome.events = [];
+
                   WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(result) : result;
 
                   searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
@@ -119,6 +116,10 @@
                   }]
 
               }
+              if (result.length || WidgetHome.events.length)
+                  WidgetHome.NoDataFound = false;
+              else
+                  WidgetHome.NoDataFound = true;
           }, errorEvents = function () {
             Buildfire.spinner.hide();
             console.log("Error fetching events");
@@ -198,7 +199,7 @@
           timeStampInMiliSec = +new Date(formattedDate);
           if(WidgetHome.calledDate !== timeStampInMiliSec){
             WidgetHome.clickEvent = true;
-            WidgetHome.events = null;
+            WidgetHome.events = [];
             searchOptions.skip = 0;
             WidgetHome.busy = false;
             WidgetHome.disabled = true;
