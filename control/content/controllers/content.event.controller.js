@@ -445,7 +445,6 @@
         };
 
         ContentEvent.gotToHome = function () {
-          buildfire.history.pop();
           $location.path('#/');
         };
 

@@ -274,7 +274,6 @@
 
         updateMasterItem(_data);
           ContentHome.gotToHome = function () {
-              buildfire.history.pop();
               $location.path('#/');
           };
         /*
