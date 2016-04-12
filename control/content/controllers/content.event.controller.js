@@ -23,7 +23,7 @@
 
         };
 
-        buildfire.history.push('Event', { elementToShow: 'Event' });
+
         //Scroll current view to top when page loaded.
         if(buildfire.navigation.scrollTop) {
           buildfire.navigation.scrollTop();
@@ -227,6 +227,7 @@
         ContentEvent.addNewEvent = function () {
           ContentEvent.isNewEventInserted = true;
           ContentEvent.event.data.dateCreated = +new Date();
+          localStorage.setItem('pluginLoadedFirst', true);
           var successEvents = function (result) {
             console.log("Inserted", result.id);
             ContentEvent.isUpdating = false;
@@ -444,7 +445,6 @@
         };
 
         ContentEvent.gotToHome = function () {
-          buildfire.history.pop();
           $location.path('#/');
         };
 

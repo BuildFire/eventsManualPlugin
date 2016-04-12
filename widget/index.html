@@ -46,7 +46,7 @@
       <div class="events-plugin">
         <div class="event-calendar-holder padded clearfix"
              ng-if="WidgetHome.allEvents">
-          <div class="event-calendar">
+          <div class="event-calendar" ng-style="{'min-height': (9 * deviceWidth / 11) + 'px' }">
             <div>
               <datepicker ng-model="$parent.dt" min-date="minDate"
                           show-weeks="false"
@@ -75,9 +75,12 @@
                 <span class="icon icon-menu rotate-90 pull-left"></span>
 
                 <div
-                    class="event-media pull-left margin-left-ten"  ng-if="event.data.listImage">
-                  <img class="border-radius-three"
-                       ng-src="{{event.data.listImage | getImageUrl : 60:60}}">
+                    class="event-media pull-left margin-left-ten">
+                  <img class="border-radius-three" ng-if="event.data.listImage"
+                       load-image="1x1" data-final-src="{{event.data.listImage |
+                       getImageUrl : 60:60}}">
+                  <img class="border-radius-three"  ng-if="!event.data.listImage"
+                       src="../../../styles/media/holder-1x1.png">
                 </div>
                 <div class="event-date text-center pull-left margin-left-ten"
                      ng-if="event.data.startDate">

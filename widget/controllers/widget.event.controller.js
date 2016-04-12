@@ -9,7 +9,6 @@
         WidgetEvent.data = {};
         WidgetEvent.event = {};
         var currentListLayout = null;
-
         //create new instance of buildfire carousel viewer
         WidgetEvent.view = null;
 
@@ -135,48 +134,53 @@
           return !(description == '<p><br data-mce-bogus="1"></p>');
         };
 
-        WidgetEvent.setAddedEventToLocalStorage= function(eventId){
+        WidgetEvent.setAddedEventToLocalStorage = function (eventId) {
           var addedEvents = [];
           addedEvents = JSON.parse(localStorage.getItem('localAddedEvents'));
-          if(!addedEvents){
-            addedEvents=[];
+          if (!addedEvents) {
+            addedEvents = [];
           }
           addedEvents.push(eventId);
           localStorage.setItem('localAddedEvents', JSON.stringify(addedEvents));
         }
 
-        WidgetEvent.getAddedEventToLocalStorage = function(eventId){
+        WidgetEvent.getAddedEventToLocalStorage = function (eventId) {
           var localStorageSavedEvents = [];
           localStorageSavedEvents = JSON.parse(localStorage.getItem('localAddedEvents'));
-          if(!localStorageSavedEvents){
-            localStorageSavedEvents=[];
+          if (!localStorageSavedEvents) {
+            localStorageSavedEvents = [];
           }
           return localStorageSavedEvents.indexOf(eventId);
         }
 
         WidgetEvent.addEventsToCalendar = function (event) {
           /*Add to calendar event will add here*/
-          var eventStartDate = new Date(event.data.startDate+" "+event.data.startTime);
+          var eventStartDate = new Date(event.data.startDate + " " + event.data.startTime);
           var eventEndDate;
-          if(event.data.endDate==''){
-            eventEndDate = new Date(event.data.startDate+" "+"11:59 PM")
+          if (event.data.endDate == '') {
+            eventEndDate = new Date(event.data.startDate + " " + "11:59 PM")
           }
           else {
-            eventEndDate = new Date(event.data.endDate+" "+event.data.endTime);
+            eventEndDate = new Date(event.data.endDate + " " + event.data.endTime);
           }
-          if(WidgetEvent.getAddedEventToLocalStorage(event.id)!=-1){
+          if (WidgetEvent.getAddedEventToLocalStorage(event.id) != -1) {
             alert("Event already added in calendar");
           }
           console.log("inCal3:", eventEndDate, event);
-          if (buildfire.device && buildfire.device.calendar && WidgetEvent.getAddedEventToLocalStorage(event.id)==-1) {
+          if (buildfire.device && buildfire.device.calendar && WidgetEvent.getAddedEventToLocalStorage(event.id) == -1) {
             buildfire.device.calendar.addEvent(
-                {
-                  title: event.data.title
-                  , location: event.data.address.location
-                  , notes: event.data.description
-                  , startDate: new Date(eventStartDate.getFullYear(), eventStartDate.getMonth(), eventStartDate.getDate(), eventStartDate.getHours(), eventStartDate.getMinutes(), eventStartDate.getSeconds())
-                  , endDate: new Date(eventEndDate.getFullYear(), eventEndDate.getMonth(), eventEndDate.getDate(), eventEndDate.getHours(), eventEndDate.getMinutes(), eventEndDate.getSeconds())
-                  , options: {
+              {
+                title: event.data.title
+                ,
+                location: event.data.address.location
+                ,
+                notes: event.data.description
+                ,
+                startDate: new Date(eventStartDate.getFullYear(), eventStartDate.getMonth(), eventStartDate.getDate(), eventStartDate.getHours(), eventStartDate.getMinutes(), eventStartDate.getSeconds())
+                ,
+                endDate: new Date(eventEndDate.getFullYear(), eventEndDate.getMonth(), eventEndDate.getDate(), eventEndDate.getHours(), eventEndDate.getMinutes(), eventEndDate.getSeconds())
+                ,
+                options: {
                   firstReminderMinutes: 120
                   ,
                   secondReminderMinutes: 5
@@ -185,18 +189,18 @@
                   ,
                   recurrenceEndDate: event.data.repeat.repeatType ? new Date(event.data.repeat.endOn) : new Date(2025, 6, 1, 0, 0, 0, 0, 0)
                 }
+              }
+              ,
+              function (err, result) {
+                if (err)
+                  console.log("******************" + err);
+                else {
+                  console.log('worked ' + JSON.stringify(result));
+                  WidgetEvent.setAddedEventToLocalStorage(event.id);
+                  alert("Event added to calendar");
+                  $scope.$digest();
                 }
-                ,
-                function (err, result) {
-                  if (err)
-                    console.log("******************" + err);
-                  else {
-                    console.log('worked ' + JSON.stringify(result));
-                    WidgetEvent.setAddedEventToLocalStorage(event.id);
-                    alert("Event added to calendar");
-                    $scope.$digest();
-                  }
-                }
+              }
             );
           }
           console.log(">>>>>>>>", event);
@@ -283,7 +287,7 @@
 
         $scope.$on("$destroy", function () {
           DataStore.clearListener();
-         //$rootScope.$broadcast('ROUTE_CHANGED');
+          $rootScope.$broadcast('ROUTE_CHANGED');
           for (var i in WidgetEvent.listeners) {
             if (WidgetEvent.listeners.hasOwnProperty(i)) {
               WidgetEvent.listeners[i]();

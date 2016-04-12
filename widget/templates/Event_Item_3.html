@@ -2,12 +2,12 @@
   <div class="events-plugin event-layout3">
     <div class="plugin-banner clearfix"
          ng-if="WidgetEvent.event">
-      <div id="carousel" ng-if="WidgetEvent.event.data.carouselImages.length"
+      <div ng-style="WidgetEvent.event.data.carouselImages.length > 0 ? {'min-height': (9 * deviceWidth / 16) + 'px' } : {}" id="carousel" ng-if="WidgetEvent.event.data.carouselImages.length"
            build-fire-carousel=""></div>
       <div class="plugin-slider text-center"
            ng-if="!WidgetEvent.event.data.carouselImages.length">
         <div class="plugin-slide">
-          <img src="assets/.images/1x1.png">
+          <img src="../../../styles/media/holder-1x1.png">
         </div>
       </div>
       <div class="info-circle small bg-white">

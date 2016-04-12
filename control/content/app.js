@@ -149,16 +149,9 @@
             Location.goTo("#/event/" + msg.id);
             break;
           default:
-          //  buildfire.history.pop();
-            Location.goToHome();
+             Location.goToHome();
         }
 
       };
-        //
-        //buildfire.history.onPop(function(data, err){
-        //   if(data.label !=  "Event" ){
-        //    Location.goToHome();
-        //  }
-        //})
     }]);
 })(window.angular,window.buildfire);
