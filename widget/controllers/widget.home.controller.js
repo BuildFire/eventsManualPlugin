@@ -74,15 +74,18 @@
 
               if(result.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
                   Buildfire.spinner.hide();
-                  console.log("==============5", result)
-                  WidgetHome.convertToZone(result);
-
+                   WidgetHome.convertToZone(result);
+                console.log("===========================", WidgetHome.events.length)
                   WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(result) : result;
 
                             searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
-                            if (result.length == PAGINATION.eventsCount) {
-                                WidgetHome.busy = false;
-                            }
+                            WidgetHome.isCalled = true;
+                                if (result.length <= PAGINATION.eventsCount ) {
+                                  WidgetHome.busy = false;
+                                 }
+                                     else{
+                                 WidgetHome.busy = true;
+                                 }
                             WidgetHome.clickEvent = false;
                             WidgetHome.isCalled = true;
                         }
@@ -129,7 +132,6 @@
           var successEventsAll = function (resultAll) {
               if(resultAll.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
                   WidgetHome.allEvents = [];
-                  console.log("==================",resultAll);
                   // WidgetHome.convertToZone(resultAll);
                   WidgetHome.allEvents = resultAll;
               }else{
@@ -157,7 +159,6 @@
                   WidgetHome.convertToZone(WidgetHome.dummyData);
                   WidgetHome.events = WidgetHome.dummyData
                   searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
-                  console.log("============11", WidgetHome.events)
                   localStorage.setItem('pluginLoadedFirst', false);
               }
             },
@@ -342,7 +343,7 @@
                                         limit: PAGINATION.eventsCount,
                                         sort: {"startDate": 1}
                                     };
-                                    WidgetHome.busy = false;
+                                  //  WidgetHome.busy = false;
                                     WidgetHome.loadMore();
                                     break;
                             }

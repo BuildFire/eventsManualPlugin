@@ -223,9 +223,7 @@
         var getManualEvents = function () {
           Buildfire.spinner.show();
           var successEvents = function (result) {
-            console.log("============", result)
-              if (result.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
-                console.log("============", result)
+               if (result.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
             Buildfire.spinner.hide();
             ContentHome.convertToZone(result);
             ContentHome.events = ContentHome.events.length ? ContentHome.events.concat(result) : result;
@@ -258,7 +256,6 @@
             ContentHome.convertToZone(ContentHome.dummyData);
             ContentHome.events = ContentHome.dummyData
             searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
-            console.log("============", ContentHome.events)
           }
         } , errorEvents = function () {
             Buildfire.spinner.hide();
