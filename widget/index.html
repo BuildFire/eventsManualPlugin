@@ -77,7 +77,8 @@
                 <div
                     class="event-media pull-left margin-left-ten">
                   <img class="border-radius-three" ng-if="event.data.listImage"
-                       ng-src="{{event.data.listImage | getImageUrl : 60:60}}">
+                       load-image="1x1" data-final-src="{{event.data.listImage |
+                       getImageUrl : 60:60}}">
                   <img class="border-radius-three"  ng-if="!event.data.listImage"
                        src="../../../styles/media/holder-1x1.png">
                 </div>
