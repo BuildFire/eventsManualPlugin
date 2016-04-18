@@ -202,6 +202,5 @@
           buildfire.navigation._goBackOne();
         }
       };
-
-    }]);
+      }]);
 })(window.angular, window.buildfire, window);
