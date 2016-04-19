@@ -153,5 +153,10 @@
         }
 
       };
+        buildfire.history.onPop(function(data, err){
+          if(data.label !=  "Event" ){
+            Location.goToHome();
+                     }
+                 })
     }]);
 })(window.angular,window.buildfire);
