@@ -218,9 +218,22 @@
         };
         // this method will be called when you change the order of items
         editor.onOrderChange = function (item, oldIndex, newIndex) {
-          var temp = ContentEvent.event.data.carouselImages[oldIndex];
-          ContentEvent.event.data.carouselImages[oldIndex] = ContentEvent.event.data.carouselImages[newIndex];
-          ContentEvent.event.data.carouselImages[newIndex] = temp;
+          var items = ContentEvent.event.data.carouselImages;
+
+          var tmp = items[oldIndex];
+
+          if (oldIndex < newIndex) {
+            for (var i = oldIndex + 1; i <= newIndex; i++) {
+              items[i - 1] = items[i];
+            }
+          } else {
+            for (var i = oldIndex - 1; i >= newIndex; i--) {
+              items[i + 1] = items[i];
+            }
+          }
+          items[newIndex] = tmp;
+
+          ContentEvent.event.data.carouselImages = items;
           $scope.$digest();
         };
 
