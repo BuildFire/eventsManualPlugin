@@ -60,7 +60,7 @@
         };
 
         ContentHome.convertToZone = function (result) {
-          for (var event = 0; event < result.length; event++) {
+          /*for (var event = 0; event < result.length; event++) {
             ContentHome.completeDateStart = moment(new Date(result[event].data.startDate))
               .add(ContentHome.partOfTime('HH', result[event].data.startTime), 'hour')
               .add(ContentHome.partOfTime('mm', result[event].data.startTime), 'minute')
@@ -71,7 +71,7 @@
               .add(ContentHome.partOfTime('ss', result[event].data.endTime), 'second');
             result[event].data.startDate = moment(ContentHome.completeDateStart).utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : ContentHome.getUTCZone()).format('MMM D, YYYY');
             result[event].data.endDate = moment(ContentHome.completeDateEnd).utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : ContentHome.getUTCZone()).format('MMM D, YYYY');
-          }
+          }*/
         };
 
         ContentHome.getUTCZone = function () {

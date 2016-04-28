@@ -23,7 +23,7 @@
         };
 
         //Scroll current view to top when page loaded.
-        if(buildfire.navigation.scrollTop) {
+        if (buildfire.navigation.scrollTop) {
           buildfire.navigation.scrollTop();
         }
         ContentEvent.event = {
@@ -55,14 +55,6 @@
           var successEvents = function (result) {
             console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&", result);
             ContentEvent.event = result;
-            if (ContentEvent.event.data.startDate)
-              ContentEvent.event.data.startDate = new Date(result.data.startDate);
-            if (ContentEvent.event.data.endDate)
-              ContentEvent.event.data.endDate = new Date(result.data.endDate);
-            if (ContentEvent.event.data.startTime)
-              ContentEvent.event.data.startTime = new Date(result.data.startTime);
-            if (ContentEvent.event.data.endTime)
-              ContentEvent.event.data.endTime = new Date(result.data.endTime);
             if (ContentEvent.event.data.address && ContentEvent.event.data.address.location) {
               ContentEvent.currentAddress = ContentEvent.event.data.address.location;
               ContentEvent.currentCoordinates = ContentEvent.event.data.address.location_coordinates;
@@ -74,8 +66,6 @@
               ContentEvent.displayTiming = ContentEvent.event.data.timeDisplay;
             }
             if (ContentEvent.event.data.repeat) {
-              if (ContentEvent.event.data.repeat.startDate)
-                ContentEvent.event.data.repeat.startDate = new Date(ContentEvent.event.data.repeat.startDate);
               if (ContentEvent.event.data.repeat.endOn)
                 ContentEvent.event.data.repeat.endOn = new Date(ContentEvent.event.data.repeat.endOn);
             }
@@ -92,89 +82,104 @@
         };
 
         ContentEvent.TimeZoneDropdownOptions = [
-          {name: "(GMT -12:00) Eniwetok, Kwajalein", value: "-12:00"},
-          {name: "(GMT -11:00) Midway Island, Samoa", value: "-11:00"},
-          {name: "(GMT -10:00) Hawaii", value: "-10:00"},
-          {name: "(GMT -09:00) Alaska", value: "-09:00"},
           {
-            name: "(GMT -08:00) Pacific Time (US &amp; Canada)",
-            value: "-08:00"
+            name: "(GMT -12:00) Eniwetok, Kwajalein", value: "-12:00", tz: "Pacific/Tarawa"
           },
           {
-            name: "(GMT -07:00) Mountain Time (US &amp; Canada)",
-            value: "-07:00"
+            name: "(GMT -11:00) Midway Island, Samoa", value: "-11:00", tz: "Pacific/Midway"
           },
           {
-            name: "(GMT -6:00) Central Time (US &amp; Canada), Mexico City",
-            value: "-06:00"
+            name: "(GMT -10:00) Hawaii", value: "-10:00", tz: "Pacific/Honolulu"
           },
           {
-            name: "(GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima",
-            value: "-05:00"
+            name: "(GMT -09:00) Alaska", value: "-09:00", tz: "America/Anchorage"
+          },
+          {
+            name: "(GMT -08:00) Pacific Time (US & Canada)",
+            value: "-08:00", tz: "America/Los_Angeles"
+          },
+          {
+            name: "(GMT -07:00) Mountain Time (US & Canada)",
+            value: "-07:00", tz: "America/Phoenix"
+          },
+          {
+            name: "(GMT -6:00) Central Time (US & Canada), Mexico City",
+            value: "-06:00", tz: "America/El_Salvador"
+          },
+          {
+            name: "(GMT -5:00) Eastern Time (US & Canada), Bogota, Lima",
+            value: "-05:00", tz: "America/Bogota"
           },
           {
             name: "(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz",
-            value: "-04:00"
+            value: "-04:00", tz: "Atlantic/Bermuda"
           },
-          {name: "(GMT -3:30) Newfoundland", value: "-03:30"},
+          {name: "(GMT -3:30) Newfoundland", value: "-03:30", tz: "America/St_Johns"},
           {
             name: "(GMT -3:00) Brazil, Buenos Aires, Georgetown",
-            value: "-03:00"
+            value: "-03:00", tz: "America/Sao_Paulo"
           },
-          {name: "(GMT -02:00) Mid-Atlantic", value: "-02:00"},
-          {name: "(GMT -01:00) Azores, Cape Verde Islands", value: "-01:00"},
+          {name: "(GMT -02:00) Mid-Atlantic", value: "-02:00", tz: "Atlantic/South_Georgia"},
+          {name: "(GMT -01:00) Azores, Cape Verde Islands", value: "-01:00", tz: "Atlantic/Cape_Verde"},
           {
             name: "(GMT) Western Europe Time, London, Lisbon, Casablanca",
-            value: "00:00"
+            value: "00:00", tz: "Europe/London"
           },
           {
             name: "(GMT +1:00 hour) Brussels, Copenhagen, Madrid, Paris",
-            value: "+01:00"
+            value: "+01:00", tz: "Europe/Paris"
           },
-          {name: "(GMT +2:00) Kaliningrad, South Africa", value: "+02:00"},
+          {name: "(GMT +2:00) Kaliningrad, South Africa", value: "+02:00", tz: "Africa/Johannesburg"},
           {
             name: "(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg",
-            value: "+03:00"
+            value: "+03:00", tz: "Asia/Riyadh"
           },
-          {name: "(GMT +3:30) Tehran", value: "+03:30"},
+          {name: "(GMT +3:30) Tehran", value: "+03:30", tz: "Asia/Tehran"},
           {
             name: "(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi",
-            value: "+04:00"
+            value: "+04:00", tz: "Asia/Tbilisi"
           },
-          {name: "(GMT +4:30) Kabul", value: "+04:30"},
+          {name: "(GMT +4:30) Kabul", value: "+04:30", tz: "Asia/Kabul"},
           {
             name: "(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent",
-            value: "+05:00"
+            value: "+05:00", tz: "Asia/Karachi"
           },
           {
             name: "(GMT +5:30) Bombay, Calcutta, Madras, New Delhi",
-            value: '+05:30'
+            value: '+05:30', tz: "Asia/Calcutta"
           },
-          {name: "(GMT +5:45) Kathmandu", value: "+05:45"},
-          {name: "(GMT +6:00) Almaty, Dhaka, Colombo", value: '+06:00'},
-          {name: "(GMT +7:00) Bangkok, Hanoi, Jakarta", value: "+07:00"},
+          {
+            name: "(GMT +5:45) Kathmandu", value: "+05:45", tz: "Asia/Katmandu"
+          },
+          {
+            name: "(GMT +6:00) Almaty, Dhaka, Colombo", value: '+06:00', tz: "Asia/Dhaka"
+          },
+          {
+            name: "(GMT +7:00) Bangkok, Hanoi, Jakarta", value: "+07:00", tz: "Asia/Bangkok"
+          },
           {
             name: "(GMT +8:00) Beijing, Perth, Singapore, Hong Kong",
-            value: "+08:00"
+            value: "+08:00", tz: "Asia/Singapore"
           },
           {
             name: "(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk",
-            value: "+09:00"
+            value: "+09:00", tz: "Asia/Tokyo"
           },
-          {name: "(GMT +09:30) Adelaide, Darwin", value: "+09:30"},
+          {
+            name: "(GMT +09:30) Adelaide, Darwin", value: "+09:30", tz: "Australia/Darwin"
+          },
           {
             name: "(GMT +10:00) Eastern Australia, Guam, Vladivostok",
-            value: "+10:00"
+            value: "+10:00", tz: "Pacific/Guam"
           },
           {
             name: "(GMT +11:00) Magadan, Solomon Islands, New Caledonia",
-            value: "+11:00"
+            value: "+11:00", tz: "Pacific/Noumea"
           },
           {
             name: "(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka",
-            value: "+12:00"
+            value: "+12:00", tz: "Pacific/Auckland"
           }
-
         ];
 
         ContentEvent.descriptionWYSIWYGOptions = {
@@ -226,6 +231,9 @@
           ContentEvent.isNewEventInserted = true;
           ContentEvent.event.data.dateCreated = +new Date();
           localStorage.setItem('pluginLoadedFirst', true);
+
+          ContentEvent.autoFillDates();
+
           var successEvents = function (result) {
             console.log("Inserted", result.id);
             ContentEvent.isUpdating = false;
@@ -243,17 +251,7 @@
             ContentEvent.isNewEventInserted = false;
             return console.error('There was a problem saving your data');
           };
-          if (ContentEvent.event.data.startDate)
-            ContentEvent.event.data.startDate = +new Date(ContentEvent.event.data.startDate);
-          if (ContentEvent.event.data.startTime)
-            ContentEvent.event.data.startTime = +new Date(ContentEvent.event.data.startTime);
-          if (ContentEvent.event.data.endTime)
-            ContentEvent.event.data.endTime = +new Date(ContentEvent.event.data.endTime);
-          if (ContentEvent.event.data.endDate)
-            ContentEvent.event.data.endDate = +new Date(ContentEvent.event.data.endDate);
           if (ContentEvent.event.data.repeat) {
-            if (ContentEvent.event.data.repeat.startDate)
-              ContentEvent.event.data.repeat.startDate = +new Date(ContentEvent.event.data.repeat.startDate);
             if (ContentEvent.event.data.repeat.endOn)
               ContentEvent.event.data.repeat.endOn = +new Date(ContentEvent.event.data.repeat.endOn);
           }
@@ -261,17 +259,7 @@
         };
 
         ContentEvent.updateEventData = function () {
-          if (ContentEvent.event.data.startDate)
-            ContentEvent.event.data.startDate = +new Date(ContentEvent.event.data.startDate);
-          if (ContentEvent.event.data.endDate)
-            ContentEvent.event.data.endDate = +new Date(ContentEvent.event.data.endDate);
-          if (ContentEvent.event.data.startTime)
-            ContentEvent.event.data.startTime = +new Date(ContentEvent.event.data.startTime);
-          if (ContentEvent.event.data.endTime)
-            ContentEvent.event.data.endTime = +new Date(ContentEvent.event.data.endTime);
           if (ContentEvent.event.data.repeat) {
-            if (ContentEvent.event.data.repeat.startDate)
-              ContentEvent.event.data.repeat.startDate = +new Date(ContentEvent.event.data.repeat.startDate);
             if (ContentEvent.event.data.repeat.endOn)
               ContentEvent.event.data.repeat.endOn = +new Date(ContentEvent.event.data.repeat.endOn);
           }
@@ -280,6 +268,27 @@
             if (err)
               return console.error('There was a problem saving your data');
           })
+        };
+
+        ContentEvent.autoFillDates = function () {
+          var _endDateObj, _startTimeObj = {};
+          if(!ContentEvent.event.data.isAllDay) {
+            _startTimeObj.date = new Date(ContentEvent.event.data.startTime);
+            _startTimeObj.minutes = _startTimeObj.date.getHours() * 60;
+            _startTimeObj.minutes += _startTimeObj.date.getMinutes();
+            _startTimeObj.millis = _startTimeObj.minutes * 60 * 1000;
+
+            ContentEvent.event.data.startDate += _startTimeObj.millis;
+            ContentEvent.event.data.startTime = ContentEvent.event.data.startDate;
+            ContentEvent.event.data.endDate = ContentEvent.event.data.startDate;
+
+            _endDateObj = new Date(ContentEvent.event.data.startDate);
+            _endDateObj.setHours(_endDateObj.getHours() + 1);
+
+            ContentEvent.event.data.endTime = _endDateObj.getTime();
+          } else {
+            ContentEvent.event.data.endDate = ContentEvent.event.data.startDate;
+          }
         };
 
         var tmrDelayForEvent = null;

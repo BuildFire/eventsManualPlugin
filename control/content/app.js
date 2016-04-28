@@ -141,6 +141,59 @@
           });
       }
     })
+    .directive('dateTime', function () {
+      return {
+        require: 'ngModel',
+        scope: {
+          event: "=",
+          timezone: "=",
+          hasTimezone: "="
+        },
+        link: function (scope, elem, attrs, ngModel) {
+
+          scope.timezoneSelected = (scope.hasTimezone === "SELECTED");
+
+          function convertToTZ(dateObj, offset) {
+            var date = dateObj.getDate(),
+              month = dateObj.getMonth() + 1,
+              year = dateObj.getFullYear(),
+              hours = dateObj.getHours(),
+              minutes = dateObj.getMinutes(),
+              dateStr = year + "-" + month + "-" + date + " " + hours + ":" + minutes;
+
+            if(offset && scope.hasTimezone === "SELECTED" && !scope.timezoneSelected) {
+              return new Date(dateStr + (offset && (" GMT" + offset) || ""));
+            } else {
+              return dateObj;
+            }
+          }
+
+          ngModel.$formatters.push(function (value) {
+            //to view
+            return convertToTZ(new Date(value), scope.timezone && scope.timezone.value || null);
+          });
+          ngModel.$parsers.push(function (value) {
+            //to model
+            return +convertToTZ(new Date(value), scope.timezone && scope.timezone.value || null);
+          });
+
+          var unbindWatch = scope.$watch("hasTimezone", function (newValue) {
+            if(newValue) {
+              scope.timezoneSelected = true;
+            }
+            if(newValue === "SELECTED") {
+              scope.event[attrs.modelField] =  +convertToTZ(new Date(scope.event[attrs.modelField]), scope.timezone && scope.timezone.value || null);
+            }
+          });
+
+          scope.$on("$destroy", function () {
+            if(unbindWatch && typeof unbindWatch === "function") {
+              unbindWatch();
+            }
+          });
+        }
+      };
+    })
     .run(['Location', '$rootScope', function (Location, $rootScope) {
       // Handler to receive message from widget
       buildfire.messaging.onReceivedMessage = function (msg) {
