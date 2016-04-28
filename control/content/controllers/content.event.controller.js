@@ -20,9 +20,7 @@
           "address": {},
           "description": "",
           "links": []
-
         };
-
 
         //Scroll current view to top when page loaded.
         if(buildfire.navigation.scrollTop) {

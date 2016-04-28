@@ -1,6 +1,6 @@
 'use strict';
 
-(function (angular,buildfire) {
+(function (angular, buildfire) {
   angular.module('eventsManualPluginContent', ['ngRoute', 'ui.tinymce', 'ui.bootstrap', 'ui.sortable', 'infinite-scroll', 'ngAnimate'])
     //injected ngRoute for routing
     .config(['$routeProvider', function ($routeProvider) {
@@ -149,14 +149,14 @@
             Location.goTo("#/event/" + msg.id);
             break;
           default:
-             Location.goToHome();
+            Location.goToHome();
         }
 
       };
-        buildfire.history.onPop(function(data, err){
-          if(data.label !=  "Event" ){
-            Location.goToHome();
-                     }
-                 })
+      buildfire.history.onPop(function (data, err) {
+        if (data.label != "Event") {
+          Location.goToHome();
+        }
+      })
     }]);
-})(window.angular,window.buildfire);
+})(window.angular, window.buildfire);
