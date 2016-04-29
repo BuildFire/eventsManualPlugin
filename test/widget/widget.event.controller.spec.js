@@ -79,52 +79,6 @@ describe('Unit : event Manual Plugin widget.manual.controller.js', function () {
     });
   });
 
-  describe('WidgetEvent.convertToZone', function () {
-    it('should invoke when WidgetEvent.convertToZone is called', function () {
-      var result={data: {
-        "title": "",
-        "listImage": "",
-        "deepLinkUrl": "",
-        "carouselImages": [],
-        "startDate": "",
-        "endDate": "",
-        "isAllDay": "",
-        "timezone": "",
-        "timeDisplay": "",
-        "repeat": {},
-        "addressTitle": "",
-        "address": {},
-        "description": "",
-        "links": []
-
-      }  };
-      WidgetEvent.convertToZone(result);
-    });
-
-    it('should invoke when WidgetEvent.convertToZone is called with endtime', function () {
-      var result={data: {
-        "title": "",
-        "listImage": "",
-        "deepLinkUrl": "",
-        "carouselImages": [],
-        "startDate": "",
-        "endDate": "21121212",
-        "isAllDay": "",
-        "timezone": "",
-        "timeDisplay": "",
-        "repeat": {},
-        "addressTitle": "",
-        "address": {},
-        "description": "",
-        "links": [],
-        "endTime":"1212121"
-
-      }  };
-      WidgetEvent.convertToZone(result);
-    });
-  });
-
-
   describe('WidgetEvent.cropImage', function () {
     it('should invoke when WidgetEvent.cropImage is called', function () {
       var setting={};

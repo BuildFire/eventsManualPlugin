@@ -96,7 +96,7 @@ describe('Unit: eventsManualPluginWidget widget app', function () {
 
     it('it should pass if "getTimeZone" filter returns month from given timestamp', function () {
       var result;
-      result = filter('getTimeZone')('+00:00');
+      result = filter('getTimeZone')('+0000');
       expect(result).toEqual('GMT');
     });
   });
