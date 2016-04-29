@@ -97,8 +97,9 @@
                     {{event.data.title}}</h4></a>
 
                   <p class="margin-zero ellipsis"
-                     ng-if="event.data.endTime && !event.data.isAllDay">{{event.data.startTime}} -
-                    {{event.data.endTime}} {{event.data.upadtedTtimeZone | getTimeZone}}</p>
+                     ng-if="event.data.endTime && !event.data.isAllDay">
+                    {{event.data.startTime | date: "hh:mm a"}} - {{event.data.endTime | date: "hh:mm a"}}
+                    {{event.data.startTime && (event.data.startTime | date: "Z" | getTimeZone) || ""}}</p>
                   <p class="margin-zero ellipsis"
                      ng-if="event.data.isAllDay">All Day</p>
                 </div>

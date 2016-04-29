@@ -27,9 +27,8 @@
 
           <p class="margin-bottom-zero ellipsis titleBarTextAndIcons"
              ng-if="WidgetEvent.event.data.endTime && !WidgetEvent.event.data.isAllDay">
-            {{WidgetEvent.event.data.startTime}} -
-            {{WidgetEvent.event.data.endTime}}
-            {{WidgetEvent.event.data.upadtedTtimeZone | getTimeZone}}</p>
+            {{WidgetEvent.event.data.startTime | date: "hh:mm a"}} - {{WidgetEvent.event.data.endTime | date: "hh:mm a"}}
+            {{WidgetEvent.event.data.startTime && (WidgetEvent.event.data.startTime | date: "Z" | getTimeZone) || ""}}</p>
           <p class="margin-bottom-zero ellipsis titleBarTextAndIcons"
              ng-if="WidgetEvent.event.data.isAllDay">
             All Day</p>
