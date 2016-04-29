@@ -55,6 +55,11 @@
           var successEvents = function (result) {
             console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&", result);
             ContentEvent.event = result;
+            if(ContentEvent.event.data.isAllDay) {
+              ContentEvent.event.data.timezone = "";
+              ContentEvent.event.data.timeDisplay = "USER";
+              ContentEvent.displayTiming = "USER"
+            }
             if (ContentEvent.event.data.address && ContentEvent.event.data.address.location) {
               ContentEvent.currentAddress = ContentEvent.event.data.address.location;
               ContentEvent.currentCoordinates = ContentEvent.event.data.address.location_coordinates;
@@ -262,6 +267,11 @@
           if (ContentEvent.event.data.repeat) {
             if (ContentEvent.event.data.repeat.endOn)
               ContentEvent.event.data.repeat.endOn = +new Date(ContentEvent.event.data.repeat.endOn);
+          }
+          if(ContentEvent.event.data.isAllDay) {
+            ContentEvent.event.data.timezone = "";
+            ContentEvent.event.data.timeDisplay = "USER";
+            ContentEvent.displayTiming = "USER"
           }
           DataStore.update(ContentEvent.event.id, ContentEvent.event.data, TAG_NAMES.EVENTS_MANUAL, function (err) {
             ContentEvent.isUpdating = false;
