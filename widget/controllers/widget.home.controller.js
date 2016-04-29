@@ -37,35 +37,6 @@
           return moment(new Date(paramTime)).format(format);
         };
 
-        WidgetHome.convertToZone = function (result) {
-          for (var event = 0; event < result.length; event++) {
-            WidgetHome.completeDateStart = moment(new Date(result[event].data.startDate))
-              .add(WidgetHome.partOfTime('HH', result[event].data.startTime), 'hour')
-              .add(WidgetHome.partOfTime('mm', result[event].data.startTime), 'minute')
-              .add(WidgetHome.partOfTime('ss', result[event].data.startTime), 'second');
-            if (result[event].data.endDate && result[event].data.endTime) {
-              WidgetHome.completeDateEnd = moment(new Date(result[event].data.endDate))
-                .add(WidgetHome.partOfTime('HH', result[event].data.endTime), 'hour')
-                .add(WidgetHome.partOfTime('mm', result[event].data.endTime), 'minute')
-                .add(WidgetHome.partOfTime('ss', result[event].data.endTime), 'second');
-              result[event].data.endDate = moment(WidgetHome.completeDateEnd)
-                .utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : WidgetHome.getUTCZone()).format('MMM D, YYYY');
-              result[event].data.endTime = moment(WidgetHome.completeDateEnd)
-                .utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : WidgetHome.getUTCZone()).format('hh:mm A');
-            }
-            else {
-              result[event].data.endDate = "";
-              result[event].data.endTime = "";
-            }
-            result[event].data.startDate = moment(WidgetHome.completeDateStart)
-              .utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : WidgetHome.getUTCZone()).format('MMM D, YYYY');
-            result[event].data.startTime = moment(WidgetHome.completeDateStart)
-              .utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : WidgetHome.getUTCZone()).format('hh:mm A');
-            result[event].data.upadtedTtimeZone = moment(WidgetHome.completeDateStart)
-              .utcOffset(result[event].data.timeDisplay == 'SELECTED' && result[event].data.timezone["value"] ? result[event].data.timezone["value"] : WidgetHome.getUTCZone()).format('Z');
-          }
-
-        };
         var getManualEvents = function () {
           WidgetHome.isCalled = false;
           WidgetHome.NoDataFound = false;
@@ -74,7 +45,6 @@
 
             if (result.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
               Buildfire.spinner.hide();
-              WidgetHome.convertToZone(result);
               console.log("===========================", WidgetHome.events.length)
               WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(result) : result;
 
@@ -132,7 +102,6 @@
           var successEventsAll = function (resultAll) {
               if (resultAll.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
                 WidgetHome.allEvents = [];
-                // WidgetHome.convertToZone(resultAll);
                 WidgetHome.allEvents = resultAll;
               } else {
                 WidgetHome.dummyData = [{
@@ -156,7 +125,6 @@
                 }];
                 WidgetHome.allEvents = WidgetHome.dummyData;
                 WidgetHome.NoDataFound = false;
-                WidgetHome.convertToZone(WidgetHome.dummyData);
                 WidgetHome.events = WidgetHome.dummyData;
                 searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
                 localStorage.setItem('pluginLoadedFirst', false);
