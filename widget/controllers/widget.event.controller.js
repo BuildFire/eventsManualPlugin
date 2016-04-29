@@ -9,7 +9,7 @@
         WidgetEvent.data = {};
         WidgetEvent.event = {};
         var currentListLayout = null;
-        buildfire.history.push('Event', { elementToShow: 'Event' });
+        buildfire.history.push('Event', {elementToShow: 'Event'});
         //create new instance of buildfire carousel viewer
         WidgetEvent.view = null;
 

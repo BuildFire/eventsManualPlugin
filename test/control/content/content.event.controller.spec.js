@@ -100,7 +100,7 @@ describe('Unit : Event Manual Plugin content.event.controller.js', function () {
             };
             ContentEvent.updateEventData();
             $rootScope.$apply();
-            expect(ContentEvent.event.data.startDate).toEqual(1476556200000);
+            expect(ContentEvent.event.data.startDate).toEqual('Sun Oct 16 2016 00:00:00 GMT+0530 (IST)');
         });
         it('it should pass if ContentEvent.changeTimeZone set value to timeZone', function () {
             ContentEvent.changeTimeZone('(GMT +1:00 hour) Brussels, Copenhagen, Madrid, Paris');
