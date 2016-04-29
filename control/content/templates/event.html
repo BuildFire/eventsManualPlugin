@@ -24,9 +24,14 @@
     </div>
 
     <div class="main col-md-9 pull-right">
-      <input type="date" placeholder="YYYY-MM-DD" class="form-control"
-             ng-model="ContentEvent.event.data.startDate"
-             ng-change="ContentEvent.setEndDay()">
+      <input type="date"
+             date-time=""
+             data-event="ContentEvent.event.data"
+             data-model-field="startDate"
+             data-has-timezone="ContentEvent.event.data.timeDisplay"
+             data-timezone="ContentEvent.event.data.timezone"
+             placeholder="YYYY-MM-DD" class="form-control"
+             ng-model="ContentEvent.event.data.startDate">
     </div>
   </div>
   <hr class="none">
@@ -38,8 +43,7 @@
       <div class="checkbox checkbox-primary margin-zero no-label">
         <input type="checkbox" id="allday"
                ng-model="ContentEvent.event.data.isAllDay"
-               ng-checked="ContentEvent.event.data.isAllDay"
-               ng-change="ContentEvent.setEndDay()">
+               ng-checked="ContentEvent.event.data.isAllDay">
         <label for="allday"></label>
       </div>
     </div>
@@ -50,7 +54,13 @@
       <span>Start Time *</span>
     </div>
     <div class="main col-md-9 pull-right">
-      <input type="time" placeholder="HH24:MI:SS" class="form-control"
+      <input type="time"
+             date-time=""
+             data-event="ContentEvent.event.data"
+             data-model-field="startTime"
+             data-has-timezone="ContentEvent.event.data.timeDisplay"
+             data-timezone="ContentEvent.event.data.timezone"
+             placeholder="HH24:MI:SS" class="form-control"
              ng-model="ContentEvent.event.data.startTime">
     </div>
   </div>
@@ -69,7 +79,13 @@
       <span>End Date</span>
     </div>
     <div class="main col-md-9 pull-right">
-      <input type="date" placeholder="YYYY-MM-DD" class="form-control"
+      <input type="date"
+             date-time=""
+             data-event="ContentEvent.event.data"
+             data-model-field="endDate"
+             data-has-timezone="ContentEvent.event.data.timeDisplay"
+             data-timezone="ContentEvent.event.data.timezone"
+             placeholder="YYYY-MM-DD" class="form-control"
              ng-model="ContentEvent.event.data.endDate">
     </div>
   </div>
@@ -79,12 +95,18 @@
       <span>End Time</span>
     </div>
     <div class="main col-md-9 pull-right">
-      <input type="time" class="form-control" placeholder="HH24:MI:SS"
+      <input type="time" class="form-control"
+             date-time=""
+             data-event="ContentEvent.event.data"
+             data-model-field="endTime"
+             data-has-timezone="ContentEvent.event.data.timeDisplay"
+             data-timezone="ContentEvent.event.data.timezone"
+             placeholder="HH24:MI:SS"
              ng-model="ContentEvent.event.data.endTime">
     </div>
   </div>
   <hr class="none">
-  <div class="item clearfix row" ng-if="!ContentEvent.event.data.isAllDay">
+  <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
       <span>Time Zone</span>
     </div>
@@ -108,7 +130,7 @@
     </div>
   </div>
   <hr class="none">
-  <div class="item clearfix row" ng-if="!ContentEvent.event.data.isAllDay">
+  <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
       <span>Time Display</span>
     </div>
@@ -143,7 +165,7 @@
     </div>
   </div>
   <div class="item clearfix row" ng-if="ContentEvent.event.data.repeat.isRepeating">
-	<hr class="none">
+    <hr class="none">
     <div class="labels col-md-3 padding-right-zero pull-left">
       <span>Repeats</span>
     </div>
@@ -569,7 +591,7 @@
     </div>
   </div>
   <div class="item clearfix row" ng-if="ContentEvent.currentCoordinates">
-	<hr class="none">
+    <hr class="none">
     <div class="main col-md-9 pull-right">
       <div google-map dragged-fn="ContentEvent.setDraggedLocation(data)"
            coordinates="ContentEvent.currentCoordinates"
