@@ -45,7 +45,10 @@
 
             if (result.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
               Buildfire.spinner.hide();
-              console.log("===========================", WidgetHome.events.length)
+              if(!WidgetHome.events){
+                WidgetHome.events = [];
+              }
+              console.log("===========================", WidgetHome.events.length);
               WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(result) : result;
 
               searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
