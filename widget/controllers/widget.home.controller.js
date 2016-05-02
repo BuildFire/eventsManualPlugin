@@ -170,7 +170,7 @@
           timeStampInMiliSec = +new Date(formattedDate);
           if (WidgetHome.calledDate !== timeStampInMiliSec) {
             WidgetHome.clickEvent = true;
-            WidgetHome.events = [];
+            WidgetHome.events = null;
             searchOptions.skip = 0;
             WidgetHome.busy = false;
             WidgetHome.disabled = true;

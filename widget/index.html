@@ -46,7 +46,7 @@
       <div class="events-plugin">
         <div class="event-calendar-holder padded clearfix"
              ng-if="WidgetHome.allEvents">
-          <div class="event-calendar" ng-style="{'min-height': (9 * deviceWidth / 11) + 'px' }">
+          <div class="event-calendar" ng-style="deviceWidth ? {'min-height': (9 * deviceWidth / 11) + 'px' }:{'min-height': (9 * 320 / 11) + 'px' }">
             <div>
               <datepicker ng-model="$parent.dt" min-date="minDate"
                           show-weeks="false"

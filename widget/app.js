@@ -189,22 +189,17 @@
         }
       };
 
-      //buildfire.navigation.onBackButtonClick = function () {
-      //  var reg = /^\/event/;
-      //  if (reg.test($location.path()) && $rootScope.showFeed == false) {
-      //    buildfire.messaging.sendMessageToControl({});
-      //    //   buildfire.history.pop();
-      //    $rootScope.showFeed = true;
-      //    Location.goTo('#/');
-      //  }
-      //  else {
-      //    buildfire.navigation._goBackOne();
-      //  }
-      //};
-        buildfire.history.onPop(function(data, err){
+      buildfire.navigation.onBackButtonClick = function () {
+        var reg = /^\/event/;
+        if (reg.test($location.path()) && $rootScope.showFeed == false) {
           buildfire.messaging.sendMessageToControl({});
+          //   buildfire.history.pop();
           $rootScope.showFeed = true;
           Location.goTo('#/');
-        })
-    }]);
+        }
+        else {
+          buildfire.navigation._goBackOne();
+        }
+      };
+      }]);
 })(window.angular, window.buildfire, window);
