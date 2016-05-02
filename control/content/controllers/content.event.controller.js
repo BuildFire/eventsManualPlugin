@@ -60,6 +60,9 @@
               ContentEvent.event.data.timeDisplay = "USER";
               ContentEvent.displayTiming = "USER"
             }
+            if(ContentEvent.event.data.startDate && ContentEvent.event.data.startTime && !ContentEvent.event.data.endTime){
+              ContentEvent.autoFillDates();
+            }
             if (ContentEvent.event.data.address && ContentEvent.event.data.address.location) {
               ContentEvent.currentAddress = ContentEvent.event.data.address.location;
               ContentEvent.currentCoordinates = ContentEvent.event.data.address.location_coordinates;
