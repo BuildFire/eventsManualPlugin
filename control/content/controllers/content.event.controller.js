@@ -5,6 +5,7 @@
     .controller('ContentEventCtrl', ['$scope', '$routeParams', 'Buildfire', 'DataStore', 'TAG_NAMES', 'ADDRESS_TYPE', '$location', 'Utils', '$timeout',
       function ($scope, $routeParams, Buildfire, DataStore, TAG_NAMES, ADDRESS_TYPE, $location, Utils, $timeout) {
         var ContentEvent = this;
+        var currentUserDate = +new Date();
         var _data = {
           "title": "",
           "listImage": "",
@@ -51,10 +52,39 @@
           return angular.equals(event, ContentEvent.masterEvent);
         };
 
+        function balanceDateTime() {
+          var _obj = {};
+          if(ContentEvent.event.data.startTime != ContentEvent.event.data.startDate) {
+            _obj.time = new Date(ContentEvent.event.data.startTime);
+            _obj.date = new Date(ContentEvent.event.data.startDate);
+            ContentEvent.event.data.startDate = +new Date(
+              _obj.date.getFullYear(),
+              _obj.date.getMonth(),
+              _obj.date.getDate(),
+              _obj.time.getHours(),
+              _obj.time.getMinutes()
+            );
+            ContentEvent.event.data.startTime = ContentEvent.event.data.startDate;
+          }
+          if(ContentEvent.event.data.endTime != ContentEvent.event.data.endDate) {
+            _obj.time = new Date(ContentEvent.event.data.endTime);
+            _obj.date = new Date(ContentEvent.event.data.endDate);
+            ContentEvent.event.data.endDate = +new Date(
+              _obj.date.getFullYear(),
+              _obj.date.getMonth(),
+              _obj.date.getDate(),
+              _obj.time.getHours(),
+              _obj.time.getMinutes()
+            );
+            ContentEvent.event.data.endTime = ContentEvent.event.data.endDate;
+          }
+        }
+
         ContentEvent.getItem = function (id) {
           var successEvents = function (result) {
             console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&", result);
             ContentEvent.event = result;
+            balanceDateTime();
             if(ContentEvent.event.data.isAllDay) {
               ContentEvent.event.data.timezone = "";
               ContentEvent.event.data.timeDisplay = "USER";
@@ -67,8 +97,8 @@
             if (ContentEvent.event.data.listImage) {
               listImage.loadbackground(ContentEvent.event.data.listImage);
             }
-            if (ContentEvent.event.data.timeDisplay) {
-              ContentEvent.displayTiming = ContentEvent.event.data.timeDisplay;
+            if (ContentEvent.event.data.timeDisplay && ContentEvent.event.data.timeDisplay == 'SELECTED') {
+              ContentEvent.displayTiming = ContentEvent.event.data.timeDisplay == "USER";
             }
             if (ContentEvent.event.data.repeat) {
               if (ContentEvent.event.data.repeat.endOn)
@@ -125,16 +155,16 @@
         };
         // this method will be called when you change the order of items
         editor.onOrderChange = function (item, oldIndex, newIndex) {
-          var items = ContentEvent.event.data.carouselImages;
-
-          var tmp = items[oldIndex];
+          var items = ContentEvent.event.data.carouselImages,
+            tmp = items[oldIndex],
+            i;
 
           if (oldIndex < newIndex) {
-            for (var i = oldIndex + 1; i <= newIndex; i++) {
+            for (i = oldIndex + 1; i <= newIndex; i++) {
               items[i - 1] = items[i];
             }
           } else {
-            for (var i = oldIndex - 1; i >= newIndex; i--) {
+            for (i = oldIndex - 1; i >= newIndex; i--) {
               items[i + 1] = items[i];
             }
           }
@@ -185,6 +215,7 @@
             ContentEvent.event.data.timeDisplay = "USER";
             ContentEvent.displayTiming = "USER"
           }
+          balanceDateTime();
           DataStore.update(ContentEvent.event.id, ContentEvent.event.data, TAG_NAMES.EVENTS_MANUAL, function (err) {
             ContentEvent.isUpdating = false;
             if (err)
@@ -379,7 +410,7 @@
         };
 
         ContentEvent.showUserTimeZone = function () {
-          return new Date();
+          return currentUserDate;
         };
 
         updateMasterEvent(ContentEvent.event);
