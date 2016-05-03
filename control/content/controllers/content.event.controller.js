@@ -86,107 +86,6 @@
           DataStore.getById(id, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
 
-        ContentEvent.TimeZoneDropdownOptions = [
-          {
-            name: "(GMT -12:00) Eniwetok, Kwajalein", value: "-12:00", tz: "Pacific/Tarawa"
-          },
-          {
-            name: "(GMT -11:00) Midway Island, Samoa", value: "-11:00", tz: "Pacific/Midway"
-          },
-          {
-            name: "(GMT -10:00) Hawaii", value: "-10:00", tz: "Pacific/Honolulu"
-          },
-          {
-            name: "(GMT -09:00) Alaska", value: "-09:00", tz: "America/Anchorage"
-          },
-          {
-            name: "(GMT -08:00) Pacific Time (US & Canada)",
-            value: "-08:00", tz: "America/Los_Angeles"
-          },
-          {
-            name: "(GMT -07:00) Mountain Time (US & Canada)",
-            value: "-07:00", tz: "America/Phoenix"
-          },
-          {
-            name: "(GMT -6:00) Central Time (US & Canada), Mexico City",
-            value: "-06:00", tz: "America/El_Salvador"
-          },
-          {
-            name: "(GMT -5:00) Eastern Time (US & Canada), Bogota, Lima",
-            value: "-05:00", tz: "America/Bogota"
-          },
-          {
-            name: "(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz",
-            value: "-04:00", tz: "Atlantic/Bermuda"
-          },
-          {name: "(GMT -3:30) Newfoundland", value: "-03:30", tz: "America/St_Johns"},
-          {
-            name: "(GMT -3:00) Brazil, Buenos Aires, Georgetown",
-            value: "-03:00", tz: "America/Sao_Paulo"
-          },
-          {name: "(GMT -02:00) Mid-Atlantic", value: "-02:00", tz: "Atlantic/South_Georgia"},
-          {name: "(GMT -01:00) Azores, Cape Verde Islands", value: "-01:00", tz: "Atlantic/Cape_Verde"},
-          {
-            name: "(GMT) Western Europe Time, London, Lisbon, Casablanca",
-            value: "00:00", tz: "Europe/London"
-          },
-          {
-            name: "(GMT +1:00 hour) Brussels, Copenhagen, Madrid, Paris",
-            value: "+01:00", tz: "Europe/Paris"
-          },
-          {name: "(GMT +2:00) Kaliningrad, South Africa", value: "+02:00", tz: "Africa/Johannesburg"},
-          {
-            name: "(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg",
-            value: "+03:00", tz: "Asia/Riyadh"
-          },
-          {name: "(GMT +3:30) Tehran", value: "+03:30", tz: "Asia/Tehran"},
-          {
-            name: "(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi",
-            value: "+04:00", tz: "Asia/Tbilisi"
-          },
-          {name: "(GMT +4:30) Kabul", value: "+04:30", tz: "Asia/Kabul"},
-          {
-            name: "(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent",
-            value: "+05:00", tz: "Asia/Karachi"
-          },
-          {
-            name: "(GMT +5:30) Bombay, Calcutta, Madras, New Delhi",
-            value: '+05:30', tz: "Asia/Calcutta"
-          },
-          {
-            name: "(GMT +5:45) Kathmandu", value: "+05:45", tz: "Asia/Katmandu"
-          },
-          {
-            name: "(GMT +6:00) Almaty, Dhaka, Colombo", value: '+06:00', tz: "Asia/Dhaka"
-          },
-          {
-            name: "(GMT +7:00) Bangkok, Hanoi, Jakarta", value: "+07:00", tz: "Asia/Bangkok"
-          },
-          {
-            name: "(GMT +8:00) Beijing, Perth, Singapore, Hong Kong",
-            value: "+08:00", tz: "Asia/Singapore"
-          },
-          {
-            name: "(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk",
-            value: "+09:00", tz: "Asia/Tokyo"
-          },
-          {
-            name: "(GMT +09:30) Adelaide, Darwin", value: "+09:30", tz: "Australia/Darwin"
-          },
-          {
-            name: "(GMT +10:00) Eastern Australia, Guam, Vladivostok",
-            value: "+10:00", tz: "Pacific/Guam"
-          },
-          {
-            name: "(GMT +11:00) Magadan, Solomon Islands, New Caledonia",
-            value: "+11:00", tz: "Pacific/Noumea"
-          },
-          {
-            name: "(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka",
-            value: "+12:00", tz: "Pacific/Auckland"
-          }
-        ];
-
         ContentEvent.descriptionWYSIWYGOptions = {
           plugins: 'advlist autolink link image lists charmap print preview',
           skin: 'lightgray',
@@ -331,10 +230,6 @@
               }
             }, 300);
           }
-        };
-
-        ContentEvent.changeTimeZone = function (timezone) {
-          ContentEvent.event.data.timezone = timezone;
         };
 
         ContentEvent.changeRepeatType = function (type) {
