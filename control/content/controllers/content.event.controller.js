@@ -483,6 +483,10 @@
             ContentEvent.event.data.endDate = ContentEvent.event.data.startDate;
         };
 
+        ContentEvent.showUserTimeZone = function () {
+          return new Date();
+        };
+
         updateMasterEvent(ContentEvent.event);
 
         if ($routeParams.id) {
