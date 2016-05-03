@@ -54,7 +54,7 @@
 
         function balanceDateTime() {
           var _obj = {};
-          if(ContentEvent.event.data.startTime != ContentEvent.event.data.startDate) {
+          if(ContentEvent.event.data.startTime != ContentEvent.event.data.startDate && +ContentEvent.event.data.startTime) {
             _obj.time = new Date(ContentEvent.event.data.startTime);
             _obj.date = new Date(ContentEvent.event.data.startDate);
             ContentEvent.event.data.startDate = +new Date(
@@ -66,7 +66,7 @@
             );
             ContentEvent.event.data.startTime = ContentEvent.event.data.startDate;
           }
-          if(ContentEvent.event.data.endTime != ContentEvent.event.data.endDate) {
+          if(ContentEvent.event.data.endTime != ContentEvent.event.data.endDate && +ContentEvent.event.data.endTime) {
             _obj.time = new Date(ContentEvent.event.data.endTime);
             _obj.date = new Date(ContentEvent.event.data.endDate);
             ContentEvent.event.data.endDate = +new Date(
