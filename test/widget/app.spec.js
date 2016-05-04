@@ -87,19 +87,6 @@ describe('Unit: eventsManualPluginWidget widget app', function () {
     });
   });
 
-  describe('Unit: getTimeZone filter', function () {
-    beforeEach(module('eventsManualPluginWidget'));
-    var filter;
-    beforeEach(inject(function (_$filter_) {
-      filter = _$filter_;
-    }));
-
-    it('it should pass if "getTimeZone" filter returns month from given timestamp', function () {
-      var result;
-      result = filter('getTimeZone')('+0000');
-      expect(result).toEqual('GMT');
-    });
-  });
 
   describe('Unit: run()', function () {
     var Buildfire;
