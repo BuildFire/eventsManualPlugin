@@ -410,7 +410,8 @@
         };
 
         ContentEvent.showUserTimeZone = function () {
-          return currentUserDate;
+          var timezone = jstz.determine();
+          return timezone.name() || "";
         };
 
         updateMasterEvent(ContentEvent.event);
