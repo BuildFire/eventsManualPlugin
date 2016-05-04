@@ -1,6 +1,6 @@
 'use strict';
 
-(function (angular,buildfire) {
+(function (angular, buildfire) {
   angular.module('eventsManualPluginContent', ['ngRoute', 'ui.tinymce', 'ui.bootstrap', 'ui.sortable', 'infinite-scroll', 'ngAnimate'])
     //injected ngRoute for routing
     .config(['$routeProvider', function ($routeProvider) {
@@ -141,6 +141,71 @@
           });
       }
     })
+    .filter('getTimeZone', function () {
+
+      var timeZoneObbr = {
+        "+0000": "GMT",
+        "-0100": "EGT",
+        "-1000": "CKT",
+        "+0100": "WAT",
+        "+1000": "AEST",
+        "-1100": "SST",
+        "-1200": "Y",
+        "+1030": "ACDT",
+        "+1100": "AEDT",
+        "-0200": "BRST",
+        "-0230": "NDT",
+        "-0300": "ADT",
+        "+1200": "NZST",
+        "+1245": "CHAST",
+        "-0330": "NST",
+        "+1300": "WST",
+        "+1345": "CHADT",
+        "+1400": "LINT",
+        "+0200": "EET",
+        "+0300": "AST",
+        "+0330": "IRST",
+        "+0400": "GET",
+        "-0400": "AST",
+        "+0430": "IRDT",
+        "+0500": "PKT",
+        "-0430": "VET",
+        "+0530": "IST",
+        "+0545": "NPT",
+        "+0600": "BST",
+        "-0500": "EST",
+        "-0600": "CST",
+        "+0630": "MMT",
+        "-0700": "MST",
+        "+0700": "ICT",
+        "-0800": "PST",
+        "+0800": "CST",
+        "-0900": "AKST",
+        "+0845": "ACWST",
+        "+0900": "JST",
+        "-0930": "MART",
+        "+0930": "ACST"
+      };
+      return function (input) {
+        return timeZoneObbr[input];
+      };
+    })
+    .directive('dateTime', function () {
+      return {
+        require: 'ngModel',
+        scope: {},
+        link: function (scope, elem, attrs, ngModel) {
+          ngModel.$formatters.push(function (value) {
+            //to view
+            return new Date(value);
+          });
+          ngModel.$parsers.push(function (value) {
+            //to model
+            return +new Date(value);
+          });
+        }
+      };
+    })
     .run(['Location', '$rootScope', function (Location, $rootScope) {
       // Handler to receive message from widget
       buildfire.messaging.onReceivedMessage = function (msg) {
@@ -149,9 +214,9 @@
             Location.goTo("#/event/" + msg.id);
             break;
           default:
-             Location.goToHome();
+            Location.goToHome();
         }
 
       };
     }]);
-})(window.angular,window.buildfire);
+})(window.angular, window.buildfire);

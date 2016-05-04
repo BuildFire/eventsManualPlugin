@@ -21,6 +21,8 @@
   <script src="assets/js/angular-touch.js"></script>
   <script src="assets/js/moment.min.js"></script>
   <script src="assets/js/ng-infinite-scroll.custom.js" type="application/javascript"></script>
+  <script src="assets/js/jstz.min.js" type="application/javascript"></script>
+  <script src="assets/js/moment-timezone.min.js" type="application/javascript"></script>
 
   <!-- Meta -->
   <meta charset="utf-8">
@@ -88,7 +90,7 @@
                     | getMonth}}</h3>
 
                   <h1 class="text-primary margin-zero">{{event.data.startDate
-                    |getDate}}</h1>
+                    | getDate}}</h1>
                 </div>
                 <div class="event-info pull-left margin-left-ten" ng-class="event.data.listImage?'titleWidth50':'titleWidth70'">
                   <a href="javascript:void(0)"
@@ -97,8 +99,9 @@
                     {{event.data.title}}</h4></a>
 
                   <p class="margin-zero ellipsis"
-                     ng-if="event.data.endTime && !event.data.isAllDay">{{event.data.startTime}} -
-                    {{event.data.endTime}} {{event.data.upadtedTtimeZone | getTimeZone}}</p>
+                     ng-if="event.data.endTime && !event.data.isAllDay">
+                    {{event.data.startTime | date: "hh:mm a"}} - {{event.data.endTime | date: "hh:mm a"}}
+                    {{event.data.startTime && (event.data.startTime | getTimeZone) || ""}}</p>
                   <p class="margin-zero ellipsis"
                      ng-if="event.data.isAllDay">All Day</p>
                 </div>

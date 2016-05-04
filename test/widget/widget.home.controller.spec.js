@@ -75,54 +75,6 @@ describe('Unit : event Manual Plugin widget.home.controller.js', function () {
     });
   });
 
-  describe('WidgetHome.convertToZone', function () {
-    it('should invoke when WidgetHome.convertToZone is called', function () {
-      var result={data: {
-        "title": "",
-        "listImage": "",
-        "deepLinkUrl": "",
-        "carouselImages": [],
-        "startDate": "",
-        "endDate": "",
-        "isAllDay": "",
-        "timezone": "",
-        "timeDisplay": "",
-        "repeat": {},
-        "addressTitle": "",
-        "address": {},
-        "description": "",
-        "links": []
-
-      }  };
-      WidgetHome.convertToZone(result);
-    });
-
-    it('should invoke when WidgetHome.convertToZone is called', function () {
-      var result={data: {
-        "title": "",
-        "listImage": "",
-        "deepLinkUrl": "",
-        "carouselImages": [],
-        "startDate": "",
-        "endDate": "1212111212",
-        "isAllDay": "",
-        "timezone": "",
-        "timeDisplay": "",
-        "repeat": {},
-        "addressTitle": "",
-        "address": {},
-        "description": "",
-        "links": [],
-        "endTime": "1212112121"
-
-      }  };
-      WidgetHome.convertToZone(result);
-    });
-
-
-  });
-
-
   describe('WidgetHome.addEvents', function () {
     it('should invoke when WidgetHome.addEvents is called', function () {
       WidgetHome.addEvents({},0,{});
