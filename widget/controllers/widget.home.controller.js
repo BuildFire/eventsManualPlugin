@@ -16,7 +16,7 @@
         $scope.dt = new Date();
         $rootScope.showFeed = true;
         $rootScope.deviceHeight = window.innerHeight;
-        $rootScope.deviceWidth = window.innerWidth;
+        $rootScope.deviceWidth = window.innerWidth || 320;
         var searchOptions = {
           skip: 0,
           limit: PAGINATION.eventsCount,
