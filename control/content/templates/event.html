@@ -1,9 +1,12 @@
 <div id="eventsManualPluginContent">
   <div class="carousel-padding-botton" id="carousel"></div>
   <!-- Show If No images -->
-  <div class="well text-center margin-bottom-zero border-none carousel-list-noImage-margin"
-       ng-hide="ContentEvent.event.data.carouselImages.length">
-    <p class="margin-zero">No images found.</p>
+  <div class="item clearfix row">
+  	<div class="col-md-9 pull-right">
+		<div class="well text-center margin-bottom-zero border-none" ng-hide="ContentEvent.event.data.carouselImages.length">
+    		<p class="margin-zero">No images found.</p>
+  		</div>
+  	</div>
   </div>
   <hr class="none">
   <div id="listImage"></div>

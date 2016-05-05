@@ -17,6 +17,9 @@
 .events-plugin .event-info{
 	margin-top:-2px;
 }
+.events-plugin .event-intro .event-info{
+	margin-top:-5px;
+}
 .events-plugin .event-info p + p{
 	margin-bottom:-1px !important;
 }
@@ -101,31 +104,35 @@
 	position:absolute;
 }
 .events-plugin .event-list .event-item .icon-menu{
-	font-size:25px;
-	margin-top:10px;
+	font-size:23px;
+	margin-top:8px;
 }
 .events-plugin .event-list .event-item .event-media{
-	width:44px;
-	height:44px;
+	width:38px;
+	height:38px;
 }
 .events-plugin .event-list .event-item .event-date h3{
-	font-size:19px;
-	line-height:19px;
+	font-size:17px;
+	line-height:17px;
 }
 .events-plugin .event-list .event-item .event-date h1{
-	font-size:29px;
-	line-height:25px;
+	font-size:24px;
+	line-height:20px;
 	position:relative;
 	top:4px;
 }
 .events-plugin .event-list .event-item .event-info h4{
 	margin-top:7px;
+	font-size:17px;
+	letter-spacing:-0.25px;
 }
 /*.events-plugin .event-list .event-item .event-info{*/
 	/*max-width:50%;*/
 /*}*/
 .events-plugin .event-list .event-item .event-info p{
 	line-height:19px;
+	font-size:13px;
+	letter-spacing:-0.25px;
 }
 .events-plugin .event-list .event-item .calendar-icon{
 	position:absolute;
