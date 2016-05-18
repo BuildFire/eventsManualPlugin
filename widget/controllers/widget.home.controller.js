@@ -37,12 +37,116 @@
           return moment(new Date(paramTime)).format(format);
         };
 
+        //translates the repeatType for recurring.js
+        var getRepeatUnit = function(repeatType) {
+          var repeat_unit;
+          switch (repeatType) {
+            case "Weekly":
+              repeat_unit = "w";
+              break;
+            case "Daily":
+              repeat_unit = "d";
+              break;
+            case "Monthly":
+              repeat_unit = "m";
+              break;
+            case "Yearly":
+              repeat_unit = "y";
+              break;
+          }
+          return repeat_unit;
+        }
+
+        //translates days from the result object to the number for recurring.js and places in array
+        var getRepeatDays = function(days) {
+          var repeat_days = [];
+          if (days.sunday) {
+            repeat_days.push(0);
+          }
+          if (days.saturday) {
+            repeat_days.push(6);
+          }
+          if (days.friday) {
+            repeat_days.push(5);
+          }
+          if (days.thursday) {
+            repeat_days.push(4);
+          }
+          if (days.wednesday) {
+            repeat_days.push(3);
+          }
+          if (days.tuesday) {
+            repeat_days.push(2);
+          }
+          if (days.monday) {
+            repeat_days.push(1);
+          }
+          return repeat_days;
+        }
+
+        //returns the last day of the month based on current date
+        var getLastDayMonth = function() {
+          var month = currentDate.getMonth();
+          var year = currentDate.getFullYear();
+          var last_day = new Date(year, month + 1, 0);
+          last_day = last_day.toISOString();
+          return last_day;
+        }
+
+        //this function will add repeating events to the result array to the repeat_until date passed in
+        var expandRepeatingEvents = function(result, repeat_until) {
+           var repeat_results = [];
+           for (var i = 0; i < result.length; i++) {
+              if (result[i].data.repeat.isRepeating) {
+                var repeat_unit = getRepeatUnit(result[i].data.repeat.repeatType);
+                if (repeat_unit === "w") {    //daily repeats do not specify day
+                  var repeat_days = getRepeatDays(result[i].data.repeat.days);
+                }
+                var pattern = {
+                  start: result[i].data.repeat.startDate,
+                  every: 1,
+                  unit: repeat_unit,
+                  end_condition: 'until',
+                  until: repeat_until,
+                  days: repeat_days
+                };
+
+                //use recurring.js from https://www.npmjs.com/package/recurring-date
+                var r = new RecurringDate(pattern);
+                var dates = r.generate();
+                //add repeating events to the result
+                for (var j = 0; j < dates.length; j++) {
+                    var temp_result = JSON.parse(JSON.stringify(result[i]));
+                    temp_result.data.startDate = Date.parse(dates[j]);
+                    temp_result.data.startTime = Date.parse(dates[j]);
+                    repeat_results.push(temp_result);
+                }
+              } else {
+                //save the result even if it is not repeating.
+                repeat_results.push(result[i]);
+              }
+           }
+           //sort the list by start date
+           repeat_results.sort(function (a, b){
+             if (a.data.startDate > b.data.startDate) {
+               return 1;
+             }
+             if (a.data.startDate < b.data.startDate) {
+               return -1;
+             }
+             // a must be equal to b
+             return 0;
+           });
+           return repeat_results;
+        }
+
         var getManualEvents = function () {
           WidgetHome.isCalled = false;
           WidgetHome.NoDataFound = false;
           Buildfire.spinner.show();
           var successEvents = function (result) {
-
+            var repeat_until = getLastDayMonth();
+            result = expandRepeatingEvents(result, repeat_until);
             if (result.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
               Buildfire.spinner.hide();
               if(!WidgetHome.events){
@@ -105,6 +209,8 @@
           var successEventsAll = function (resultAll) {
               if (resultAll.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
                 WidgetHome.allEvents = [];
+                var repeat_until = getLastDayMonth();
+                resultAll = expandRepeatingEvents(resultAll, repeat_until);
                 WidgetHome.allEvents = resultAll;
               } else {
                 WidgetHome.dummyData = [{
