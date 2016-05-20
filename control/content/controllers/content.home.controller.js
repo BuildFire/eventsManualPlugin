@@ -19,10 +19,6 @@
         };
         var regex;
         var ContentHome = this;
-      //  buildfire.history.push('Home', { elementToShow: 'Home' });
-        //buildfire.history.get({},function(err,data){
-        //  $rootScope.pluginName = data[0].label;
-        //});
 
         //Scroll current view to top when page loaded.
         if (buildfire.navigation.scrollTop) {
