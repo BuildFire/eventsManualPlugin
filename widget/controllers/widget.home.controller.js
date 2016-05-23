@@ -94,7 +94,7 @@
         }
 
         //this function will add repeating events to the result array to the repeat_until date passed in
-        var expandRepeatingEvents = function(result, repeat_until) {
+        var expandRepeatingEvents = function(result, repeat_until, AllEvent) {
            var repeat_results = [];
            for (var i = 0; i < result.length; i++) {
               if (result[i].data.repeat.isRepeating) {
@@ -102,14 +102,23 @@
                 if (repeat_unit === "w") {    //daily repeats do not specify day
                   var repeat_days = getRepeatDays(result[i].data.repeat.days);
                 }
+                if(!AllEvent)
                 var pattern = {
-                  start: result[i].data.repeat.startDate,
+                  start: +new Date(result[i].data.repeat.startDate) < timeStampInMiliSec? timeStampInMiliSec : result[i].data.repeat.startDate,
                   every: 1,
                   unit: repeat_unit,
                   end_condition: 'until',
                   until: result[i].data.repeat.isRepeating && result[i].data.repeat.endOn ? result[i].data.repeat.endOn: repeat_until,
                   days: repeat_days
-                };
+                };else
+                  var pattern = {
+                    start: result[i].data.repeat.startDate,
+                    every: 1,
+                    unit: repeat_unit,
+                    end_condition: 'until',
+                    until: result[i].data.repeat.isRepeating && result[i].data.repeat.endOn ? result[i].data.repeat.endOn : repeat_until,
+                    days: repeat_days
+                  }
 
                 //use recurring.js from https://www.npmjs.com/package/recurring-date
                 var r = new RecurringDate(pattern);
@@ -146,7 +155,7 @@
           Buildfire.spinner.show();
           var successEvents = function (result) {
             var repeat_until = getLastDayMonth();
-            result = expandRepeatingEvents(result, repeat_until);
+            result = expandRepeatingEvents(result, repeat_until, false);
             if (result.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
               Buildfire.spinner.hide();
               if(!WidgetHome.events){
@@ -210,7 +219,7 @@
               if (resultAll.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
                 WidgetHome.allEvents = [];
                 var repeat_until = getLastDayMonth();
-                resultAll = expandRepeatingEvents(resultAll, repeat_until);
+                resultAll = expandRepeatingEvents(resultAll, repeat_until, true);
                 WidgetHome.allEvents = resultAll;
               } else {
                 WidgetHome.dummyData = [{
