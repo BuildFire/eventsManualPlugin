@@ -107,7 +107,7 @@
                   every: 1,
                   unit: repeat_unit,
                   end_condition: 'until',
-                  until: repeat_until,
+                  until: result[i].data.repeat.isRepeating && result[i].data.repeat.endOn ? result[i].data.repeat.endOn: repeat_until,
                   days: repeat_days
                 };
 
@@ -244,7 +244,7 @@
             };
 
           DataStore.search({}, TAG_NAMES.EVENTS_MANUAL).then(successEventsAll, errorEventsAll);
-          searchOptions.filter = {"$or": [{"$json.startDate": {"$gt": timeStampInMiliSec}}, {"$json.startDate": {"$eq": timeStampInMiliSec}}]};
+          searchOptions.filter = {"$or": [{"$json.startDate": {"$gt": timeStampInMiliSec}}, {"$json.startDate": {"$eq": timeStampInMiliSec}}, {"$json.repeat.endOn": {"$gt": timeStampInMiliSec}}, {"$json.repeat.endOn": {"$eq": timeStampInMiliSec}}]};
           DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
 
