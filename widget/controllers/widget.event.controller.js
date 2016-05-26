@@ -8,7 +8,22 @@
         var WidgetEvent = this;
         WidgetEvent.data = {};
         WidgetEvent.event = {};
+        var breadCrumbFlag = true;
         var currentListLayout = null;
+
+        buildfire.history.get('pluginBreadcrumbsOnly', function (err, result) {
+          if(result && result.length) {
+            result.forEach(function(breadCrumb) {
+              if(breadCrumb.label == 'Event') {
+                breadCrumbFlag = false;
+              }
+            });
+          }
+          if(breadCrumbFlag) {
+            buildfire.history.push('Event', { elementToShow: 'Event' });
+          }
+        });
+
         //create new instance of buildfire carousel viewer
         WidgetEvent.view = null;
 

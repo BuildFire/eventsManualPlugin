@@ -21,14 +21,14 @@
         </div>
       </div>
       <div class="info-text">
-        <p class="margin-bottom-zero ellipsis">
+        <p class="margin-bottom-zero ellipsis whiteTheme">
           {{WidgetEvent.event.data.title}}</p>
 
-        <p class="margin-bottom-zero ellipsis"
+        <p class="margin-bottom-zero ellipsis whiteTheme"
            ng-if="WidgetEvent.event.data.endTime && !WidgetEvent.event.data.isAllDay">
           {{WidgetEvent.event.data.startTime | date: "hh:mm a"}} - {{WidgetEvent.event.data.endTime | date: "hh:mm a"}}
           {{WidgetEvent.event.data.startTime && (WidgetEvent.event.data.startTime | getTimeZone) || ""}}</p>
-          <p class="margin-bottom-zero ellipsis"
+          <p class="margin-bottom-zero ellipsis whiteTheme"
              ng-if="WidgetEvent.event.data.isAllDay">
               All Day</p>
       </div>
