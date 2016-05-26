@@ -100,6 +100,21 @@
               if (result[i].data.repeat.isRepeating) {
                 var repeat_unit = getRepeatUnit(result[i].data.repeat.repeatType);
                 if (repeat_unit === "w") {    //daily repeats do not specify day
+                  if(!result[i].data.repeat.days ){
+                    result[i].data.repeat.days={}
+                  }
+                  if(!Object.keys(result[i].data.repeat.days).length){
+                    switch(new Date(result[i].data.repeat.startDate).getDay()){
+                      case 0:result[i].data.repeat.days.sunday = true; break;
+                      case 1:result[i].data.repeat.days.monday = true; break;
+                      case 2:result[i].data.repeat.days.tuesday = true; break;
+                      case 3:result[i].data.repeat.days.wednesday = true; break;
+                      case 4:result[i].data.repeat.days.thursday = true; break;
+                      case 5:result[i].data.repeat.days.friday = true; break;
+                      case 6:result[i].data.repeat.days.saturday = true; break;
+                    }
+                    var repeat_days = getRepeatDays(result[i].data.repeat.days);
+                  }else
                   var repeat_days = getRepeatDays(result[i].data.repeat.days);
                 }
                 if(!AllEvent)
