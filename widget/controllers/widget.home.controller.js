@@ -14,6 +14,9 @@
         WidgetHome.clickEvent = false;
         WidgetHome.calledDate = null;
         $scope.dt = new Date();
+        var configureDate = new Date();
+        //var eventFromDate = moment(configureDate.getFullYear()+"-"+moment(configureDate).format("MM")+"-"+'01').unix()*1000;
+        var eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + ("0" + configureDate.getDate()).slice(-2) + "T00:00:00" + moment(new Date()).format("Z");
         $rootScope.showFeed = true;
         $rootScope.deviceHeight = window.innerHeight;
         $rootScope.deviceWidth = window.innerWidth || 320;
@@ -117,6 +120,7 @@
                   }else
                   var repeat_days = getRepeatDays(result[i].data.repeat.days);
                 }
+                console.log("====++++",result[i].data.repeat.endOn,repeat_until,eventFromDate )
                 if(!AllEvent)
                 var pattern = {
                   start: +new Date(result[i].data.repeat.startDate) < timeStampInMiliSec? timeStampInMiliSec : result[i].data.repeat.startDate,
@@ -124,6 +128,7 @@
                   unit: repeat_unit,
                   end_condition: 'until',
                   until: result[i].data.repeat.isRepeating && result[i].data.repeat.endOn ? result[i].data.repeat.endOn: repeat_until,
+                  //until: eventFromDate,
                   days: repeat_days
                 };else
                   var pattern = {
@@ -131,7 +136,8 @@
                     every: 1,
                     unit: repeat_unit,
                     end_condition: 'until',
-                    until: result[i].data.repeat.isRepeating && result[i].data.repeat.endOn ? result[i].data.repeat.endOn : repeat_until,
+                    //until: result[i].data.repeat.isRepeating && result[i].data.repeat.endOn ? result[i].data.repeat.endOn : repeat_until,
+                    until: eventFromDate,
                     days: repeat_days
                   }
 
@@ -236,6 +242,7 @@
                 var repeat_until = getLastDayMonth();
                 resultAll = expandRepeatingEvents(resultAll, repeat_until, true);
                 WidgetHome.allEvents = resultAll;
+                $scope.$broadcast('refreshDatepickers');
               } else {
                 WidgetHome.dummyData = [{
                   data: {
@@ -309,7 +316,19 @@
             WidgetHome.disabled = true;
             WidgetHome.calledDate = timeStampInMiliSec;
             WidgetHome.loadMore();
+          }else
+
+          if($rootScope.chnagedMonth==undefined){
+            configureDate = new Date();
+            eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).add(0,'months').format("MM") + "-" + ("0" + configureDate.getDate()).slice(-2) + "T00:00:00" + moment(new Date()).format("Z");
+          }else{
+            configureDate = new Date($rootScope.chnagedMonth);
+            eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).add(0,'months').format("MM") + "-" + ("0" + configureDate.getDate()).slice(-2) + "T00:00:00" + moment(new Date()).format("Z");
           }
+          $scope.$broadcast('refreshDatepickers');
+          $rootScope.$apply();
+          WidgetHome.loadMore();
+          console.log("====+++++===",+new Date(configureDate))
         };
 
         WidgetHome.addEvents = function (e, i, toggle) {
