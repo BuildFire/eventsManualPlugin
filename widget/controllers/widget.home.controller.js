@@ -16,7 +16,7 @@
         $scope.dt = new Date();
         var configureDate = new Date();
         //var eventFromDate = moment(configureDate.getFullYear()+"-"+moment(configureDate).format("MM")+"-"+'01').unix()*1000;
-        var eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + ("0" + configureDate.getDate()).slice(-2) + "T00:00:00" + moment(new Date()).format("Z");
+        var eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + 31 + "T00:00:00" + moment(new Date()).format("Z");
         $rootScope.showFeed = true;
         $rootScope.deviceHeight = window.innerHeight;
         $rootScope.deviceWidth = window.innerWidth || 320;
@@ -137,7 +137,7 @@
                     unit: repeat_unit,
                     end_condition: 'until',
                     //until: result[i].data.repeat.isRepeating && result[i].data.repeat.endOn ? result[i].data.repeat.endOn : repeat_until,
-                    until: eventFromDate,
+                    until: +new Date(eventFromDate) < +new Date(result[i].data.repeat.endOn)?eventFromDate:result[i].data.repeat.endOn,
                     days: repeat_days
                   }
 
@@ -145,6 +145,7 @@
                 var r = new RecurringDate(pattern);
                 var dates = r.generate();
                 //add repeating events to the result
+                console.log("-------------------mmmm",eventFromDate,Date.parse(dates[5]) )
                 for (var j = 0; j < dates.length; j++) {
                     var temp_result = JSON.parse(JSON.stringify(result[i]));
                     temp_result.data.startDate = Date.parse(dates[j]);
@@ -236,6 +237,12 @@
             Buildfire.spinner.hide();
             console.log("Error fetching events");
           };
+          WidgetHome.getAllEvents();
+          searchOptions.filter = {"$or": [{"$json.startDate": {"$gt": timeStampInMiliSec}}, {"$json.startDate": {"$eq": timeStampInMiliSec}}, {"$json.repeat.endOn": {"$gt": timeStampInMiliSec}}, {"$json.repeat.endOn": {"$eq": timeStampInMiliSec}}]};
+          DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
+        };
+
+        WidgetHome.getAllEvents = function(){
           var successEventsAll = function (resultAll) {
               if (resultAll.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
                 WidgetHome.allEvents = [];
@@ -275,10 +282,7 @@
             };
 
           DataStore.search({}, TAG_NAMES.EVENTS_MANUAL).then(successEventsAll, errorEventsAll);
-          searchOptions.filter = {"$or": [{"$json.startDate": {"$gt": timeStampInMiliSec}}, {"$json.startDate": {"$eq": timeStampInMiliSec}}, {"$json.repeat.endOn": {"$gt": timeStampInMiliSec}}, {"$json.repeat.endOn": {"$eq": timeStampInMiliSec}}]};
-          DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
-        };
-
+        }
         /**
          * init() function invocation to fetch previously saved user's data from datastore.
          */
@@ -316,19 +320,17 @@
             WidgetHome.disabled = true;
             WidgetHome.calledDate = timeStampInMiliSec;
             WidgetHome.loadMore();
-          }else
+          }
 
           if($rootScope.chnagedMonth==undefined){
             configureDate = new Date();
-            eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).add(0,'months').format("MM") + "-" + ("0" + configureDate.getDate()).slice(-2) + "T00:00:00" + moment(new Date()).format("Z");
+            eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + 31 + "T00:00:00" + moment(new Date()).format("Z");
           }else{
             configureDate = new Date($rootScope.chnagedMonth);
-            eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).add(0,'months').format("MM") + "-" + ("0" + configureDate.getDate()).slice(-2) + "T00:00:00" + moment(new Date()).format("Z");
+              eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + 31 + "T00:00:00" + moment(new Date()).format("Z");
           }
-          $scope.$broadcast('refreshDatepickers');
-          $rootScope.$apply();
-          WidgetHome.loadMore();
-          console.log("====+++++===",+new Date(configureDate))
+          WidgetHome.getAllEvents();
+          console.log("-------------------mmmm",new Date(eventFromDate))
         };
 
         WidgetHome.addEvents = function (e, i, toggle) {

@@ -166,9 +166,9 @@
 
             }, function (oldValue, newValue) {
               if (oldValue.getMonth() !== newValue.getMonth()) {
-                $rootScope.chnagedMonth = newValue;
+                $rootScope.chnagedMonth = oldValue;
               }
-            }, true);
+             }, true);
             if (ngModelCtrl) { //New Change for refreshing views
               // Listen for 'refreshDatepickers' event...//New Change for refreshing views
               scope.$on('refreshDatepickers', function refreshView() {//New Change for refreshing views
