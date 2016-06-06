@@ -21,8 +21,8 @@
         $rootScope.deviceHeight = window.innerHeight;
         $rootScope.deviceWidth = window.innerWidth || 320;
         var searchOptions = {
-          skip: 0,
-          limit: PAGINATION.eventsCount,
+          //skip: 0,
+          //limit: PAGINATION.eventsCount,
           sort: {"startDate": 1}
         };
         var currentDate = new Date();
@@ -120,19 +120,20 @@
                   }else
                   var repeat_days = getRepeatDays(result[i].data.repeat.days);
                 }
-                console.log("====++++",result[i].data.repeat.endOn,repeat_until,eventFromDate )
-                if(!AllEvent)
-                var pattern = {
-                  start: +new Date(result[i].data.repeat.startDate) < timeStampInMiliSec? timeStampInMiliSec : result[i].data.repeat.startDate,
-                  every: 1,
-                  unit: repeat_unit,
-                  end_condition: 'until',
-                  until: result[i].data.repeat.isRepeating && result[i].data.repeat.endOn ? result[i].data.repeat.endOn: repeat_until,
-                  //until: eventFromDate,
-                  days: repeat_days
-                };else
+                console.log("====++++",new Date(result[i].data.repeat.endOn),'\n',repeat_until,'\n',eventFromDate )
+                //if(!AllEvent)
+                //var pattern = {
+                //  start: +new Date(result[i].data.repeat.startDate) < timeStampInMiliSec? timeStampInMiliSec : result[i].data.repeat.startDate,
+                //  every: 1,
+                //  unit: repeat_unit,
+                //  end_condition: 'until',
+                //  until: +new Date(eventFromDate) < +new Date(result[i].data.repeat.endOn)?eventFromDate:result[i].data.repeat.endOn,
+                //  //until: eventFromDate,
+                //  days: repeat_days
+                //};else
+                console.log("---------------54545",eventFromDate)
                   var pattern = {
-                    start: result[i].data.repeat.startDate,
+                    start: AllEvent?result[i].data.repeat.startDate:+new Date(result[i].data.repeat.startDate) < timeStampInMiliSec && +new Date(result[i].data.startDate) < timeStampInMiliSec? timeStampInMiliSec : result[i].data.repeat.startDate,
                     every: 1,
                     unit: repeat_unit,
                     end_condition: 'until',
@@ -145,15 +146,15 @@
                 var r = new RecurringDate(pattern);
                 var dates = r.generate();
                 //add repeating events to the result
-                console.log("-------------------mmmm",eventFromDate,Date.parse(dates[5]) )
                 for (var j = 0; j < dates.length; j++) {
                     var temp_result = JSON.parse(JSON.stringify(result[i]));
                     temp_result.data.startDate = Date.parse(dates[j]);
                     temp_result.data.startTime = Date.parse(dates[j]);
                     repeat_results.push(temp_result);
-                }
+                 }
               } else {
                 //save the result even if it is not repeating.
+                if(result[i].data.startDate <= +new Date(eventFromDate))
                 repeat_results.push(result[i]);
               }
            }
@@ -177,23 +178,24 @@
           Buildfire.spinner.show();
           var successEvents = function (result) {
             var repeat_until = getLastDayMonth();
-            result = expandRepeatingEvents(result, repeat_until, false);
-            if (result.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
+           var resultRepeating = expandRepeatingEvents(result, repeat_until, false);
+            if (resultRepeating.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
               Buildfire.spinner.hide();
               if(!WidgetHome.events){
                 WidgetHome.events = [];
               }
-              console.log("===========================", WidgetHome.events.length);
-              WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(result) : result;
+               WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(resultRepeating) : resultRepeating;
 
               searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
+              console.log("===========================2222222", WidgetHome.events.length);
+
               WidgetHome.isCalled = true;
-              if (result.length <= PAGINATION.eventsCount) {
-                WidgetHome.busy = false;
-              }
-              else {
-                WidgetHome.busy = true;
-              }
+              //if (result.length <= PAGINATION.eventsCount) {
+              //  WidgetHome.busy = false;
+              //}
+              //else {
+              //  WidgetHome.busy = true;
+              //}
               WidgetHome.clickEvent = false;
               WidgetHome.isCalled = true;
             }
@@ -325,12 +327,13 @@
           if($rootScope.chnagedMonth==undefined){
             configureDate = new Date();
             eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + 31 + "T00:00:00" + moment(new Date()).format("Z");
+            WidgetHome.calledDate = +new Date(configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-01"+ "T00:00:00" + moment(new Date()).format("Z"))
           }else{
             configureDate = new Date($rootScope.chnagedMonth);
               eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + 31 + "T00:00:00" + moment(new Date()).format("Z");
+            WidgetHome.calledDate = +new Date(configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-01"+ "T00:00:00" + moment(new Date()).format("Z"))
           }
-          WidgetHome.getAllEvents();
-          console.log("-------------------mmmm",new Date(eventFromDate))
+          console.log("-------------------mmmm",+new Date(configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-01"+ "T00:00:00" + moment(new Date()).format("Z")))
         };
 
         WidgetHome.addEvents = function (e, i, toggle) {
@@ -461,8 +464,8 @@
                   WidgetHome.events = [];
                   WidgetHome.allEvents = null;
                   searchOptions = {
-                    skip: 0,
-                    limit: PAGINATION.eventsCount,
+                    //skip: 0,
+                    //limit: PAGINATION.eventsCount,
                     sort: {"startDate": 1}
                   };
                   //  WidgetHome.busy = false;
