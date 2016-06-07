@@ -14,9 +14,12 @@
         WidgetHome.clickEvent = false;
         WidgetHome.calledDate = null;
         $scope.dt = new Date();
+        WidgetHome.getLastDateOfMonth = function (date) {
+          return moment(date).endOf('month').format('DD');
+        };
         var configureDate = new Date();
         //var eventFromDate = moment(configureDate.getFullYear()+"-"+moment(configureDate).format("MM")+"-"+'01').unix()*1000;
-        var eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + 31 + "T00:00:00" + moment(new Date()).format("Z");
+        var eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
         $rootScope.showFeed = true;
         $rootScope.deviceHeight = window.innerHeight;
         $rootScope.deviceWidth = window.innerWidth || 320;
@@ -120,19 +123,8 @@
                   }else
                   var repeat_days = getRepeatDays(result[i].data.repeat.days);
                 }
-                console.log("====++++",new Date(result[i].data.repeat.endOn),'\n',repeat_until,'\n',eventFromDate )
-                //if(!AllEvent)
-                //var pattern = {
-                //  start: +new Date(result[i].data.repeat.startDate) < timeStampInMiliSec? timeStampInMiliSec : result[i].data.repeat.startDate,
-                //  every: 1,
-                //  unit: repeat_unit,
-                //  end_condition: 'until',
-                //  until: +new Date(eventFromDate) < +new Date(result[i].data.repeat.endOn)?eventFromDate:result[i].data.repeat.endOn,
-                //  //until: eventFromDate,
-                //  days: repeat_days
-                //};else
-                console.log("---------------54545",eventFromDate)
-                  var pattern = {
+
+               var pattern = {
                     start: AllEvent?result[i].data.repeat.startDate:+new Date(result[i].data.repeat.startDate) < timeStampInMiliSec && +new Date(result[i].data.startDate) < timeStampInMiliSec? timeStampInMiliSec : result[i].data.repeat.startDate,
                     every: 1,
                     unit: repeat_unit,
@@ -187,7 +179,6 @@
                WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(resultRepeating) : resultRepeating;
 
               searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
-              console.log("===========================2222222", WidgetHome.events.length);
 
               WidgetHome.isCalled = true;
               //if (result.length <= PAGINATION.eventsCount) {
@@ -326,14 +317,13 @@
 
           if($rootScope.chnagedMonth==undefined){
             configureDate = new Date();
-            eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + 31 + "T00:00:00" + moment(new Date()).format("Z");
+            eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
             WidgetHome.calledDate = +new Date(configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-01"+ "T00:00:00" + moment(new Date()).format("Z"))
           }else{
             configureDate = new Date($rootScope.chnagedMonth);
-              eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + 31 + "T00:00:00" + moment(new Date()).format("Z");
+              eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
             WidgetHome.calledDate = +new Date(configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-01"+ "T00:00:00" + moment(new Date()).format("Z"))
           }
-          console.log("-------------------mmmm",+new Date(configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-01"+ "T00:00:00" + moment(new Date()).format("Z")))
         };
 
         WidgetHome.addEvents = function (e, i, toggle) {
@@ -412,7 +402,6 @@
               }
             );
           }
-          console.log(">>>>>>>>", event);
         };
 
         WidgetHome.loadMore = function () {
@@ -428,13 +417,12 @@
         };
 
         $scope.getDayClass = function (date, mode) {
-
           var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
           var currentDay;
           for (var i = 0; i < WidgetHome.allEvents.length; i++) {
             currentDay = new Date(WidgetHome.allEvents[i].data.startDate).setHours(0, 0, 0, 0);
             if (dayToCheck === currentDay) {
-              return 'eventDate';
+              return 'eventDate avoid-clicks-none';
             }
           }
         };

@@ -332,7 +332,13 @@
 .avoid-clicks {
     pointer-events: none;
 }
+.avoid-clicks-none {
+	pointer-events: auto;
+}
 
+.glyphicon{
+	pointer-events: auto;
+}
 /*
 * Styling for message shown in case no events are there for selected date
 */
