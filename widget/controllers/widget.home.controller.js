@@ -142,6 +142,7 @@
                     var temp_result = JSON.parse(JSON.stringify(result[i]));
                     temp_result.data.startDate = Date.parse(dates[j]);
                     temp_result.data.startTime = Date.parse(dates[j]);
+                  if(result[i].data.startDate <= +new Date(eventFromDate))
                     repeat_results.push(temp_result);
                  }
               } else {
