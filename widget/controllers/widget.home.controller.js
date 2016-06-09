@@ -20,6 +20,7 @@
         var configureDate = new Date();
         //var eventFromDate = moment(configureDate.getFullYear()+"-"+moment(configureDate).format("MM")+"-"+'01').unix()*1000;
         var eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+        var recurringEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
         $rootScope.showFeed = true;
         $rootScope.deviceHeight = window.innerHeight;
         $rootScope.deviceWidth = window.innerWidth || 320;
@@ -130,7 +131,7 @@
                     unit: repeat_unit,
                     end_condition: 'until',
                     //until: result[i].data.repeat.isRepeating && result[i].data.repeat.endOn ? result[i].data.repeat.endOn : repeat_until,
-                    until: +new Date(eventFromDate) < +new Date(result[i].data.repeat.endOn)?eventFromDate:result[i].data.repeat.endOn,
+                    until: +new Date(eventFromDate) < +new Date(result[i].data.repeat.endOn) || new Date(result[i].data.repeat.endOn)=='Invalid Date'?recurringEndDate:result[i].data.repeat.endOn,
                     days: repeat_days
                   }
 
@@ -232,8 +233,8 @@
             console.log("Error fetching events");
           };
           WidgetHome.getAllEvents();
-          searchOptions.filter = {"$or": [{"$json.startDate": {"$gt": timeStampInMiliSec}}, {"$json.startDate": {"$eq": timeStampInMiliSec}}, {"$json.repeat.endOn": {"$gt": timeStampInMiliSec}}, {"$json.repeat.endOn": {"$eq": timeStampInMiliSec}}]};
-          DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
+       //   searchOptions.filter = {"$or": [{"$json.startDate": {"$gt": timeStampInMiliSec}}, {"$json.startDate": {"$eq": timeStampInMiliSec}}, {"$json.repeat.startDate": {"$gt": timeStampInMiliSec}}, {"$json.repeat.startDate": {"$eq": timeStampInMiliSec}}]};
+          DataStore.search({}, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
 
         WidgetHome.getAllEvents = function(){
