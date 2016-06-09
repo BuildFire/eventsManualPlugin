@@ -125,6 +125,9 @@
                   var repeat_days = getRepeatDays(result[i].data.repeat.days);
                 }
 
+                if((result[i].data.repeat.startDate && result[i].data.repeat.endOn==undefined) && new Date(result[i].data.repeat.startDate).getMonth() >= new Date(eventFromDate).getMonth()){
+                  recurringEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+                }
                var pattern = {
                     start: AllEvent?result[i].data.repeat.startDate:+new Date(result[i].data.repeat.startDate) < timeStampInMiliSec && +new Date(result[i].data.startDate) < timeStampInMiliSec? timeStampInMiliSec : result[i].data.repeat.startDate,
                     every: 1,
