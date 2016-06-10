@@ -168,7 +168,12 @@
                 //save the result even if it is not repeating.
 
                 if(result[i].data.startDate >= +new Date(eventStartDate) && result[i].data.startDate <= +new Date(eventRecEndDate))
-                repeat_results.push(result[i]);
+                  if(AllEvent)
+                    repeat_results.push(result[i]);
+                  else if(result[i].data.startDate>=timeStampInMiliSec){
+                    repeat_results.push(result[i]);
+                  }
+
               }
            }
            //sort the list by start date
@@ -484,7 +489,7 @@
                     //limit: PAGINATION.eventsCount,
                     sort: {"startDate": 1}
                   };
-                  //  WidgetHome.busy = false;
+                    WidgetHome.busy = false;
                   WidgetHome.loadMore();
                   break;
               }
