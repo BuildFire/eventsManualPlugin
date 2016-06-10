@@ -229,8 +229,14 @@
 
         ContentEvent.updateEventData = function () {
           if (ContentEvent.event.data.repeat) {
-            if (ContentEvent.event.data.repeat.endOn)
+             if (ContentEvent.event.data.repeat.endOn)
               ContentEvent.event.data.repeat.endOn = +new Date(ContentEvent.event.data.repeat.endOn);
+          }
+          if (ContentEvent.event.data.repeat) {
+            if (ContentEvent.event.data.repeat.end=='NEVER') {
+              ContentEvent.event.data.repeat.endOn = null;
+            }
+            $scope.$digest();
           }
           if(ContentEvent.event.data.isAllDay) {
             ContentEvent.event.data.timezone = "";
