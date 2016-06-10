@@ -17,10 +17,15 @@
         WidgetHome.getLastDateOfMonth = function (date) {
           return moment(date).endOf('month').format('DD');
         };
+        WidgetHome.getFirstDateOfMonth = function (date) {
+          return moment(date).startOf('month').format('DD');
+        };
         var configureDate = new Date();
-        //var eventFromDate = moment(configureDate.getFullYear()+"-"+moment(configureDate).format("MM")+"-"+'01').unix()*1000;
-        var eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+        //var eventEndDate = moment(configureDate.getFullYear()+"-"+moment(configureDate).format("MM")+"-"+'01').unix()*1000;
+        var eventRecEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+        var eventStartDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getFirstDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
         var recurringEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+        var eventRecEndDateCheck = null;
         $rootScope.showFeed = true;
         $rootScope.deviceHeight = window.innerHeight;
         $rootScope.deviceWidth = window.innerWidth || 320;
@@ -125,19 +130,25 @@
                   var repeat_days = getRepeatDays(result[i].data.repeat.days);
                 }
 
-                if((result[i].data.repeat.startDate && result[i].data.repeat.endOn==undefined) && new Date(result[i].data.repeat.startDate).getMonth() >= new Date(eventFromDate).getMonth()){
+                if((result[i].data.repeat.startDate && result[i].data.repeat.endOn==undefined) && new Date(result[i].data.repeat.startDate).getMonth() >= new Date(eventRecEndDate).getMonth()){
                   recurringEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
                 }
                var pattern = {
-                    start: AllEvent?result[i].data.repeat.startDate:+new Date(result[i].data.repeat.startDate) < timeStampInMiliSec && +new Date(result[i].data.startDate) < timeStampInMiliSec? timeStampInMiliSec : result[i].data.repeat.startDate,
+                   // start: AllEvent?result[i].data.repeat.startDate:+new Date(result[i].data.repeat.startDate) < timeStampInMiliSec && +new Date(result[i].data.startDate) < timeStampInMiliSec? timeStampInMiliSec : result[i].data.repeat.startDate,
+                    start: result[i].data.repeat.startDate,
                     every: 1,
                     unit: repeat_unit,
                     end_condition: 'until',
                     //until: result[i].data.repeat.isRepeating && result[i].data.repeat.endOn ? result[i].data.repeat.endOn : repeat_until,
-                    until: +new Date(eventFromDate) < +new Date(result[i].data.repeat.endOn) || new Date(result[i].data.repeat.endOn)=='Invalid Date'?recurringEndDate:result[i].data.repeat.endOn,
+                    //until: +new Date(eventEndDate) < +new Date(result[i].data.repeat.endOn) || new Date(result[i].data.repeat.endOn)=='Invalid Date'?recurringEndDate:result[i].data.repeat.endOn,
+                    until: +new Date(eventRecEndDate) < +new Date(result[i].data.repeat.endOn) ?eventRecEndDate:result[i].data.repeat.endOn,
                     days: repeat_days
                   }
-
+                if(result[i].data.repeat.endOn == undefined){
+                  var recurringEndDate = moment(result[i].data.repeat.startDate).format('YYYY') + "-" + moment(result[i].data.repeat.startDate).format("MM") + "-" +  WidgetHome.getLastDateOfMonth(result[i].data.repeat.startDate) + "T00:00:00" + moment(new Date()).format("Z");
+                  pattern.until = recurringEndDate;
+                }
+                console.log("----------LLLLLLLLl",result[i].data.repeat.startDate, result[i].data.repeat.endOn, moment(result[i].data.repeat.endOn).format('MM'))
                 //use recurring.js from https://www.npmjs.com/package/recurring-date
                 var r = new RecurringDate(pattern);
                 var dates = r.generate();
@@ -146,12 +157,17 @@
                     var temp_result = JSON.parse(JSON.stringify(result[i]));
                     temp_result.data.startDate = Date.parse(dates[j]);
                     temp_result.data.startTime = Date.parse(dates[j]);
-                  if(result[i].data.startDate <= +new Date(eventFromDate))
+                  if(temp_result.data.startTime >= +new Date(eventStartDate) &&  temp_result.data.startTime <= +new Date(eventRecEndDate))
+                  if(AllEvent)
                     repeat_results.push(temp_result);
+                  else if(temp_result.data.startTime>=timeStampInMiliSec){
+                    repeat_results.push(temp_result);
+                  }
                  }
               } else {
                 //save the result even if it is not repeating.
-                if(result[i].data.startDate <= +new Date(eventFromDate))
+
+                if(result[i].data.startDate >= +new Date(eventStartDate) && result[i].data.startDate <= +new Date(eventRecEndDate))
                 repeat_results.push(result[i]);
               }
            }
@@ -227,7 +243,7 @@
               }]
 
             }
-            if (result.length || WidgetHome.events.length)
+            if (WidgetHome.events.length)
               WidgetHome.NoDataFound = false;
             else
               WidgetHome.NoDataFound = true;
@@ -236,7 +252,7 @@
             console.log("Error fetching events");
           };
           WidgetHome.getAllEvents();
-       //   searchOptions.filter = {"$or": [{"$json.startDate": {"$gt": timeStampInMiliSec}}, {"$json.startDate": {"$eq": timeStampInMiliSec}}, {"$json.repeat.startDate": {"$gt": timeStampInMiliSec}}, {"$json.repeat.startDate": {"$eq": timeStampInMiliSec}}]};
+         //   searchOptions.filter = {"$or": [{"$json.startDate": {"$gt": timeStampInMiliSec}}, {"$json.startDate": {"$eq": timeStampInMiliSec}}, {"$json.repeat.startDate": {"$gt": timeStampInMiliSec}}, {"$json.repeat.startDate": {"$eq": timeStampInMiliSec}}]};
           DataStore.search({}, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
         };
 
@@ -322,12 +338,19 @@
 
           if($rootScope.chnagedMonth==undefined){
             configureDate = new Date();
-            eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+            eventStartDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getFirstDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+            eventRecEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
             WidgetHome.calledDate = +new Date(configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-01"+ "T00:00:00" + moment(new Date()).format("Z"))
           }else{
             configureDate = new Date($rootScope.chnagedMonth);
-              eventFromDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+            eventStartDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getFirstDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+            eventRecEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
             WidgetHome.calledDate = +new Date(configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-01"+ "T00:00:00" + moment(new Date()).format("Z"))
+            if(eventRecEndDateCheck!=eventRecEndDate) {
+              formattedDate = currentDate.getFullYear() + "-" + moment(currentDate).format("MM") + "-" + ("0" + currentDate.getDate()).slice(-2) + "T00:00:00" + moment(new Date()).format("Z");
+              timeStampInMiliSec = +new Date(formattedDate);
+              eventRecEndDateCheck = eventRecEndDate;
+            }
           }
         };
 
