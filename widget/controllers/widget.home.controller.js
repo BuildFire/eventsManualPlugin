@@ -136,7 +136,7 @@
                var pattern = {
                    // start: AllEvent?result[i].data.repeat.startDate:+new Date(result[i].data.repeat.startDate) < timeStampInMiliSec && +new Date(result[i].data.startDate) < timeStampInMiliSec? timeStampInMiliSec : result[i].data.repeat.startDate,
                     start: result[i].data.repeat.startDate,
-                    every: 1,
+                    every: result[i].data.repeat.repeatCount?result[i].data.repeat.repeatCount:1,
                     unit: repeat_unit,
                     end_condition: 'until',
                     //until: result[i].data.repeat.isRepeating && result[i].data.repeat.endOn ? result[i].data.repeat.endOn : repeat_until,
@@ -144,11 +144,22 @@
                     until: +new Date(eventRecEndDate) < +new Date(result[i].data.repeat.endOn) ?eventRecEndDate:result[i].data.repeat.endOn,
                     days: repeat_days
                   }
-                if(result[i].data.repeat.endOn == undefined){
+
+                if(result[i].data.repeat.endOn == undefined && result[i].data.repeat.end !== 'NEVER' ){
                   var recurringEndDate = moment(result[i].data.repeat.startDate).format('YYYY') + "-" + moment(result[i].data.repeat.startDate).format("MM") + "-" +  WidgetHome.getLastDateOfMonth(result[i].data.repeat.startDate) + "T00:00:00" + moment(new Date()).format("Z");
                   pattern.until = recurringEndDate;
                 }
-                console.log("----------LLLLLLLLl",result[i].data.repeat.startDate, result[i].data.repeat.endOn, moment(result[i].data.repeat.endOn).format('MM'))
+
+                if(result[i].data.repeat.endOn == undefined && result[i].data.repeat.end == 'NEVER'){
+                  pattern.until = eventRecEndDate;
+                }
+
+                if(result[i].data.repeat.end == 'AFTER'){
+                  pattern.end_condition = 'for';
+                  pattern.rfor = result[i].data.repeat.endAfter;
+                }
+
+                console.log("----------LLLLLLLLl",pattern)
                 //use recurring.js from https://www.npmjs.com/package/recurring-date
                 var r = new RecurringDate(pattern);
                 var dates = r.generate();
@@ -173,7 +184,6 @@
                   else if(result[i].data.startDate>=timeStampInMiliSec){
                     repeat_results.push(result[i]);
                   }
-
               }
            }
            //sort the list by start date
