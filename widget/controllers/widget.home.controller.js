@@ -544,6 +544,13 @@
             timeStampInMiliSec = +new Date(formattedDate);
             WidgetHome.loadMore();
           });
+           if($rootScope.showFeed){
+            WidgetHome.events = null;
+            WidgetHome.allEvents = null;
+            searchOptions.skip = 0;
+            WidgetHome.busy = false;
+            WidgetHome.loadMore();
+          }
           DataStore.onUpdate().then(null, null, onUpdateCallback);
         });
 
