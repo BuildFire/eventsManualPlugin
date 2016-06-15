@@ -394,20 +394,31 @@
 
         WidgetHome.addEventsToCalendar = function (event, i) {
           /*Add to calendar event will add here*/
-          var eventStartDate = new Date(event.data.startDate + " " + event.data.startTime);
+          var eventStartDate = new Date(event.data.startDate);
           var eventEndDate;
-          if (event.data.endDate == '') {
-            eventEndDate = new Date(event.data.startDate + " " + "11:59 PM")
+          if(event.data.endDate ==''){
+            eventEndDate = eventStartDate;
+          }else{
+            eventEndDate = new Date(event.data.endDate);
           }
-          else {
-            eventEndDate = new Date(event.data.endDate + " " + event.data.endTime);
+          if(event.data.repeat.isRepeating){
+            eventEndDate = eventStartDate;
           }
+          //if (event.data.endDate == '') {
+          //  eventEndDate = new Date(event.data.startDate + " " + "11:59 PM")
+          //}
+          //else {
+          //  eventEndDate = new Date(event.data.endDate + " " + event.data.endTime);
+          //}
+
+
+
           //  console.log("------------------",WidgetHome.getAddedEventToLocalStorage(event.id))
           //  WidgetHome.setAddedEventToLocalStorage(event.id);
           if (WidgetHome.getAddedEventToLocalStorage(event.id) != -1) {
             alert("Event already added in calendar");
           }
-          console.log("inCal3:", eventEndDate, event);
+          console.log("inCal3:", eventEndDate, event, eventStartDate);
           if (buildfire.device && buildfire.device.calendar && WidgetHome.getAddedEventToLocalStorage(event.id) == -1) {
             buildfire.device.calendar.addEvent(
               {
