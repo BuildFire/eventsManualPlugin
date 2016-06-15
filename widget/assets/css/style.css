@@ -332,7 +332,13 @@
 .avoid-clicks {
     pointer-events: none;
 }
+.avoid-clicks-none {
+	pointer-events: auto;
+}
 
+.glyphicon{
+	pointer-events: auto;
+}
 /*
 * Styling for message shown in case no events are there for selected date
 */
@@ -359,4 +365,14 @@
 }
 .titleWidth50{
 	max-width: 50%;
+}
+
+.text-muted {
+	color: rgba(119, 119, 119, 0.02) !important;
+	pointer-events: none !important;
+}
+
+.text-muted::after {
+	opacity: 0 !important;
+	pointer-events: none !important;
 }

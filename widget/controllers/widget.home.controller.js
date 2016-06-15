@@ -14,12 +14,24 @@
         WidgetHome.clickEvent = false;
         WidgetHome.calledDate = null;
         $scope.dt = new Date();
+        WidgetHome.getLastDateOfMonth = function (date) {
+          return moment(date).endOf('month').format('DD');
+        };
+        WidgetHome.getFirstDateOfMonth = function (date) {
+          return moment(date).startOf('month').format('DD');
+        };
+        var configureDate = new Date();
+        //var eventEndDate = moment(configureDate.getFullYear()+"-"+moment(configureDate).format("MM")+"-"+'01').unix()*1000;
+        var eventRecEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+        var eventStartDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getFirstDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+        var recurringEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+        var eventRecEndDateCheck = null;
         $rootScope.showFeed = true;
         $rootScope.deviceHeight = window.innerHeight;
         $rootScope.deviceWidth = window.innerWidth || 320;
         var searchOptions = {
-          skip: 0,
-          limit: PAGINATION.eventsCount,
+          //skip: 0,
+          //limit: PAGINATION.eventsCount,
           sort: {"startDate": 1}
         };
         var currentDate = new Date();
@@ -37,28 +49,180 @@
           return moment(new Date(paramTime)).format(format);
         };
 
+        //translates the repeatType for recurring.js
+        var getRepeatUnit = function(repeatType) {
+          var repeat_unit;
+          switch (repeatType) {
+            case "Weekly":
+              repeat_unit = "w";
+              break;
+            case "Daily":
+              repeat_unit = "d";
+              break;
+            case "Monthly":
+              repeat_unit = "m";
+              break;
+            case "Yearly":
+              repeat_unit = "y";
+              break;
+          }
+          return repeat_unit;
+        }
+
+        //translates days from the result object to the number for recurring.js and places in array
+        var getRepeatDays = function(days) {
+          var repeat_days = [];
+          if (days.sunday) {
+            repeat_days.push(0);
+          }
+          if (days.saturday) {
+            repeat_days.push(6);
+          }
+          if (days.friday) {
+            repeat_days.push(5);
+          }
+          if (days.thursday) {
+            repeat_days.push(4);
+          }
+          if (days.wednesday) {
+            repeat_days.push(3);
+          }
+          if (days.tuesday) {
+            repeat_days.push(2);
+          }
+          if (days.monday) {
+            repeat_days.push(1);
+          }
+          return repeat_days;
+        }
+
+        //returns the last day of the month based on current date
+        var getLastDayMonth = function() {
+          var month = currentDate.getMonth();
+          var year = currentDate.getFullYear();
+          var last_day = new Date(year, month + 1, 0);
+          last_day = last_day.toISOString();
+          return last_day;
+        }
+
+        //this function will add repeating events to the result array to the repeat_until date passed in
+        var expandRepeatingEvents = function(result, repeat_until, AllEvent) {
+           var repeat_results = [];
+           for (var i = 0; i < result.length; i++) {
+              if (result[i].data.repeat.isRepeating) {
+                var repeat_unit = getRepeatUnit(result[i].data.repeat.repeatType);
+                if (repeat_unit === "w") {    //daily repeats do not specify day
+                  if(!result[i].data.repeat.days ){
+                    result[i].data.repeat.days={}
+                  }
+                  if(!Object.keys(result[i].data.repeat.days).length){
+                    switch(new Date(result[i].data.repeat.startDate).getDay()){
+                      case 0:result[i].data.repeat.days.sunday = true; break;
+                      case 1:result[i].data.repeat.days.monday = true; break;
+                      case 2:result[i].data.repeat.days.tuesday = true; break;
+                      case 3:result[i].data.repeat.days.wednesday = true; break;
+                      case 4:result[i].data.repeat.days.thursday = true; break;
+                      case 5:result[i].data.repeat.days.friday = true; break;
+                      case 6:result[i].data.repeat.days.saturday = true; break;
+                    }
+                    var repeat_days = getRepeatDays(result[i].data.repeat.days);
+                  }else
+                  var repeat_days = getRepeatDays(result[i].data.repeat.days);
+                }
+
+                if((result[i].data.repeat.startDate && result[i].data.repeat.endOn==undefined) && new Date(result[i].data.repeat.startDate).getMonth() >= new Date(eventRecEndDate).getMonth()){
+                  recurringEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+                }
+               var pattern = {
+                   // start: AllEvent?result[i].data.repeat.startDate:+new Date(result[i].data.repeat.startDate) < timeStampInMiliSec && +new Date(result[i].data.startDate) < timeStampInMiliSec? timeStampInMiliSec : result[i].data.repeat.startDate,
+                    start: result[i].data.repeat.startDate,
+                    every: result[i].data.repeat.repeatCount?result[i].data.repeat.repeatCount:1,
+                    unit: repeat_unit,
+                    end_condition: 'until',
+                    //until: result[i].data.repeat.isRepeating && result[i].data.repeat.endOn ? result[i].data.repeat.endOn : repeat_until,
+                    //until: +new Date(eventEndDate) < +new Date(result[i].data.repeat.endOn) || new Date(result[i].data.repeat.endOn)=='Invalid Date'?recurringEndDate:result[i].data.repeat.endOn,
+                    until: +new Date(eventRecEndDate) < +new Date(result[i].data.repeat.endOn) ?eventRecEndDate:result[i].data.repeat.endOn,
+                    days: repeat_days
+                  }
+
+                if(result[i].data.repeat.endOn == undefined && result[i].data.repeat.end !== 'NEVER' ){
+                  var recurringEndDate = moment(result[i].data.repeat.startDate).format('YYYY') + "-" + moment(result[i].data.repeat.startDate).format("MM") + "-" +  WidgetHome.getLastDateOfMonth(result[i].data.repeat.startDate) + "T00:00:00" + moment(new Date()).format("Z");
+                  pattern.until = recurringEndDate;
+                }
+
+                if(result[i].data.repeat.endOn == undefined && result[i].data.repeat.end == 'NEVER'){
+                  pattern.until = eventRecEndDate;
+                }
+
+                if(result[i].data.repeat.end == 'AFTER'){
+                  pattern.end_condition = 'for';
+                  pattern.rfor = result[i].data.repeat.endAfter;
+                }
+
+                console.log("----------LLLLLLLLl",pattern)
+                //use recurring.js from https://www.npmjs.com/package/recurring-date
+                var r = new RecurringDate(pattern);
+                var dates = r.generate();
+                //add repeating events to the result
+                for (var j = 0; j < dates.length; j++) {
+                    var temp_result = JSON.parse(JSON.stringify(result[i]));
+                    temp_result.data.startDate = Date.parse(dates[j]);
+                    temp_result.data.startTime = Date.parse(dates[j]);
+                  if(temp_result.data.startTime >= +new Date(eventStartDate) &&  temp_result.data.startTime <= +new Date(eventRecEndDate))
+                  if(AllEvent)
+                    repeat_results.push(temp_result);
+                  else if(temp_result.data.startTime>=timeStampInMiliSec){
+                    repeat_results.push(temp_result);
+                  }
+                 }
+              } else {
+                //save the result even if it is not repeating.
+
+                if(result[i].data.startDate >= +new Date(eventStartDate) && result[i].data.startDate <= +new Date(eventRecEndDate))
+                  if(AllEvent)
+                    repeat_results.push(result[i]);
+                  else if(result[i].data.startDate>=timeStampInMiliSec){
+                    repeat_results.push(result[i]);
+                  }
+              }
+           }
+           //sort the list by start date
+           repeat_results.sort(function (a, b){
+             if (a.data.startDate > b.data.startDate) {
+               return 1;
+             }
+             if (a.data.startDate < b.data.startDate) {
+               return -1;
+             }
+             // a must be equal to b
+             return 0;
+           });
+           return repeat_results;
+        }
+
         var getManualEvents = function () {
           WidgetHome.isCalled = false;
           WidgetHome.NoDataFound = false;
           Buildfire.spinner.show();
           var successEvents = function (result) {
-
-            if (result.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
+            var repeat_until = getLastDayMonth();
+            var resultRepeating = expandRepeatingEvents(result, repeat_until, false);
+            if (resultRepeating || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
               Buildfire.spinner.hide();
               if(!WidgetHome.events){
                 WidgetHome.events = [];
               }
-              console.log("===========================", WidgetHome.events.length);
-              WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(result) : result;
+               WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(resultRepeating) : resultRepeating;
 
               searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
+
               WidgetHome.isCalled = true;
-              if (result.length <= PAGINATION.eventsCount) {
-                WidgetHome.busy = false;
-              }
-              else {
-                WidgetHome.busy = true;
-              }
+              //if (result.length <= PAGINATION.eventsCount) {
+              //  WidgetHome.busy = false;
+              //}
+              //else {
+              //  WidgetHome.busy = true;
+              //}
               WidgetHome.clickEvent = false;
               WidgetHome.isCalled = true;
             }
@@ -94,7 +258,7 @@
               }]
 
             }
-            if (result.length || WidgetHome.events.length)
+            if (WidgetHome.events.length)
               WidgetHome.NoDataFound = false;
             else
               WidgetHome.NoDataFound = true;
@@ -102,10 +266,19 @@
             Buildfire.spinner.hide();
             console.log("Error fetching events");
           };
+          WidgetHome.getAllEvents();
+         //   searchOptions.filter = {"$or": [{"$json.startDate": {"$gt": timeStampInMiliSec}}, {"$json.startDate": {"$eq": timeStampInMiliSec}}, {"$json.repeat.startDate": {"$gt": timeStampInMiliSec}}, {"$json.repeat.startDate": {"$eq": timeStampInMiliSec}}]};
+          DataStore.search({}, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
+        };
+
+        WidgetHome.getAllEvents = function(){
           var successEventsAll = function (resultAll) {
               if (resultAll.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
                 WidgetHome.allEvents = [];
+                var repeat_until = getLastDayMonth();
+                resultAll = expandRepeatingEvents(resultAll, repeat_until, true);
                 WidgetHome.allEvents = resultAll;
+                $scope.$broadcast('refreshDatepickers');
               } else {
                 WidgetHome.dummyData = [{
                   data: {
@@ -138,10 +311,7 @@
             };
 
           DataStore.search({}, TAG_NAMES.EVENTS_MANUAL).then(successEventsAll, errorEventsAll);
-          searchOptions.filter = {"$or": [{"$json.startDate": {"$gt": timeStampInMiliSec}}, {"$json.startDate": {"$eq": timeStampInMiliSec}}]};
-          DataStore.search(searchOptions, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
-        };
-
+        }
         /**
          * init() function invocation to fetch previously saved user's data from datastore.
          */
@@ -180,6 +350,23 @@
             WidgetHome.calledDate = timeStampInMiliSec;
             WidgetHome.loadMore();
           }
+
+          if($rootScope.chnagedMonth==undefined){
+            configureDate = new Date();
+            eventStartDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getFirstDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+            eventRecEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+            WidgetHome.calledDate = +new Date(configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-01"+ "T00:00:00" + moment(new Date()).format("Z"))
+          }else{
+            configureDate = new Date($rootScope.chnagedMonth);
+            eventStartDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getFirstDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+            eventRecEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+            WidgetHome.calledDate = +new Date(configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-01"+ "T00:00:00" + moment(new Date()).format("Z"))
+            if(eventRecEndDateCheck!=eventRecEndDate) {
+              formattedDate = currentDate.getFullYear() + "-" + moment(currentDate).format("MM") + "-" + ("0" + currentDate.getDate()).slice(-2) + "T00:00:00" + moment(new Date()).format("Z");
+              timeStampInMiliSec = +new Date(formattedDate);
+              eventRecEndDateCheck = eventRecEndDate;
+            }
+          }
         };
 
         WidgetHome.addEvents = function (e, i, toggle) {
@@ -207,20 +394,31 @@
 
         WidgetHome.addEventsToCalendar = function (event, i) {
           /*Add to calendar event will add here*/
-          var eventStartDate = new Date(event.data.startDate + " " + event.data.startTime);
+          var eventStartDate = new Date(event.data.startDate);
           var eventEndDate;
-          if (event.data.endDate == '') {
-            eventEndDate = new Date(event.data.startDate + " " + "11:59 PM")
+          if(event.data.endDate ==''){
+            eventEndDate = eventStartDate;
+          }else{
+            eventEndDate = new Date(event.data.endDate);
           }
-          else {
-            eventEndDate = new Date(event.data.endDate + " " + event.data.endTime);
+          if(event.data.repeat.isRepeating){
+            eventEndDate = eventStartDate;
           }
+          //if (event.data.endDate == '') {
+          //  eventEndDate = new Date(event.data.startDate + " " + "11:59 PM")
+          //}
+          //else {
+          //  eventEndDate = new Date(event.data.endDate + " " + event.data.endTime);
+          //}
+
+
+
           //  console.log("------------------",WidgetHome.getAddedEventToLocalStorage(event.id))
           //  WidgetHome.setAddedEventToLocalStorage(event.id);
           if (WidgetHome.getAddedEventToLocalStorage(event.id) != -1) {
             alert("Event already added in calendar");
           }
-          console.log("inCal3:", eventEndDate, event);
+          console.log("inCal3:", eventEndDate, event, eventStartDate);
           if (buildfire.device && buildfire.device.calendar && WidgetHome.getAddedEventToLocalStorage(event.id) == -1) {
             buildfire.device.calendar.addEvent(
               {
@@ -258,7 +456,6 @@
               }
             );
           }
-          console.log(">>>>>>>>", event);
         };
 
         WidgetHome.loadMore = function () {
@@ -274,13 +471,12 @@
         };
 
         $scope.getDayClass = function (date, mode) {
-
           var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
           var currentDay;
           for (var i = 0; i < WidgetHome.allEvents.length; i++) {
             currentDay = new Date(WidgetHome.allEvents[i].data.startDate).setHours(0, 0, 0, 0);
             if (dayToCheck === currentDay) {
-              return 'eventDate';
+              return 'eventDate avoid-clicks-none';
             }
           }
         };
@@ -310,11 +506,11 @@
                   WidgetHome.events = [];
                   WidgetHome.allEvents = null;
                   searchOptions = {
-                    skip: 0,
-                    limit: PAGINATION.eventsCount,
+                    //skip: 0,
+                    //limit: PAGINATION.eventsCount,
                     sort: {"startDate": 1}
                   };
-                  //  WidgetHome.busy = false;
+                    WidgetHome.busy = false;
                   WidgetHome.loadMore();
                   break;
               }
@@ -335,9 +531,10 @@
           searchOptions.skip = 0;
           WidgetHome.busy = false;
           WidgetHome.disabled = true;
-          $scope.dt = new Date();
-          formattedDate = currentDate.getFullYear() + "-" + moment(currentDate).format("MM") + "-" + ("0" + currentDate.getDate()).slice(-2) + "T00:00:00" + moment(new Date()).format("Z");
-          timeStampInMiliSec = +new Date(formattedDate);
+          configureDate = new Date();
+          eventStartDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getFirstDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+          eventRecEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+          WidgetHome.calledDate = +new Date(configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-01"+ "T00:00:00" + moment(new Date()).format("Z"))
           WidgetHome.loadMore();
         });
 
@@ -359,6 +556,13 @@
             timeStampInMiliSec = +new Date(formattedDate);
             WidgetHome.loadMore();
           });
+           if($rootScope.showFeed){
+            WidgetHome.events = null;
+            WidgetHome.allEvents = null;
+            searchOptions.skip = 0;
+            WidgetHome.busy = false;
+            WidgetHome.loadMore();
+          }
           DataStore.onUpdate().then(null, null, onUpdateCallback);
         });
 

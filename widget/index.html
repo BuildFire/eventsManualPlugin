@@ -20,9 +20,10 @@
   <script src="../../../scripts/angular/ui-bootstrap.min.js"></script>
   <script src="assets/js/angular-touch.js"></script>
   <script src="assets/js/moment.min.js"></script>
-  <script src="assets/js/ng-infinite-scroll.custom.js" type="application/javascript"></script>
+  <script src="../../../scripts/angular/ng-infinite-scroll.custom.js" type="application/javascript"></script>
   <script src="assets/js/jstz.min.js" type="application/javascript"></script>
   <script src="assets/js/moment-timezone.min.js" type="application/javascript"></script>
+  <script src="assets/js/recurring.js" type="application/javascript"></script>
 
   <!-- Meta -->
   <meta charset="utf-8">
@@ -55,7 +56,7 @@
                           max-mode="day" class="calendar-day" show-year="false"
                           custom-class="getDayClass(date, mode)"
                           ng-click="WidgetHome.getEvent()"
-                          ng-class="{'avoid-clicks':WidgetHome.clickEvent}"></datepicker>
+                          ng-class="{'avoid-clicks':1}"></datepicker>
             </div>
           </div>
         </div>

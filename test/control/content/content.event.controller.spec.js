@@ -94,7 +94,7 @@ describe('Unit : Event Manual Plugin content.event.controller.js', function () {
                 endDate: 'Sun Oct 16 2016 00:00:00 GMT+0530 (IST)',
                 endTime: 'Thu Jan 01 1970 12:59:00 GMT+0530 (IST)',
                 repeat: {
-                    startDate: 'Tue Jan 05 2016 00:00:00 GMT+0530 (IST)',
+                    startDate: new Date(),
                     endOn: 'Wed Jan 13 2016 00:00:00 GMT+0530 (IST)'
                 }
             };
