@@ -206,8 +206,8 @@
           Buildfire.spinner.show();
           var successEvents = function (result) {
             var repeat_until = getLastDayMonth();
-           var resultRepeating = expandRepeatingEvents(result, repeat_until, false);
-            if (resultRepeating.length || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
+            var resultRepeating = expandRepeatingEvents(result, repeat_until, false);
+            if (resultRepeating || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
               Buildfire.spinner.hide();
               if(!WidgetHome.events){
                 WidgetHome.events = [];
