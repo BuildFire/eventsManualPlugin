@@ -39,7 +39,7 @@
           if (event.isAllDay)
             return (event.startDate && event.title);
           else if (event.endTime)
-            return (event.startDate && event.title && event.startTime && !(+new Date(event.startTime) == +new Date(event.endTime)));
+            return (event.startDate && event.title && event.startTime && (+new Date(event.startTime) < +new Date(event.endTime)));
           else
             return (event.startDate && event.title && event.startTime);
         };
