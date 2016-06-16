@@ -45,7 +45,40 @@
             height: height
           });
       }
-    })
+    }).filter('cropImage', [function () {
+      return function (url, width, height, noDefault) {
+        if(noDefault)
+        {
+          if(!url)
+            return '';
+        }
+        return buildfire.imageLib.cropImage(url, {
+          width: width,
+          height: height
+        });
+      };
+    }])
+    .directive('backImg', ["$filter", "$rootScope", "$window" , function ($filter, $rootScope, $window) {
+      return function (scope, element, attrs) {
+        attrs.$observe('backImg', function (value) {
+          var img = '';
+          if (value) {
+            img = $filter("cropImage")(value, $window.innerWidth, $window.innerHeight, true);
+            element.attr("style", 'background:url(' + img + ') !important');
+            element.css({
+              'background-size': 'cover'
+            });
+          }
+          else {
+            img = "";
+            element.attr("style", '');
+            element.css({
+              'background-size': 'cover'
+            });
+          }
+        });
+      };
+    }])
     .filter('getTimeZone', function () {
       var timezone = jstz.determine();
       console.log(timezone.name());

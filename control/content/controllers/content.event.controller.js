@@ -6,6 +6,7 @@
       function ($scope, $routeParams, Buildfire, DataStore, TAG_NAMES, ADDRESS_TYPE, $location, Utils, $timeout) {
         var ContentEvent = this;
         var currentUserDate = +new Date();
+        ContentEvent.isValidRecurrance = true;
         var _data = {
           "title": "",
           "listImage": "",
@@ -39,7 +40,7 @@
           if (event.isAllDay)
             return (event.startDate && event.title);
           else if (event.endTime)
-            return (event.startDate && event.title && event.startTime && !(+new Date(event.startTime) == +new Date(event.endTime)));
+            return (event.startDate && event.title && event.startTime && (+new Date(event.startTime) < +new Date(event.endTime)));
           else
             return (event.startDate && event.title && event.startTime);
         };
@@ -53,8 +54,9 @@
         };
 
         function balanceDateTime() {
+
           var _obj = {};
-          if(ContentEvent.event.data.startTime != ContentEvent.event.data.startDate && +ContentEvent.event.data.startTime) {
+          if (ContentEvent.event.data.startTime != ContentEvent.event.data.startDate && +ContentEvent.event.data.startTime) {
             _obj.time = new Date(ContentEvent.event.data.startTime);
             _obj.date = new Date(ContentEvent.event.data.startDate);
             ContentEvent.event.data.startDate = +new Date(
@@ -66,7 +68,9 @@
             );
             ContentEvent.event.data.startTime = ContentEvent.event.data.startDate;
           }
-          if(ContentEvent.event.data.endTime != ContentEvent.event.data.endDate && +ContentEvent.event.data.endTime) {
+          if(!ContentEvent.event.data.endDate || ContentEvent.event.data.endDate <= 0) {
+            ContentEvent.event.data.endDate = ContentEvent.event.data.startDate;
+          } else if (ContentEvent.event.data.endTime != ContentEvent.event.data.endDate && +ContentEvent.event.data.endTime) {
             _obj.time = new Date(ContentEvent.event.data.endTime);
             _obj.date = new Date(ContentEvent.event.data.endDate);
             ContentEvent.event.data.endDate = +new Date(
@@ -85,6 +89,8 @@
             console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&", result);
             ContentEvent.event = result;
             balanceDateTime();
+            if(!ContentEvent.event.data.repeat.repeatCount)
+            ContentEvent.event.data.repeat.repeatCount = 1;
             if(ContentEvent.event.data.isAllDay) {
               ContentEvent.event.data.timezone = "";
               ContentEvent.event.data.timeDisplay = "USER";
@@ -107,19 +113,33 @@
             if (ContentEvent.event.data.repeat) {
               if (ContentEvent.event.data.repeat.startDate) {
                 ContentEvent.event.data.repeat.startDate = new Date(ContentEvent.event.data.repeat.startDate);
-                if(!ContentEvent.event.data.repeat.days ){
-                  ContentEvent.event.data.repeat.days={}
+                if (!ContentEvent.event.data.repeat.days) {
+                  ContentEvent.event.data.repeat.days = {}
                 }
-                 if(!Object.keys(ContentEvent.event.data.repeat.days).length){
-                   //ContentEvent.event.data.repeat.days=[];
-                  switch(ContentEvent.event.data.repeat.startDate.getDay()){
-                    case 0:ContentEvent.event.data.repeat.days.sunday = true; break;
-                    case 1:ContentEvent.event.data.repeat.days.monday = true; break;
-                    case 2:ContentEvent.event.data.repeat.days.tuesday = true; break;
-                    case 3:ContentEvent.event.data.repeat.days.wednesday = true; break;
-                    case 4:ContentEvent.event.data.repeat.days.thursday = true; break;
-                    case 5:ContentEvent.event.data.repeat.days.friday = true; break;
-                    case 6:ContentEvent.event.data.repeat.days.saturday = true; break;
+                if (!Object.keys(ContentEvent.event.data.repeat.days).length) {
+                  //ContentEvent.event.data.repeat.days=[];
+                  switch (ContentEvent.event.data.repeat.startDate.getDay()) {
+                    case 0:
+                      ContentEvent.event.data.repeat.days.sunday = true;
+                      break;
+                    case 1:
+                      ContentEvent.event.data.repeat.days.monday = true;
+                      break;
+                    case 2:
+                      ContentEvent.event.data.repeat.days.tuesday = true;
+                      break;
+                    case 3:
+                      ContentEvent.event.data.repeat.days.wednesday = true;
+                      break;
+                    case 4:
+                      ContentEvent.event.data.repeat.days.thursday = true;
+                      break;
+                    case 5:
+                      ContentEvent.event.data.repeat.days.friday = true;
+                      break;
+                    case 6:
+                      ContentEvent.event.data.repeat.days.saturday = true;
+                      break;
 
                   }
                 }
@@ -145,6 +165,14 @@
           theme: 'modern'
         };
 
+        ContentEvent.setZeeroValue = function(){
+          if (!ContentEvent.event.data.repeat.repeatCount|| ContentEvent.event.data.repeat.repeatCount==0)
+            ContentEvent.event.data.repeat.repeatCount = 1;
+        }
+        ContentEvent.setZeeroValueEndAfter = function(){
+          if (!ContentEvent.event.data.repeat.endAfter|| ContentEvent.event.data.repeat.endAfter==0)
+            ContentEvent.event.data.repeat.endAfter = 1;
+        }
         /**
          * link and sortable options
          */
@@ -229,56 +257,56 @@
 
         ContentEvent.updateEventData = function () {
           if (ContentEvent.event.data.repeat) {
-             if (ContentEvent.event.data.repeat.endOn)
+            if (ContentEvent.event.data.repeat.endOn)
               ContentEvent.event.data.repeat.endOn = +new Date(ContentEvent.event.data.repeat.endOn);
           }
           if (ContentEvent.event.data.repeat) {
-            if (ContentEvent.event.data.repeat.end=='NEVER') {
+            if (ContentEvent.event.data.repeat.end == 'NEVER') {
               ContentEvent.event.data.repeat.endOn = null;
             }
             $scope.$digest();
           }
-          if(ContentEvent.event.data.isAllDay) {
+          if (ContentEvent.event.data.isAllDay) {
             ContentEvent.event.data.timezone = "";
             ContentEvent.event.data.timeDisplay = "USER";
             ContentEvent.displayTiming = "USER"
           }
           if (ContentEvent.event.data.repeat) {
-            if (ContentEvent.event.data.repeat.startDate!=ContentEvent.event.lastSavedStartDate){
-           //   ContentEvent.event.data.repeat.startDate = +new Date(ContentEvent.event.data.repeat.startDate);
-           switch(ContentEvent.event.data.repeat.startDate.getDay()) {
-              case 0:
-                ContentEvent.event.data.repeat.days={};
-                ContentEvent.event.data.repeat.days.sunday = true;
-                break;
-              case 1:
-                ContentEvent.event.data.repeat.days={};
-                ContentEvent.event.data.repeat.days.monday = true;
-                break;
-              case 2:
-                ContentEvent.event.data.repeat.days={};
-                ContentEvent.event.data.repeat.days.tuesday = true;
-                break;
-              case 3:
-                ContentEvent.event.data.repeat.days={};
-                ContentEvent.event.data.repeat.days.wednesday = true;
-                break;
-              case 4:
-                ContentEvent.event.data.repeat.days={};
-                ContentEvent.event.data.repeat.days.thursday = true;
-                break;
-              case 5:
-                ContentEvent.event.data.repeat.days={};
-                ContentEvent.event.data.repeat.days.friday = true;
-                break;
-              case 6:
-                ContentEvent.event.data.repeat.days={};
-                ContentEvent.event.data.repeat.days.saturday = true;
-                break;
-            }
-              ContentEvent.event.lastSavedStartDate=ContentEvent.event.data.repeat.startDate;
+            if (ContentEvent.event.data.repeat.startDate != ContentEvent.event.lastSavedStartDate) {
+              //   ContentEvent.event.data.repeat.startDate = +new Date(ContentEvent.event.data.repeat.startDate);
+              switch (ContentEvent.event.data.repeat.startDate.getDay()) {
+                case 0:
+                  ContentEvent.event.data.repeat.days = {};
+                  ContentEvent.event.data.repeat.days.sunday = true;
+                  break;
+                case 1:
+                  ContentEvent.event.data.repeat.days = {};
+                  ContentEvent.event.data.repeat.days.monday = true;
+                  break;
+                case 2:
+                  ContentEvent.event.data.repeat.days = {};
+                  ContentEvent.event.data.repeat.days.tuesday = true;
+                  break;
+                case 3:
+                  ContentEvent.event.data.repeat.days = {};
+                  ContentEvent.event.data.repeat.days.wednesday = true;
+                  break;
+                case 4:
+                  ContentEvent.event.data.repeat.days = {};
+                  ContentEvent.event.data.repeat.days.thursday = true;
+                  break;
+                case 5:
+                  ContentEvent.event.data.repeat.days = {};
+                  ContentEvent.event.data.repeat.days.friday = true;
+                  break;
+                case 6:
+                  ContentEvent.event.data.repeat.days = {};
+                  ContentEvent.event.data.repeat.days.saturday = true;
+                  break;
+              }
+              ContentEvent.event.lastSavedStartDate = ContentEvent.event.data.repeat.startDate;
               $scope.$apply();
-          }
+            }
           }
           balanceDateTime();
           DataStore.update(ContentEvent.event.id, ContentEvent.event.data, TAG_NAMES.EVENTS_MANUAL, function (err) {
@@ -290,7 +318,7 @@
 
         ContentEvent.autoFillDates = function () {
           var _endDateObj, _startTimeObj = {};
-          if(!ContentEvent.event.data.isAllDay) {
+          if (!ContentEvent.event.data.isAllDay) {
             _startTimeObj.date = new Date(ContentEvent.event.data.startTime);
             _startTimeObj.minutes = _startTimeObj.date.getHours() * 60;
             _startTimeObj.minutes += _startTimeObj.date.getMinutes();
@@ -332,8 +360,22 @@
           ContentEvent.event.data.repeat = {};
           ContentEvent.event.data.repeat.isRepeating = true;
           ContentEvent.event.data.repeat.repeatType = type;
+          ContentEvent.event.data.repeat.repeatCount = 1;
+          if(type=='Weekly')
+          {
+            ContentEvent.isValidRecurrance = false;
+          }else{
+            ContentEvent.isValidRecurrance = true;
+          }
         };
 
+        ContentEvent.startOnDateChange = function(){
+          if(ContentEvent.event.data.repeat.startDate){
+            ContentEvent.isValidRecurrance = true;
+          }else{
+            ContentEvent.isValidRecurrance = false;
+          }
+        }
         /**
          * Add dynamic link
          */

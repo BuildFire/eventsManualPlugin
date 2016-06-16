@@ -142,6 +142,7 @@
           </li>
         </ul>
       </div>
+      <div style="color: red;" ng-if="!ContentEvent.isValidRecurrance">Please select Starts On date also for Weekly events</div>
     </div>
   </div>
   <span ng-if="ContentEvent.event.data.repeat.isRepeating && ContentEvent.event.data.repeat.repeatType == 'Daily'">
@@ -153,7 +154,7 @@
     <div class="main col-md-9 pull-right">
       <div class="col-md-4 pull-left padding-left-zero">
         <input type="text" class="form-control text-center" placeholder="1"
-               ng-model="ContentEvent.event.data.repeat.repeatCount">
+               ng-model="ContentEvent.event.data.repeat.repeatCount" onkeypress="return event.charCode>=48 && event.charCode<=57" ng-change="ContentEvent.setZeeroValue()">
       </div>
       <div class="col-md-4 pull-left padding-left-zero">
         <p class="margin-top-five margin-bottom-zero">Days</p>
@@ -163,7 +164,7 @@
   <hr class="none">
   <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
-      <span>Starts On *</span>
+      <span>Starts On</span>
     </div>
     <div class="main col-md-9 pull-right">
       <input type="date" class="form-control" placeholder="Show Start Date"
@@ -197,7 +198,7 @@
       <div class="col-md-9 padding-zero pull-left">
         <div class="col-md-6 pull-left padding-zero">
           <input type="text" class="form-control text-center"
-                 ng-model="ContentEvent.event.data.repeat.endAfter">
+                 ng-model="ContentEvent.event.data.repeat.endAfter" onkeypress="return event.charCode>=48 && event.charCode<=57" ng-change="ContentEvent.setZeeroValueEndAfter()">
         </div>
         <div class="col-md-6 pull-left padding-right-zero">
           <p class="margin-top-five margin-bottom-zero">Occurrences</p>
@@ -234,7 +235,7 @@
     <div class="main col-md-9 pull-right">
       <div class="col-md-4 pull-left padding-left-zero">
         <input type="text" class="form-control text-center" placeholder="1"
-               ng-model="ContentEvent.event.data.repeat.repeatCount">
+               ng-model="ContentEvent.event.data.repeat.repeatCount" onkeypress="return event.charCode>=48 && event.charCode<=57" ng-change="ContentEvent.setZeeroValue()">
       </div>
       <div class="col-md-4 pull-left padding-left-zero">
         <p class="margin-top-five margin-bottom-zero">Weeks</p>
@@ -291,7 +292,7 @@
     </div>
     <div class="main col-md-9 pull-right">
       <input type="date" class="form-control" placeholder="Show Start Date"
-             ng-model="ContentEvent.event.data.repeat.startDate">
+             ng-model="ContentEvent.event.data.repeat.startDate" ng-change="ContentEvent.startOnDateChange()">
     </div>
   </div>
   <hr class="none">
@@ -320,8 +321,8 @@
       </div>
       <div class="col-md-9 padding-zero pull-left">
         <div class="col-md-6 pull-left padding-zero">
-          <input type="number" class="form-control text-center"
-                 ng-model="ContentEvent.event.data.repeat.endAfter">
+          <input type="text" class="form-control text-center"
+                 ng-model="ContentEvent.event.data.repeat.endAfter" onkeypress="return event.charCode>=48 && event.charCode<=57" ng-change="ContentEvent.setZeeroValueEndAfter()">
         </div>
         <div class="col-md-6 pull-left padding-right-zero">
           <p class="margin-top-five margin-bottom-zero">Occurrences</p>
@@ -358,7 +359,7 @@
     <div class="main col-md-9 pull-right">
       <div class="col-md-4 pull-left padding-left-zero">
         <input type="text" class="form-control text-center" placeholder="1"
-               ng-model="ContentEvent.event.data.repeat.repeatCount">
+               ng-model="ContentEvent.event.data.repeat.repeatCount" onkeypress="return event.charCode>=48 && event.charCode<=57" ng-change="ContentEvent.setZeeroValue()">
       </div>
       <div class="col-md-4 pull-left padding-left-zero">
         <p class="margin-top-five margin-bottom-zero">Months</p>
@@ -368,7 +369,7 @@
   <hr class="none">
   <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
-      <span>Starts On *</span>
+      <span>Starts On</span>
     </div>
     <div class="main col-md-9 pull-right">
       <input type="date" class="form-control" placeholder="Show Start Date"
@@ -402,7 +403,7 @@
       <div class="col-md-9 padding-zero pull-left">
         <div class="col-md-6 pull-left padding-zero">
           <input type="text" class="form-control text-center"
-                 ng-model="ContentEvent.event.data.repeat.endAfter">
+                 ng-model="ContentEvent.event.data.repeat.endAfter" onkeypress="return event.charCode>=48 && event.charCode<=57" ng-change="ContentEvent.setZeeroValueEndAfter()">
         </div>
         <div class="col-md-6 pull-left padding-right-zero">
           <p class="margin-top-five margin-bottom-zero">Occurrences</p>
@@ -439,7 +440,7 @@
     <div class="main col-md-9 pull-right">
       <div class="col-md-4 pull-left padding-left-zero">
         <input type="text" class="form-control text-center" placeholder="1"
-               ng-model="ContentEvent.event.data.repeat.repeatCount">
+               ng-model="ContentEvent.event.data.repeat.repeatCount" onkeypress="return event.charCode>=48 && event.charCode<=57" ng-change="ContentEvent.setZeeroValue()">
       </div>
       <div class="col-md-4 pull-left padding-left-zero">
         <p class="margin-top-five margin-bottom-zero">Years</p>
@@ -449,7 +450,7 @@
   <hr class="none">
   <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
-      <span>Starts On *</span>
+      <span>Starts On</span>
     </div>
     <div class="main col-md-9 pull-right">
       <input type="date" class="form-control" placeholder="Show Start Date"
@@ -483,7 +484,7 @@
       <div class="col-md-9 padding-zero pull-left">
         <div class="col-md-6 pull-left padding-zero">
           <input type="text" class="form-control text-center"
-                 ng-model="ContentEvent.event.data.repeat.endAfter">
+                 ng-model="ContentEvent.event.data.repeat.endAfter" onkeypress="return event.charCode>=48 && event.charCode<=57" ng-change="ContentEvent.setZeeroValueEndAfter()">
         </div>
         <div class="col-md-6 pull-left padding-right-zero">
           <p class="margin-top-five margin-bottom-zero">Occurrences</p>
@@ -617,7 +618,7 @@
       <div class="col-md-6 pull-right padding-right-zero padding-left-ten">
         <button class="btn btn-primary pull-right stretch"
                 ng-click="ContentEvent.gotToHome()"
-                ng-disabled="!ContentEvent.isValidEvent(ContentEvent.event.data)">
+                ng-disabled="!ContentEvent.isValidEvent(ContentEvent.event.data) || !ContentEvent.isValidRecurrance">
           Done
         </button>
       </div>

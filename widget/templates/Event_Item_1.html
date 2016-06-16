@@ -21,7 +21,7 @@
         <p class="ellipsis margin-zero">{{WidgetEvent.event.data.title}}</p>
 
         <p class="margin-zero"
-           ng-if="WidgetEvent.event.data.endTime && !WidgetEvent.event.data.isAllDay">
+           ng-if="((WidgetEvent.event.data.endTime >= 0) && (!WidgetEvent.event.data.isAllDay))">
           {{WidgetEvent.event.data.startTime | date: "hh:mm a"}} - {{WidgetEvent.event.data.endTime | date: "hh:mm a"}}
           {{WidgetEvent.event.data.startTime && (WidgetEvent.event.data.startTime | getTimeZone) || ""}}</p>
           <p class="margin-zero"

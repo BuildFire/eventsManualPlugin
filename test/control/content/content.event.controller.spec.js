@@ -84,7 +84,7 @@ describe('Unit : Event Manual Plugin content.event.controller.js', function () {
                 startTime: 'Sun Oct 16 2016 00:00:00 GMT+0530 (IST)',
                 endDate: 'Sun Oct 16 2016 00:00:00 GMT+0530 (IST)',
                 endTime: 'Thu Jan 01 1970 12:59:00 GMT+0530 (IST)'
-            })).toEqual(true);
+            })).toEqual(false);
         });
         it('it should pass if ContentEvent.isvalidEvent endTime is there returns title', function () {
             ContentEvent.event.data = {
