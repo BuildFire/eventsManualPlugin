@@ -151,6 +151,10 @@
           if (!ContentEvent.event.data.repeat.repeatCount|| ContentEvent.event.data.repeat.repeatCount==0)
             ContentEvent.event.data.repeat.repeatCount = 1;
         }
+        ContentEvent.setZeeroValueEndAfter = function(){
+          if (!ContentEvent.event.data.repeat.endAfter|| ContentEvent.event.data.repeat.endAfter==0)
+            ContentEvent.event.data.repeat.endAfter = 1;
+        }
         /**
          * link and sortable options
          */
