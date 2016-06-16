@@ -364,6 +364,8 @@
           if(type=='Weekly')
           {
             ContentEvent.isValidRecurrance = false;
+          }else{
+            ContentEvent.isValidRecurrance = true;
           }
         };
 
