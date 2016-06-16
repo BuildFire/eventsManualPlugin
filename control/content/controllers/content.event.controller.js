@@ -85,6 +85,8 @@
             console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&", result);
             ContentEvent.event = result;
             balanceDateTime();
+            if(!ContentEvent.event.data.repeat.repeatCount)
+            ContentEvent.event.data.repeat.repeatCount = 1;
             if(ContentEvent.event.data.isAllDay) {
               ContentEvent.event.data.timezone = "";
               ContentEvent.event.data.timeDisplay = "USER";
@@ -145,6 +147,10 @@
           theme: 'modern'
         };
 
+        ContentEvent.setZeeroValue = function(){
+          if (!ContentEvent.event.data.repeat.repeatCount|| ContentEvent.event.data.repeat.repeatCount==0)
+            ContentEvent.event.data.repeat.repeatCount = 1;
+        }
         /**
          * link and sortable options
          */
@@ -332,6 +338,7 @@
           ContentEvent.event.data.repeat = {};
           ContentEvent.event.data.repeat.isRepeating = true;
           ContentEvent.event.data.repeat.repeatType = type;
+          ContentEvent.event.data.repeat.repeatCount = 1;
         };
 
         /**
