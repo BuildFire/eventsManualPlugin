@@ -142,6 +142,7 @@
           </li>
         </ul>
       </div>
+      <div style="color: red;" ng-if="!ContentEvent.isValidRecurrance">Please select Starts On date also for Weekly events</div>
     </div>
   </div>
   <span ng-if="ContentEvent.event.data.repeat.isRepeating && ContentEvent.event.data.repeat.repeatType == 'Daily'">
@@ -163,7 +164,7 @@
   <hr class="none">
   <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
-      <span>Starts On *</span>
+      <span>Starts On</span>
     </div>
     <div class="main col-md-9 pull-right">
       <input type="date" class="form-control" placeholder="Show Start Date"
@@ -291,7 +292,7 @@
     </div>
     <div class="main col-md-9 pull-right">
       <input type="date" class="form-control" placeholder="Show Start Date"
-             ng-model="ContentEvent.event.data.repeat.startDate">
+             ng-model="ContentEvent.event.data.repeat.startDate" ng-change="ContentEvent.startOnDateChange()">
     </div>
   </div>
   <hr class="none">
@@ -368,7 +369,7 @@
   <hr class="none">
   <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
-      <span>Starts On *</span>
+      <span>Starts On</span>
     </div>
     <div class="main col-md-9 pull-right">
       <input type="date" class="form-control" placeholder="Show Start Date"
@@ -449,7 +450,7 @@
   <hr class="none">
   <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
-      <span>Starts On *</span>
+      <span>Starts On</span>
     </div>
     <div class="main col-md-9 pull-right">
       <input type="date" class="form-control" placeholder="Show Start Date"
@@ -617,7 +618,7 @@
       <div class="col-md-6 pull-right padding-right-zero padding-left-ten">
         <button class="btn btn-primary pull-right stretch"
                 ng-click="ContentEvent.gotToHome()"
-                ng-disabled="!ContentEvent.isValidEvent(ContentEvent.event.data)">
+                ng-disabled="!ContentEvent.isValidEvent(ContentEvent.event.data) || !ContentEvent.isValidRecurrance">
           Done
         </button>
       </div>

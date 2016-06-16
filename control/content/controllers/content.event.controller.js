@@ -6,6 +6,7 @@
       function ($scope, $routeParams, Buildfire, DataStore, TAG_NAMES, ADDRESS_TYPE, $location, Utils, $timeout) {
         var ContentEvent = this;
         var currentUserDate = +new Date();
+        ContentEvent.isValidRecurrance = true;
         var _data = {
           "title": "",
           "listImage": "",
@@ -343,8 +344,19 @@
           ContentEvent.event.data.repeat.isRepeating = true;
           ContentEvent.event.data.repeat.repeatType = type;
           ContentEvent.event.data.repeat.repeatCount = 1;
+          if(type=='Weekly')
+          {
+            ContentEvent.isValidRecurrance = false;
+          }
         };
 
+        ContentEvent.startOnDateChange = function(){
+          if(ContentEvent.event.data.repeat.startDate){
+            ContentEvent.isValidRecurrance = true;
+          }else{
+            ContentEvent.isValidRecurrance = false;
+          }
+        }
         /**
          * Add dynamic link
          */
