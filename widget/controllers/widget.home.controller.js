@@ -346,7 +346,6 @@
             eventStartDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getFirstDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
             eventRecEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
             WidgetHome.calledDate = +new Date(configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-01"+ "T00:00:00" + moment(new Date()).format("Z"))
-            if (WidgetHome.calledDate !== timeStampInMiliSec) {
               WidgetHome.clickEvent = true;
               WidgetHome.events = null;
               searchOptions.skip = 0;
@@ -354,7 +353,6 @@
               WidgetHome.disabled = true;
               WidgetHome.calledDate = timeStampInMiliSec;
               WidgetHome.loadMore();
-            }
           }else{
             configureDate = new Date($rootScope.chnagedMonth);
             eventStartDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getFirstDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
@@ -365,7 +363,6 @@
               timeStampInMiliSec = +new Date(formattedDate);
               eventRecEndDateCheck = eventRecEndDate;
             }
-            if (WidgetHome.calledDate !== timeStampInMiliSec) {
               WidgetHome.clickEvent = true;
               WidgetHome.events = null;
               searchOptions.skip = 0;
@@ -373,7 +370,6 @@
               WidgetHome.disabled = true;
               WidgetHome.calledDate = timeStampInMiliSec;
               WidgetHome.loadMore();
-            }
           }
 
         };
