@@ -341,21 +341,20 @@
         WidgetHome.getEvent = function () {
           formattedDate = $scope.dt.getFullYear() + "-" + moment($scope.dt).format("MM") + "-" + ("0" + $scope.dt.getDate()).slice(-2) + "T00:00:00" + WidgetHome.getUTCZone();
           timeStampInMiliSec = +new Date(formattedDate);
-          if (WidgetHome.calledDate !== timeStampInMiliSec) {
-            WidgetHome.clickEvent = true;
-            WidgetHome.events = null;
-            searchOptions.skip = 0;
-            WidgetHome.busy = false;
-            WidgetHome.disabled = true;
-            WidgetHome.calledDate = timeStampInMiliSec;
-            WidgetHome.loadMore();
-          }
-
           if($rootScope.chnagedMonth==undefined){
             configureDate = new Date();
             eventStartDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getFirstDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
             eventRecEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
             WidgetHome.calledDate = +new Date(configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-01"+ "T00:00:00" + moment(new Date()).format("Z"))
+            if (WidgetHome.calledDate !== timeStampInMiliSec) {
+              WidgetHome.clickEvent = true;
+              WidgetHome.events = null;
+              searchOptions.skip = 0;
+              WidgetHome.busy = false;
+              WidgetHome.disabled = true;
+              WidgetHome.calledDate = timeStampInMiliSec;
+              WidgetHome.loadMore();
+            }
           }else{
             configureDate = new Date($rootScope.chnagedMonth);
             eventStartDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" +  WidgetHome.getFirstDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
@@ -366,7 +365,17 @@
               timeStampInMiliSec = +new Date(formattedDate);
               eventRecEndDateCheck = eventRecEndDate;
             }
+            if (WidgetHome.calledDate !== timeStampInMiliSec) {
+              WidgetHome.clickEvent = true;
+              WidgetHome.events = null;
+              searchOptions.skip = 0;
+              WidgetHome.busy = false;
+              WidgetHome.disabled = true;
+              WidgetHome.calledDate = timeStampInMiliSec;
+              WidgetHome.loadMore();
+            }
           }
+
         };
 
         WidgetHome.addEvents = function (e, i, toggle) {
