@@ -10,7 +10,9 @@
         WidgetEvent.event = {};
         var breadCrumbFlag = true;
         var currentListLayout = null;
-
+        $rootScope.deviceHeight = window.innerHeight;
+        $rootScope.deviceWidth = window.innerWidth || 320;
+        $rootScope.backgroundImage="";
         buildfire.history.get('pluginBreadcrumbsOnly', function (err, result) {
           if(result && result.length) {
             result.forEach(function(breadCrumb) {
@@ -207,7 +209,12 @@
                     WidgetEvent.data.design.itemDetailsLayout = LAYOUTS.itemDetailsLayout[0].name;
                   }
                   currentListLayout = WidgetEvent.data.design.itemDetailsLayout;
-
+                  if(WidgetEvent.data.design.itemDetailsBgImage){
+                    $rootScope.backgroundImage = WidgetEvent.data.design.itemDetailsBgImage;
+                  }else
+                  {
+                    $rootScope.backgroundImage = "";
+                  }
                   break;
                 case TAG_NAMES.EVENTS_MANUAL:
                   WidgetEvent.event.data = event.data;
@@ -218,6 +225,7 @@
                   break;
               }
               $scope.$digest();
+              $rootScope.$digest();
             }
           }, 0);
         };
@@ -232,6 +240,13 @@
                 WidgetEvent.data.design = {};
               if (!WidgetEvent.data.design.itemDetailsLayout) {
                 WidgetEvent.data.design.itemDetailsLayout = LAYOUTS.itemDetailsLayout[0].name;
+              }
+              if(WidgetEvent.data.design.itemDetailsBgImage){
+                $rootScope.backgroundImage = WidgetEvent.data.design.itemDetailsBgImage;
+              }
+              else
+              {
+                $rootScope.backgroundImage = "";
               }
               getEventDetails();
             }
