@@ -36,13 +36,38 @@
         ContentEvent.unchangedData = true;
         ContentEvent.displayTiming = "USER";
 
+        ContentEvent.returnDAteWithoutTime = function (date) {
+          var _date  = new Date(date);
+          return +new Date(
+            _date.getFullYear(),
+            _date.getMonth(),
+            _date.getDate()
+          );
+        };
+
         ContentEvent.isValidEvent = function (event) {
-          if (event.isAllDay)
-            return (event.startDate && event.title);
-          else if (event.endTime)
-            return (event.startDate && event.title && event.startTime && (+new Date(event.startTime) < +new Date(event.endTime)));
-          else
-            return (event.startDate && event.title && event.startTime);
+          if (event.isAllDay) {
+            // Check if start date of the event is not less than repeat event starts on date
+            if (event.repeat && event.repeat.isRepeating && event.repeat.startDate)
+              return (event.startDate && event.title && (+new Date(event.startDate) <= (+new Date(event.repeat.startDate))));
+            else
+              return (event.startDate && event.title);
+          }
+          else if (event.endTime) {
+            // Check if start date of the event is not less than repeat event starts on date
+            if (event.repeat && event.repeat.isRepeating && event.repeat.startDate)
+              return (event.startDate && event.title && event.startTime && (+new Date(event.startTime) < +new Date(event.endTime)) && (+new Date(ContentEvent.returnDAteWithoutTime(event.startDate)) <= (+new Date(event.repeat.startDate))));
+            else
+              return (event.startDate && event.title && event.startTime && (+new Date(event.startTime) < +new Date(event.endTime)));
+          }
+          else {
+            // Check if start date of the event is not less than repeat event starts on date
+            if (event.repeat && event.repeat.isRepeating && event.repeat.startDate)
+              return (event.startDate && event.title && event.startTime && (+new Date(ContentEvent.returnDAteWithoutTime(event.startDate)) <= (+new Date(event.repeat.startDate))));
+            else
+              return (event.startDate && event.title && event.startTime);
+          }
+
         };
 
         var updateMasterEvent = function (event) {
@@ -68,7 +93,7 @@
             );
             ContentEvent.event.data.startTime = ContentEvent.event.data.startDate;
           }
-          if(!ContentEvent.event.data.endDate || ContentEvent.event.data.endDate <= 0) {
+          if (!ContentEvent.event.data.endDate || ContentEvent.event.data.endDate <= 0) {
             ContentEvent.event.data.endDate = ContentEvent.event.data.startDate;
           } else if (ContentEvent.event.data.endTime != ContentEvent.event.data.endDate && +ContentEvent.event.data.endTime) {
             _obj.time = new Date(ContentEvent.event.data.endTime);
@@ -89,9 +114,9 @@
             console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&", result);
             ContentEvent.event = result;
             balanceDateTime();
-            if(!ContentEvent.event.data.repeat.repeatCount)
-            ContentEvent.event.data.repeat.repeatCount = 1;
-            if(ContentEvent.event.data.isAllDay) {
+            if (!ContentEvent.event.data.repeat.repeatCount)
+              ContentEvent.event.data.repeat.repeatCount = 1;
+            if (ContentEvent.event.data.isAllDay) {
               ContentEvent.event.data.timezone = "";
               ContentEvent.event.data.timeDisplay = "USER";
               ContentEvent.displayTiming = "USER"
@@ -165,14 +190,14 @@
           theme: 'modern'
         };
 
-        ContentEvent.setZeeroValue = function(){
-          if (!ContentEvent.event.data.repeat.repeatCount|| ContentEvent.event.data.repeat.repeatCount==0)
+        ContentEvent.setZeeroValue = function () {
+          if (!ContentEvent.event.data.repeat.repeatCount || ContentEvent.event.data.repeat.repeatCount == 0)
             ContentEvent.event.data.repeat.repeatCount = 1;
-        }
-        ContentEvent.setZeeroValueEndAfter = function(){
-          if (!ContentEvent.event.data.repeat.endAfter|| ContentEvent.event.data.repeat.endAfter==0)
+        };
+        ContentEvent.setZeeroValueEndAfter = function () {
+          if (!ContentEvent.event.data.repeat.endAfter || ContentEvent.event.data.repeat.endAfter == 0)
             ContentEvent.event.data.repeat.endAfter = 1;
-        }
+        };
         /**
          * link and sortable options
          */
@@ -345,6 +370,7 @@
           ContentEvent.unchangedData = angular.equals(_data, ContentEvent.event.data);
 
           ContentEvent.isEventValid = ContentEvent.isValidEvent(ContentEvent.event.data);
+          console.log("________________", ContentEvent.isEventValid);
           if (!ContentEvent.isUpdating && !isUnchanged(ContentEvent.event) && ContentEvent.isEventValid) {
             tmrDelayForEvent = setTimeout(function () {
               if (event.id) {
@@ -361,18 +387,17 @@
           ContentEvent.event.data.repeat.isRepeating = true;
           ContentEvent.event.data.repeat.repeatType = type;
           ContentEvent.event.data.repeat.repeatCount = 1;
-          if(type=='Weekly')
-          {
+          if (type == 'Weekly') {
             ContentEvent.isValidRecurrance = false;
-          }else{
+          } else {
             ContentEvent.isValidRecurrance = true;
           }
         };
 
-        ContentEvent.startOnDateChange = function(){
-          if(ContentEvent.event.data.repeat.startDate){
+        ContentEvent.startOnDateChange = function () {
+          if (ContentEvent.event.data.repeat.startDate) {
             ContentEvent.isValidRecurrance = true;
-          }else{
+          } else {
             ContentEvent.isValidRecurrance = false;
           }
         }
