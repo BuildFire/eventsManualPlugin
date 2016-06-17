@@ -530,7 +530,7 @@
                   break;
                 case TAG_NAMES.EVENTS_MANUAL:
                   WidgetHome.events = [];
-                  WidgetHome.allEvents = null;
+                  WidgetHome.allEvents = [];
                   searchOptions = {
                     //skip: 0,
                     //limit: PAGINATION.eventsCount,
@@ -584,7 +584,7 @@
           });
           if ($rootScope.showFeed) {
             WidgetHome.events = null;
-            WidgetHome.allEvents = null;
+            WidgetHome.allEvents = [];
             searchOptions.skip = 0;
             WidgetHome.busy = false;
             WidgetHome.loadMore();
