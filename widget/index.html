@@ -69,7 +69,7 @@
               <div class="event-item clearfix"
                    ng-swipe-right="WidgetHome.addEvents($event, $index, true)"
                    ng-swipe-left="WidgetHome.addEvents($event, $index, false)"
-                   ng-class="{'active' : WidgetHome.swiped[$index]}"
+                   ng-class="{'active' : WidgetHome.swiped[$index] && WidgetHome.flag}"
                    ng-repeat="event in WidgetHome.events">
                 <div class="calendar-icon text-center bg-primary"
                      ng-click="WidgetHome.addEventsToCalendar(event, $index)">
