@@ -181,11 +181,11 @@
               for (var j = 0; j < dates.length; j++) {
                 var temp_result = JSON.parse(JSON.stringify(result[i]));
                 temp_result.data.startDate = Date.parse(dates[j]);
-                temp_result.data.startTime = Date.parse(dates[j]);
-                if (temp_result.data.startTime >= +new Date(eventStartDate) && temp_result.data.startTime <= +new Date(eventRecEndDate))
+                temp_result.data.startTime = result[i].data.startTime;
+                if (temp_result.data.startDate >= +new Date(eventStartDate) && temp_result.data.startDate <= +new Date(eventRecEndDate))
                   if (AllEvent)
                     repeat_results.push(temp_result);
-                  else if (temp_result.data.startTime >= timeStampInMiliSec) {
+                  else if (temp_result.data.startDate >= timeStampInMiliSec) {
                     repeat_results.push(temp_result);
                   }
               }
