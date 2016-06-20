@@ -67,7 +67,7 @@
             return '';
         }
         if (!_imgUrl) {
-          return buildfire.imageLib.cropImage(url, {
+          buildfire.imageLib.local.cropImage(url, {
             width: width,
             height: height
           }, function (err, imgUrl) {
