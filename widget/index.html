@@ -81,8 +81,7 @@
                 <div
                     class="event-media pull-left margin-left-ten"  ng-if="event.data.listImage">
                   <img class="border-radius-three"
-                       load-image="1x1" data-final-src="{{event.data.listImage |
-                       getImageUrl : 60:60}}">
+                       load-image="1x1" data-final-src="{{event.data.listImage}}" crop-width="60" crop-height="60" crop-type="crop" >
                 </div>
                 <div class="event-date text-center pull-left margin-left-ten"
                      ng-if="event.data.startDate">
