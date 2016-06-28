@@ -37,3 +37,5 @@
 .overflowY-auto{
     overflow-y: auto;
 }
+
+.input-disabled{background-color:#DEDEDE;border:1px solid #ABADB3;padding:2px 1px;}
