@@ -23,7 +23,7 @@
         };
         var configureDate = new Date();
         //var eventEndDate = moment(configureDate.getFullYear()+"-"+moment(configureDate).format("MM")+"-"+'01').unix()*1000;
-        var eventRecEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+        var eventRecEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getLastDateOfMonth(configureDate) + "T23:59:59" + moment(new Date()).format("Z");
         var eventStartDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getFirstDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
         var recurringEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
         var eventRecEndDateCheck = null;
@@ -110,7 +110,7 @@
         var expandRepeatingEvents = function (result, repeat_until, AllEvent) {
           var repeat_results = [];
           for (var i = 0; i < result.length; i++) {
-            if (result[i].data.repeat.isRepeating) {
+            if (result[i].data.repeat.isRepeating && result[i].data.repeat.repeatType) {
               var repeat_unit = getRepeatUnit(result[i].data.repeat.repeatType);
               if (repeat_unit === "w") {    //daily repeats do not specify day
                 if (!result[i].data.repeat.days) {
@@ -362,7 +362,7 @@
             if ($rootScope.chnagedMonth == undefined) {
               configureDate = new Date();
               eventStartDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getFirstDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
-              eventRecEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+              eventRecEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getLastDateOfMonth(configureDate) + "T23:59:59" + moment(new Date()).format("Z");
               WidgetHome.calledDate = +new Date(configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-01" + "T00:00:00" + moment(new Date()).format("Z"))
               WidgetHome.clickEvent = true;
               WidgetHome.events = null;
@@ -375,7 +375,7 @@
             } else {
               configureDate = new Date($rootScope.chnagedMonth);
               eventStartDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getFirstDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
-              eventRecEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+              eventRecEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getLastDateOfMonth(configureDate) + "T23:59:59" + moment(new Date()).format("Z");
               WidgetHome.calledDate = +new Date(configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-01" + "T00:00:00" + moment(new Date()).format("Z"))
               if (eventRecEndDateCheck != eventRecEndDate) {
                 formattedDate = currentDate.getFullYear() + "-" + moment(currentDate).format("MM") + "-" + ("0" + currentDate.getDate()).slice(-2) + "T00:00:00" + moment(new Date()).format("Z");
@@ -559,7 +559,7 @@
           WidgetHome.disabled = true;
           configureDate = new Date();
           eventStartDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getFirstDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
-          eventRecEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getLastDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+          eventRecEndDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getLastDateOfMonth(configureDate) + "T23:59:59" + moment(new Date()).format("Z");
           WidgetHome.calledDate = +new Date(configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-01" + "T00:00:00" + moment(new Date()).format("Z"))
           WidgetHome.loadMore();
         });
