@@ -368,7 +368,9 @@
           clearTimeout(tmrDelayForEvent);
           ContentEvent.isUpdating = false;
           ContentEvent.unchangedData = angular.equals(_data, ContentEvent.event.data);
-          ContentEvent.event.data.repeat.startDate = new Date(ContentEvent.event.data.startDate);
+          if (ContentEvent.event.data.repeat) {
+              ContentEvent.event.data.repeat.startDate = new Date(ContentEvent.event.data.startDate);
+          }
 
           ContentEvent.isEventValid = ContentEvent.isValidEvent(ContentEvent.event.data);
           console.log("________________", ContentEvent.isEventValid);
