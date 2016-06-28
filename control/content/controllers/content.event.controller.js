@@ -368,6 +368,7 @@
           clearTimeout(tmrDelayForEvent);
           ContentEvent.isUpdating = false;
           ContentEvent.unchangedData = angular.equals(_data, ContentEvent.event.data);
+          ContentEvent.event.data.repeat.startDate = new Date(ContentEvent.event.data.startDate);
 
           ContentEvent.isEventValid = ContentEvent.isValidEvent(ContentEvent.event.data);
           console.log("________________", ContentEvent.isEventValid);
@@ -383,15 +384,17 @@
         };
 
         ContentEvent.changeRepeatType = function (type) {
-          ContentEvent.event.data.repeat = {};
+          ContentEvent.event.data.repeat = {
+            startDate:new Date(ContentEvent.event.data.startDate)
+          };
           ContentEvent.event.data.repeat.isRepeating = true;
           ContentEvent.event.data.repeat.repeatType = type;
           ContentEvent.event.data.repeat.repeatCount = 1;
-          if (type == 'Weekly') {
-            ContentEvent.isValidRecurrance = false;
-          } else {
-            ContentEvent.isValidRecurrance = true;
-          }
+          //if (type == 'Weekly') {
+          //  ContentEvent.isValidRecurrance = false;
+          //} else {
+          //  ContentEvent.isValidRecurrance = true;
+          //}
         };
 
         ContentEvent.startOnDateChange = function () {
