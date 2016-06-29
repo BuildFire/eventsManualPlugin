@@ -46,6 +46,7 @@
         };
 
         ContentEvent.isValidEvent = function (event) {
+          balanceDateTime()
           if (event.isAllDay) {
             // Check if start date of the event is not less than repeat event starts on date
             if (event.repeat && event.repeat.isRepeating && event.repeat.startDate)
