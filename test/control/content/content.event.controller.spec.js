@@ -185,7 +185,7 @@ describe('Unit : Event Manual Plugin content.event.controller.js', function () {
             };
             ContentEvent.setEndDay();
             $rootScope.$apply();
-            expect(ContentEvent.event.data.endDate).toEqual('Sun Oct 16 2016 00:00:00 GMT+0530 (IST)');
+            expect(ContentEvent.event.data.endDate).toEqual(1476556800000);
         });
 
         it('it should pass if ContentEvent.editLink', function () {

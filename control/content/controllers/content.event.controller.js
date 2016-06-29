@@ -46,7 +46,12 @@
         };
 
         ContentEvent.isValidEvent = function (event) {
-          balanceDateTime()
+
+          if ((+new Date(event.startTime) >= +new Date(event.endTime))) {
+          ContentEvent.event.data.endDate = ContentEvent.event.data.startDate;
+          ContentEvent.event.data.endTime = moment(ContentEvent.event.data.startTime).add('10', 'minute');
+        }
+          balanceDateTime();
           if (event.isAllDay) {
             // Check if start date of the event is not less than repeat event starts on date
             if (event.repeat && event.repeat.isRepeating && event.repeat.startDate)
