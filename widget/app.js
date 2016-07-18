@@ -91,7 +91,7 @@
               img = imgUrl;
               element.attr("style", 'background:url(' + img + ') !important');
               element.css({
-                'background-size': 'cover'
+                'background-size': 'cover !important'
               });
             });
 
