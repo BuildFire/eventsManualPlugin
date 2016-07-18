@@ -12,6 +12,7 @@
   <!-- Angular, jQuery & Owl Carousel-->
 
   <script src="../../../scripts/jquery/jquery-1.11.2.min.js"></script>
+  <script src="../../../scripts/smartcrop.js"></script>
   <script src="../../../scripts/owlCarousel/owlCarousel.js"></script>
   <script
       src="../../../scripts/buildfire/components/carousel/carousel.js"></script>
@@ -80,8 +81,7 @@
                 <div
                     class="event-media pull-left margin-left-ten"  ng-if="event.data.listImage">
                   <img class="border-radius-three"
-                       load-image="1x1" data-final-src="{{event.data.listImage |
-                       getImageUrl : 60:60}}">
+                       load-image="1x1" data-final-src="{{event.data.listImage}}" crop-width="60" crop-height="60" crop-type="crop" >
                 </div>
                 <div class="event-date text-center pull-left margin-left-ten"
                      ng-if="event.data.startDate">

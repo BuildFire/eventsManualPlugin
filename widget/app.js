@@ -32,42 +32,69 @@
         return new Date(input).getDate();
       };
     })
-    .filter('getImageUrl', function () {
-      return function (url, width, height, type) {
-        if (type == 'resize')
-          return buildfire.imageLib.resizeImage(url, {
-            width: width,
-            height: height
-          });
-        else
-          return buildfire.imageLib.cropImage(url, {
-            width: width,
-            height: height
-          });
+    /*.filter('getImageUrl', ['Buildfire', function (Buildfire) {
+      filter.$stateful = true;
+      function filter(url, width, height, type) {
+        var _imgUrl;
+        if (!_imgUrl) {
+          if (type == 'resize') {
+            Buildfire.imageLib.local.resizeImage(url, {
+              width: width,
+              height: height
+            }, function (err, imgUrl) {
+              _imgUrl = imgUrl;
+            });
+          } else {
+            Buildfire.imageLib.local.cropImage(url, {
+              width: width,
+              height: height
+            }, function (err, imgUrl) {
+              _imgUrl = imgUrl;
+            });
+          }
+        }
+
+        return _imgUrl;
       }
-    }).filter('cropImage', [function () {
-      return function (url, width, height, noDefault) {
+      return filter;
+    }])*/
+    .filter('cropImage', [function () {
+      function filter (url, width, height, noDefault) {
+        var _imgUrl;
+        filter.$stateful = true;
         if(noDefault)
         {
           if(!url)
             return '';
         }
-        return buildfire.imageLib.cropImage(url, {
-          width: width,
-          height: height
-        });
-      };
+        if (!_imgUrl) {
+          buildfire.imageLib.local.cropImage(url, {
+            width: width,
+            height: height
+          }, function (err, imgUrl) {
+            _imgUrl = imgUrl;
+          });
+        }
+        return _imgUrl;
+      }
+      return filter;
     }])
     .directive('backImg', ["$filter", "$rootScope", "$window" , function ($filter, $rootScope, $window) {
       return function (scope, element, attrs) {
         attrs.$observe('backImg', function (value) {
           var img = '';
           if (value) {
-            img = $filter("cropImage")(value, $window.innerWidth, $window.innerHeight, true);
-            element.attr("style", 'background:url(' + img + ') !important');
-            element.css({
-              'background-size': 'cover'
+            buildfire.imageLib.local.cropImage(value, {
+                width: $rootScope.deviceWidth,
+               height: $rootScope.deviceHeight
+            }, function (err, imgUrl) {
+              img = imgUrl;
+              element.attr("style", 'background:url(' + img + ') !important');
+              element.css({
+                'background-size': 'cover !important'
+              });
             });
+
           }
           else {
             img = "";
@@ -148,18 +175,39 @@
         }
       }
     })
-    .directive("loadImage", [function () {
+    .directive("loadImage", ['Buildfire', function (Buildfire) {
       return {
         restrict: 'A',
         link: function (scope, element, attrs) {
           element.attr("src", "../../../styles/media/holder-" + attrs.loadImage + ".gif");
 
-          var elem = $("<img>");
-          elem[0].onload = function () {
-            element.attr("src", attrs.finalSrc);
-            elem.remove();
-          };
-          elem.attr("src", attrs.finalSrc);
+          var _img = attrs.finalSrc;
+          if (attrs.cropType == 'resize') {
+            Buildfire.imageLib.local.resizeImage(_img, {
+              width: attrs.cropWidth,
+              height: attrs.cropHeight
+            }, function (err, imgUrl) {
+              _img = imgUrl;
+              replaceImg(_img);
+            });
+          } else {
+            Buildfire.imageLib.local.cropImage(_img, {
+              width: attrs.cropWidth,
+              height: attrs.cropHeight
+            }, function (err, imgUrl) {
+              _img = imgUrl;
+              replaceImg(_img);
+            });
+          }
+
+          function replaceImg(finalSrc) {
+            var elem = $("<img>");
+            elem[0].onload = function () {
+              element.attr("src", finalSrc);
+              elem.remove();
+            };
+            elem.attr("src", finalSrc);
+          }
         }
       };
     }])
