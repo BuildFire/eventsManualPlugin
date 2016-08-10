@@ -354,8 +354,7 @@
             _startTimeObj.minutes = _startTimeObj.date.getHours() * 60;
             _startTimeObj.minutes += _startTimeObj.date.getMinutes();
             _startTimeObj.millis = _startTimeObj.minutes * 60 * 1000;
-
-            ContentEvent.event.data.startDate += _startTimeObj.millis;
+            //ContentEvent.event.data.startDate += _startTimeObj.millis;  //Commented this code to fix the pivotal issue #127223151
             ContentEvent.event.data.startTime = ContentEvent.event.data.startDate;
             ContentEvent.event.data.endDate = ContentEvent.event.data.startDate;
 
