@@ -518,29 +518,34 @@
         };
 
         ContentEvent.setCoordinates = function () {
-          function successCallback(resp) {
-            if (resp) {
-              ContentEvent.event.data.address = {
-                type: ADDRESS_TYPE.COORDINATES,
-                location: resp.formatted_address || ContentEvent.currentAddress,
-                location_coordinates: [ContentEvent.currentAddress.split(",")[0].trim(), ContentEvent.currentAddress.split(",")[1].trim()]
-              };
-              ContentEvent.currentAddress = ContentEvent.event.data.address.location;
-              ContentEvent.currentCoordinates = ContentEvent.event.data.address.location_coordinates;
-            } else {
-              errorCallback();
-            }
-          }
+              var latlng = '';
+              function successCallback(resp) {
+                  if (resp) {
+                      ContentEvent.event.data.address = {
+                          type: ADDRESS_TYPE.COORDINATES,
+                          location: resp.formatted_address || ContentEvent.currentAddress,
+                          location_coordinates: [ContentEvent.currentAddress.split(",")[1].trim(), ContentEvent.currentAddress.split(",")[0].trim()]
+                      };
+                      ContentEvent.currentAddress = ContentEvent.event.data.address.location;
+                      ContentEvent.currentCoordinates = ContentEvent.event.data.address.location_coordinates;
+                  } else {
+                      errorCallback();
+                  }
+              }
 
-          function errorCallback(err) {
-            ContentEvent.validCoordinatesFailure = true;
-            $timeout(function () {
-              ContentEvent.validCoordinatesFailure = false;
-            }, 5000);
-          }
+              function errorCallback(err) {
+                  ContentEvent.validCoordinatesFailure = true;
+                  $timeout(function () {
+                      ContentEvent.validCoordinatesFailure = false;
+                  }, 5000);
+              }
 
-          Utils.validLongLats(ContentEvent.currentAddress).then(successCallback, errorCallback);
-        };
+              if (ContentEvent.currentAddress) {
+                  latlng = ContentEvent.currentAddress.split(',')[1] + "," + ContentEvent.currentAddress.split(',')[0];
+              }
+
+              Utils.validLongLats(latlng).then(successCallback, errorCallback);
+          };
 
         ContentEvent.gotToHome = function () {
           buildfire.history.pop();

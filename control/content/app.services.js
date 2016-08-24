@@ -160,7 +160,7 @@
                 if(response.data && response.data.results && response.data.results.length) {
                   deferred.resolve(response.data.results[0]);
                 } else {
-                  deferred.resolve(null);
+                  deferred.resolve(true);
                 }
               }, function (error) {
                 // called asynchronously if an error occurs
