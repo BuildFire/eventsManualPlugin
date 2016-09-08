@@ -1,123 +1,109 @@
 <!DOCTYPE html>
 <html ng-app="eventsManualPluginWidget">
 <head>
-  <!-- CSS -->
-  <link rel="stylesheet" href="../../../styles/siteIcons.css">
-  <link rel="stylesheet" href="../../../styles/helper.css">
-  <link rel="stylesheet" href="../../../scripts/owlCarousel/owlCarousel.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../../styles/siteIcons.css">
+    <link rel="stylesheet" href="../../../styles/helper.css">
+    <link rel="stylesheet" href="../../../scripts/owlCarousel/owlCarousel.css">
 
-  <!-- JS -->
-  <script src="../../../scripts/buildfire.js"></script>
+    <!-- JS -->
+    <script src="../../../scripts/buildfire.js"></script>
 
-  <!-- Angular, jQuery & Owl Carousel-->
+    <!-- Angular, jQuery & Owl Carousel-->
 
-  <script src="../../../scripts/jquery/jquery-1.11.2.min.js"></script>
-  <script src="../../../scripts/smartcrop.js"></script>
-  <script src="../../../scripts/owlCarousel/owlCarousel.js"></script>
-  <script
-      src="../../../scripts/buildfire/components/carousel/carousel.js"></script>
-  <script src="../../../scripts/angular/angular.min.js"></script>
-  <script src="../../../scripts/angular/angular-route.min.js"></script>
-  <script src="../../../scripts/angular/ui-bootstrap.min.js"></script>
-  <script src="../../../scripts/angular/angular-touch.js"></script>
-  <script src="assets/js/moment.min.js"></script>
-  <script src="../../../scripts/angular/ng-infinite-scroll.custom.js" type="application/javascript"></script>
-  <script src="assets/js/jstz.min.js" type="application/javascript"></script>
-  <script src="assets/js/moment-timezone.min.js" type="application/javascript"></script>
-  <script src="assets/js/recurring.js" type="application/javascript"></script>
+    <script src="../../../scripts/jquery/jquery-1.11.2.min.js"></script>
+    <script src="../../../scripts/smartcrop.js"></script>
+    <script src="../../../scripts/owlCarousel/owlCarousel.js"></script>
+    <script
+        src="../../../scripts/buildfire/components/carousel/carousel.js"></script>
+    <script src="../../../scripts/angular/angular.min.js"></script>
+    <script src="../../../scripts/angular/angular-route.min.js"></script>
+    <script src="../../../scripts/angular/ui-bootstrap.min.js"></script>
+    <script src="../../../scripts/angular/angular-touch.js"></script>
+    <script src="assets/js/moment.min.js"></script>
+    <script src="../../../scripts/angular/ng-infinite-scroll.custom.js" type="application/javascript"></script>
+    <script src="assets/js/jstz.min.js" type="application/javascript"></script>
+    <script src="assets/js/moment-timezone.min.js" type="application/javascript"></script>
+    <script src="assets/js/recurring.js" type="application/javascript"></script>
 
-  <!-- Meta -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- App -->
-  <script src="app.js" type="application/javascript"></script>
-  <script src="enums.js"></script>
-  <script src="app.services.js"></script>
-  <script src="controllers/widget.home.controller.js"
-          type="application/javascript"></script>
-  <script src="controllers/widget.event.controller.js"
-          type="application/javascript"></script>
-  <link rel="stylesheet" href="assets/css/style.css">
-  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
-  <script src="../../../scripts/angular/angular-animate.min.js"></script>
-  <link rel="stylesheet" href="../../../styles/transitionAnimation.css">
+    <!-- App -->
+    <script src="app.js" type="application/javascript"></script>
+    <script src="enums.js"></script>
+    <script src="app.services.js"></script>
+    <script src="controllers/widget.home.controller.js"
+            type="application/javascript"></script>
+    <script src="controllers/widget.event.controller.js"
+            type="application/javascript"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <script src="../../../scripts/angular/angular-animate.min.js"></script>
+    <link rel="stylesheet" href="../../../styles/transitionAnimation.css">
 </head>
 <body class="body-scroll">
-<div class="content relative slide infinite-scroll-parent">
-  <div ng-controller="WidgetHomeCtrl as WidgetHome">
-    <div class="holder padding-zero">
-      <div class="events-plugin">
-        <div class="event-calendar-holder padded clearfix"
-             ng-if="WidgetHome.allEvents">
-          <div class="event-calendar" ng-style="deviceWidth ? {'min-height': (9 * deviceWidth / 11) + 'px' }:{'min-height': (9 * 320 / 11) + 'px' }">
-            <div>
-              <datepicker ng-model="$parent.dt" min-date="minDate"
-                          show-weeks="false"
-                          max-mode="day" class="calendar-day" show-year="false"
-                          custom-class="getDayClass(date, mode)"
-                          ng-click="WidgetHome.getEvent()"
-                          ng-class="{'avoid-clicks':1}"></datepicker>
+    <div class="content relative slide infinite-scroll-parent">
+        <div ng-controller="WidgetHomeCtrl as WidgetHome">
+            <div class="holder padding-zero">
+                <div class="events-plugin">
+                    <div class="event-calendar-holder padded clearfix" ng-if="WidgetHome.allEvents">
+                        <div class="event-calendar" ng-style="deviceWidth ? {'min-height': (9 * deviceWidth / 11) + 'px' }:{'min-height': (9 * 320 / 11) + 'px' }">
+                            <div>
+                                <datepicker ng-model="$parent.dt" min-date="minDate"
+                                            show-weeks="false"
+                                            max-mode="day" class="calendar-day" show-year="false"
+                                            custom-class="getDayClass(date, mode)"
+                                            ng-click="WidgetHome.getEvent()"
+                                            ng-class="{'avoid-clicks':1}">
+                                </datepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="event-list">
+                        <div ng-if="WidgetHome.events">
+                            <div infinite-scroll="WidgetHome.loadMore()" infinite-scroll-distance="1" data-infinite-container=".infinite-scroll-parent" infinite-scroll-disabled="WidgetHome.busy">
+                                <div class="event-item clearfix"
+                                     ng-swipe-right="WidgetHome.addEvents($event, $index, true)"
+                                     ng-swipe-left="WidgetHome.addEvents($event, $index, false)"
+                                     ng-class="{'active' : WidgetHome.swiped[$index] && WidgetHome.flag}"
+                                     ng-repeat="event in WidgetHome.events">
+                                     <div class="calendar-icon text-center bg-primary"
+                                          ng-click="WidgetHome.addEventsToCalendar(event, $index)">
+                                          <span class="icon icon-calendar-check"></span>
+                                     </div>
+                                     <span class="icon icon-menu rotate-90 pull-left"></span>
+                                     <div class="event-media pull-left margin-left-ten"  ng-if="event.data.listImage">
+                                          <img class="border-radius-three" load-image="1x1" data-final-src="{{event.data.listImage}}" crop-width="60" crop-height="60" crop-type="crop" >
+                                     </div>
+                                     <div class="event-date text-center pull-left margin-left-ten" ng-if="event.data.startDate">
+                                         <h3 class="text-primary margin-zero">{{event.data.startDate | getMonth}}</h3>
+                                         <h1 class="text-primary margin-zero">{{event.data.startDate | getDate}}</h1>
+                                     </div>
+                                     <div class="event-info pull-left margin-left-ten" ng-class="event.data.listImage?'titleWidth50':'titleWidth70'">
+                                         <a href="javascript:void(0)" ng-click="WidgetHome.openDetailsPage(event)">
+                                             <h4 class="margin-bottom-zero text-primary ellipsis">{{event.data.title}}</h4>
+                                         </a>
+                                         <p class="margin-zero ellipsis" ng-if="event.data.endTime && !event.data.isAllDay">
+                                             {{event.data.startTime | date: "hh:mm a"}} - {{event.data.endTime | date: "hh:mm a"}}
+                                             {{event.data.startTime && (event.data.startTime | getTimeZone) || ""}}
+                                         </p>
+                                         <p class="margin-zero ellipsis" ng-if="event.data.isAllDay">All Day</p>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="no-event-found padded" ng-if="WidgetHome.NoDataFound">
+                        <div class="well">No events found.</div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-        <div class="event-list">
-          <div ng-if="WidgetHome.events">
-            <div infinite-scroll="WidgetHome.loadMore()"
-                 infinite-scroll-distance="1"
-                 data-infinite-container=".infinite-scroll-parent"
-                 infinite-scroll-disabled="WidgetHome.busy">
-              <div class="event-item clearfix"
-                   ng-swipe-right="WidgetHome.addEvents($event, $index, true)"
-                   ng-swipe-left="WidgetHome.addEvents($event, $index, false)"
-                   ng-class="{'active' : WidgetHome.swiped[$index] && WidgetHome.flag}"
-                   ng-repeat="event in WidgetHome.events">
-                <div class="calendar-icon text-center bg-primary"
-                     ng-click="WidgetHome.addEventsToCalendar(event, $index)">
-                  <span class="icon icon-calendar-check"></span>
-                </div>
-                <span class="icon icon-menu rotate-90 pull-left"></span>
-
-                <div
-                    class="event-media pull-left margin-left-ten"  ng-if="event.data.listImage">
-                  <img class="border-radius-three"
-                       load-image="1x1" data-final-src="{{event.data.listImage}}" crop-width="60" crop-height="60" crop-type="crop" >
-                </div>
-                <div class="event-date text-center pull-left margin-left-ten"
-                     ng-if="event.data.startDate">
-                  <h3 class="text-primary margin-zero">{{event.data.startDate
-                    | getMonth}}</h3>
-
-                  <h1 class="text-primary margin-zero">{{event.data.startDate
-                    | getDate}}</h1>
-                </div>
-                <div class="event-info pull-left margin-left-ten" ng-class="event.data.listImage?'titleWidth50':'titleWidth70'">
-                  <a href="javascript:void(0)"
-                     ng-click="WidgetHome.openDetailsPage(event)"><h4
-                      class="margin-bottom-zero text-primary ellipsis">
-                    {{event.data.title}}</h4></a>
-
-                  <p class="margin-zero ellipsis"
-                     ng-if="event.data.endTime && !event.data.isAllDay">
-                    {{event.data.startTime | date: "hh:mm a"}} - {{event.data.endTime | date: "hh:mm a"}}
-                    {{event.data.startTime && (event.data.startTime | getTimeZone) || ""}}</p>
-                  <p class="margin-zero ellipsis"
-                     ng-if="event.data.isAllDay">All Day</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="no-event-found padded" ng-if="WidgetHome.NoDataFound">
-          <div class="well">No events found.</div>
-        </div>
-      </div>
     </div>
-  </div>
-</div>
-<div >
-<div ng-view="" class="slide content" ng-hide="showFeed" data-back-img="{{backgroundImage}}">
-</div>
-</div>
+    <div>
+        <div ng-view="" class="slide content" ng-hide="showFeed" data-back-img="{{backgroundImage}}"></div>
+    </div>
 </body>
 </html>
