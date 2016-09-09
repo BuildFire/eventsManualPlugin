@@ -144,13 +144,13 @@
 
         WidgetEvent.addEventsToCalendar = function (event) {
           /*Add to calendar event will add here*/
-          var eventStartDate = new Date(event.data.startDate + " " + event.data.startTime);
+          var eventStartDate = new Date(event.data.startDate);
           var eventEndDate;
-          if (event.data.endDate == '') {
-            eventEndDate = new Date(event.data.startDate + " " + "11:59 PM")
+          if (event.data.endDate !== '' && event.data.endDate < event.data.startDate) {
+            eventEndDate = new Date(event.data.endDate);
           }
           else {
-            eventEndDate = new Date(event.data.endDate + " " + event.data.endTime);
+            eventEndDate = new Date(event.data.startDate + 3600);  //add hour to start date to derive end date
           }
           if (WidgetEvent.getAddedEventToLocalStorage(event.id) != -1) {
             alert("Event already added in calendar");
