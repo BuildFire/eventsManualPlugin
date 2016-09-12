@@ -157,13 +157,44 @@
           }
           console.log("inCal3:", eventEndDate, event);
           if (buildfire.device && buildfire.device.calendar && WidgetEvent.getAddedEventToLocalStorage(event.id) == -1) {
+            var eventLocation, eventTitle, eventDescr, eventRepeatType, eventRepeatEndOn;
+            if (event && event.data && event.data.address && event.data.address.location) {
+              eventLocation = event.data.address.location;
+            } else {
+              eventLocation = "";
+            }
+            if (event && event.data) {
+              if (event.data.title) {
+                eventTitle = event.data.title;
+              } else {
+                eventTitle = "";
+              }
+              if (event.data.description) {
+                eventDescr = event.data.description;
+              } else {
+                eventDescr = "";
+              }
+              if (event.data.repeat) {
+                if (event.data.repeat.repeatType) {
+                  eventRepeatType = event.data.repeat.repeatType;
+                } else {
+                  eventRepeatType = "";
+                }
+                if (event.data.repeat.endOn) {
+                  eventRepeatEndOn = event.data.repeat.endOn;
+                } else {
+                  eventRepeatEndOn = "";
+                }
+              }
+            }
+
             buildfire.device.calendar.addEvent(
               {
-                title: event.data.title
+                title: eventTitle
                 ,
-                location: event.data.address.location
+                location: eventLocation
                 ,
-                notes: event.data.description
+                notes: eventDescr
                 ,
                 startDate: new Date(eventStartDate.getFullYear(), eventStartDate.getMonth(), eventStartDate.getDate(), eventStartDate.getHours(), eventStartDate.getMinutes(), eventStartDate.getSeconds())
                 ,
@@ -174,9 +205,9 @@
                   ,
                   secondReminderMinutes: 5
                   ,
-                  recurrence: event.data.repeat.repeatType
+                  recurrence: eventRepeatType
                   ,
-                  recurrenceEndDate: event.data.repeat.repeatType ? new Date(event.data.repeat.endOn) : new Date(2025, 6, 1, 0, 0, 0, 0, 0)
+                  recurrenceEndDate: eventRepeatType ? new Date(eventRepeatEndOn) : new Date(2025, 6, 1, 0, 0, 0, 0, 0)
                 }
               }
               ,
