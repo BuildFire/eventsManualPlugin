@@ -177,17 +177,17 @@
               if (event.data.repeat) {
                 if (event.data.repeat.repeatType) {
                   eventRepeatType = event.data.repeat.repeatType;
+                  if (event.data.repeat.endOn) {
+                    eventRepeatEndOn = new Date(event.data.repeat.endOn);
+                  } else {
+                    eventRepeatEndOn = new Date(2025, 6, 1, 0, 0, 0, 0, 0);
+                  }
                 } else {
                   eventRepeatType = "";
-                }
-                if (event.data.repeat.endOn) {
-                  eventRepeatEndOn = event.data.repeat.endOn;
-                } else {
                   eventRepeatEndOn = "";
                 }
               }
             }
-
             buildfire.device.calendar.addEvent(
               {
                 title: eventTitle
@@ -207,7 +207,7 @@
                   ,
                   recurrence: eventRepeatType
                   ,
-                  recurrenceEndDate: eventRepeatType ? new Date(eventRepeatEndOn) : new Date(2025, 6, 1, 0, 0, 0, 0, 0)
+                  recurrenceEndDate: eventRepeatEndOn
                 }
               }
               ,
