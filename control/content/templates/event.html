@@ -529,11 +529,27 @@
     </div>
     <div class="main col-md-9 pull-right">
       <input type="text" class="form-control"
-             placeholder="Enter Street Address or Long/Lat Coordinates"
+             placeholder="Enter Street Address"
              ng-model="ContentEvent.currentAddress" google-location-search
              callback-fn="ContentEvent.setLocation(data)"
-             ng-enter="ContentEvent.setCoordinates()"
              ng-change="ContentEvent.clearAddress()">
+      <br>
+
+      <div class="alert alert-danger alert-sm text-center"
+           ng-show="ContentEvent.validCoordinatesFailure">Please enter valid
+        coordinates
+      </div>
+    </div>
+  </div>
+  <div class="item clearfix row">
+    <div class="labels col-md-3 padding-right-zero pull-left">
+      <span>Lat/Long Coordinates</span>
+    </div>
+    <div class="main col-md-9 pull-right">
+      <input type="text" class="form-control"
+             placeholder="Enter Long/Lat Coordinates"
+             ng-model="ContentEvent.latlng"
+             ng-blur="ContentEvent.setCoordinates()">
       <br>
 
       <div class="alert alert-danger alert-sm text-center"

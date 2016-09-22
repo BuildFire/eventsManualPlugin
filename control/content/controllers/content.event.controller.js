@@ -472,6 +472,7 @@
           };
           ContentEvent.currentAddress = ContentEvent.event.data.address.location;
           ContentEvent.currentCoordinates = ContentEvent.event.data.address.location_coordinates;
+          ContentEvent.latlng = Math.round(ContentEvent.event.data.address.location_coordinates[1]*10000)/10000 + ', ' + Math.round(ContentEvent.event.data.address.location_coordinates[0]*10000)/10000;
           $scope.$digest();
         };
 
@@ -512,11 +513,21 @@
 
         ContentEvent.clearAddress = function () {
           if (!ContentEvent.currentAddress) {
+            ContentEvent.currentAddress = null;
             ContentEvent.event.data.address = null;
             ContentEvent.currentCoordinates = null;
           }
         };
 
+        ContentEvent.clearCoordinates = function () {
+          if (!ContentEvent.latlong) {
+            ContentEvent.currentAddress = null;
+            ContentEvent.event.data.address = null;
+            ContentEvent.currentCoordinates = null;
+          }
+        };
+        
+        
         ContentEvent.setCoordinates = function () {
               var latlng = '';
               function successCallback(resp) {
@@ -524,10 +535,11 @@
                       ContentEvent.event.data.address = {
                           type: ADDRESS_TYPE.COORDINATES,
                           location: resp.formatted_address || ContentEvent.currentAddress,
-                          location_coordinates: [ContentEvent.currentAddress.split(",")[1].trim(), ContentEvent.currentAddress.split(",")[0].trim()]
+                          location_coordinates: [ContentEvent.latlng.split(",")[1].trim(), ContentEvent.latlng.split(",")[0].trim()]
                       };
                       ContentEvent.currentAddress = ContentEvent.event.data.address.location;
                       ContentEvent.currentCoordinates = ContentEvent.event.data.address.location_coordinates;
+                      ContentEvent.latlng = Math.round(ContentEvent.event.data.address.location_coordinates[1]*10000)/10000 + ', ' + Math.round(ContentEvent.event.data.address.location_coordinates[0]*10000)/10000;
                   } else {
                       errorCallback();
                   }
@@ -540,8 +552,8 @@
                   }, 5000);
               }
 
-              if (ContentEvent.currentAddress) {
-                  latlng = ContentEvent.currentAddress.split(',')[1] + "," + ContentEvent.currentAddress.split(',')[0];
+              if (ContentEvent.latlng) {
+                  latlng = ContentEvent.latlng.split(',')[1] + "," + ContentEvent.latlng.split(',')[0];
               }
 
               Utils.validLongLats(latlng).then(successCallback, errorCallback);

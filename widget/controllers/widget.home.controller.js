@@ -224,15 +224,17 @@
                 return repeat_results;
             };
 
-            var getManualEvents = function () {
+            var getManualEvents = function (skip, callback) {
                 WidgetHome.isCalled = false;
                 WidgetHome.NoDataFound = false;
                 Buildfire.spinner.show();
                 var successEvents = function (result) {
-                    WidgetHome.allEvents = [];
+                    if (!result.length) {
+                        return true;
+                    }
                     var repeat_until = getLastDayMonth();
                     var resultRepeating = expandRepeatingEvents(result, repeat_until, false);
-                    WidgetHome.allEvents = resultRepeating;
+                    WidgetHome.allEvents = WidgetHome.allEvents.length? WidgetHome.allEvents.concat(resultRepeating) : resultRepeating;
                     $scope.$broadcast('refreshDatepickers');
                     if (resultRepeating || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
                         Buildfire.spinner.hide();
@@ -241,12 +243,24 @@
                         }
                         WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(resultRepeating) : resultRepeating;
 
+                        WidgetHome.events.sort(function (a, b) {
+                            if (a.data.startDate > b.data.startDate) {
+                                return 1;
+                            }
+                            if (a.data.startDate < b.data.startDate) {
+                                return -1;
+                            }
+                            // a must be equal to b
+                            return 0;
+                        });
+
                         searchOptions.skip = searchOptions.skip + PAGINATION.eventsCount;
 
                         WidgetHome.isCalled = true;
                         WidgetHome.clickEvent = false;
                         WidgetHome.isCalled = true;
                         $(".glyphicon").css('pointer-events', 'auto');
+                        getManualEvents(skip + 50);
                     }
                     else {
                         if (!result.length && !JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
@@ -289,16 +303,16 @@
                 };
                 //WidgetHome.getAllEvents();
                 var _limit = 49;
-                var _skipItems = 0;
+                var _skipItems = skip;
                 var startDate = +new Date(eventStartDate);
                 var year = new Date(eventStartDate).getFullYear();
                 var month = new Date(eventStartDate).getMonth();
                 //need to calculate leap year correctly.
                 if (isLeapYear(year) && (month === 0 || month === 1)) month++;
-                var endDate = new Date(year, month + 1, 0);
+                var endDate = new Date(year, month + 2, 1);
                 var endDate = +new Date(endDate.toISOString());
                 var searchOptionsItems = {
-                  filter: { "$or": [{"$and": [{"$json.startDate": {"$gte": startDate}}, {"$json.startDate":   {"$lte": endDate}}]},
+                  filter: { "$or": [{"$and": [{"$json.startDate": {"$gte": startDate}}, {"$json.startDate":   {"$lt": endDate}}]},
                                     {"$and": [{"$json.startDate": {"$lte": startDate }}, {"$json.repeat.isRepeating":true}]}]
                   },
                   limit: _limit + 1,
@@ -455,7 +469,9 @@
             WidgetHome.loadMore = function () {
                 if (WidgetHome.busy) return;
                 WidgetHome.busy = true;
-                getManualEvents();
+                var skip = 0;
+                WidgetHome.allEvents = [];
+                getManualEvents(skip);
             };
 
             /*This method is used to navigate to particular event details page*/
