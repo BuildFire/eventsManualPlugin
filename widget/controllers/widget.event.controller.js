@@ -170,7 +170,7 @@
                 eventTitle = "";
               }
               if (event.data.description) {
-                eventDescr = event.data.description;
+                eventDescr = event.data.description.replace(/<[^>]*>?/g, '');  //dépouiller les caractères spéciaux
               } else {
                 eventDescr = "";
               }

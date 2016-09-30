@@ -15,11 +15,22 @@
         get: function (_tagName) {
           var deferred = $q.defer();
           Buildfire.datastore.get(_tagName, function (err, result) {
-            if (err) {
-              return deferred.reject(err);
-            } else if (result) {
-              return deferred.resolve(result);
-            }
+              if (err) {
+                  return deferred.reject(err);
+              } else {
+                  if (_tagName === "eventsManualInfo") {    //seulment pour le data de plugin
+                      if (result && result.data && result.data.design) {
+                          return deferred.resolve(result);
+                      } else {  //il n'y a pas element de design, donc par défaut à quelque chose
+                          var mResult = {data:{}};
+                          return deferred.resolve(mResult);
+                      }
+                  } else {
+                      if (result) {
+                          return deferred.resolve(result);
+                      }
+                  }
+              }
           });
           return deferred.promise;
         },
