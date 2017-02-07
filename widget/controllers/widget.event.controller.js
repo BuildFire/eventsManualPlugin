@@ -305,8 +305,8 @@
         WidgetEvent.onAddressClick = function (long, lat) {
           buildfire.getContext(function (err, context) {
             if (context) {
-              if (context.device && context.device.platform == 'ios')
-                window.open("maps://maps.google.com/maps?daddr=" + lat + "," + long);
+              if (context.device && context.device.platform.toLowerCase() == 'ios')
+                window.open("maps://maps.apple.com?q=" + lat + "," + long);
               else
                 window.open("http://maps.google.com/maps?daddr=" + lat + "," + long);
             }

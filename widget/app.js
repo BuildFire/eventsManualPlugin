@@ -162,8 +162,8 @@
 
                   buildfire.getContext(function (err, context) {
                     if (context) {
-                      if (context.device && context.device.platform == 'ios')
-                        window.open("maps://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
+                      if (context.device && context.device.platform.toLowerCase() == 'ios')
+                        window.open("maps://maps.apple.com?q=" + scope.coordinates[1] + "," + scope.coordinates[0]);
                       else
                         window.open("http://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
                     }
