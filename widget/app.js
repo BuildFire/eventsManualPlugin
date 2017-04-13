@@ -100,7 +100,7 @@
             img = "";
             element.attr("style", '');
             element.css({
-              'background-size': 'cover'
+              'background-size': 'cover !important'
             });
           }
         });
