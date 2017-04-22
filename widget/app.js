@@ -89,7 +89,7 @@
                height: $rootScope.deviceHeight
             }, function (err, imgUrl) {
               img = imgUrl;
-              element.attr("style", 'background:url(' + img + ') !important');
+              element.attr("style", 'background:url(' + img + ') !important;background-size:cover !important');
               element.css({
                 'background-size': 'cover !important'
               });
