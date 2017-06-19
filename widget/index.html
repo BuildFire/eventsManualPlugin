@@ -60,6 +60,9 @@
                             </div>
                         </div>
                     </div>
+                    <div style="text-align: center;margin-bottom: 3px;">
+                        <button type="button" class="btn btn-success btn-sm" ng-click="WidgetHome.resetCalendar()">All Events</button>
+                    </div>
                     <div class="event-list">
                         <div ng-if="WidgetHome.events">
                             <div infinite-scroll="WidgetHome.loadMore()" infinite-scroll-distance="1" data-infinite-container=".infinite-scroll-parent" infinite-scroll-disabled="WidgetHome.busy">

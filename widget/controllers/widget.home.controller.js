@@ -343,6 +343,11 @@
                 DataStore.get(TAG_NAMES.EVENTS_MANUAL_INFO).then(success, error);
             };
 
+            WidgetHome.resetCalendar = function() {
+                $rootScope.chnagedMonth = $scope.dt.getFullYear() + "-" + moment($scope.dt).format("MM") + "-" + ("0" + $scope.dt.getDate()).slice(-2) + "T00:00:00" + WidgetHome.getUTCZone();
+                WidgetHome.getEvent();
+            };
+
             /*
              * Fetch user's data from datastore
              */
