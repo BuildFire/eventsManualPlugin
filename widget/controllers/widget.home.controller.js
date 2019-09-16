@@ -229,6 +229,7 @@
                 WidgetHome.NoDataFound = false;
                 Buildfire.spinner.show();
                 var successEvents = function (result) {
+                    Buildfire.spinner.hide();                    
                     if (!result.length) {
                         return true;
                     }
@@ -237,7 +238,6 @@
                     WidgetHome.allEvents = WidgetHome.allEvents.length? WidgetHome.allEvents.concat(resultRepeating) : resultRepeating;
                     $scope.$broadcast('refreshDatepickers');
                     if (resultRepeating || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
-                        Buildfire.spinner.hide();
                         if (!WidgetHome.events) {
                           WidgetHome.events = [];
                         }
