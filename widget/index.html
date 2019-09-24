@@ -80,10 +80,14 @@
                                      <div class="event-media pull-left margin-left-ten"  ng-if="event.data.listImage">
                                           <img class="border-radius-three" load-image="1x1" data-final-src="{{event.data.listImage}}" crop-width="60" crop-height="60" crop-type="crop" >
                                      </div>
-                                     <div class="event-date text-center pull-left margin-left-ten" ng-if="event.data.startDate">
+                                     <div class="event-date text-center pull-left margin-left-ten" ng-if="(event.data.startDate && isSameDate(event))">
                                          <h3 class="text-primary margin-zero">{{event.data.startDate | getMonth}}</h3>
                                          <h1 class="text-primary margin-zero">{{event.data.startDate | getDate}}</h1>
                                      </div>
+                                     <div class="event-date text-center pull-left margin-left-ten" ng-if="(event.data.startDate && !isSameDate(event))">
+                                        <h3 class="text-primary margin-zero">{{dateToShow(event) | getMonth}}</h3>
+                                        <h1 class="text-primary margin-zero">{{dateToShow(event) | getDate}}</h1>
+                                    </div>
                                      <div class="event-info pull-left margin-left-ten" ng-class="event.data.listImage?'titleWidth50':'titleWidth70'">
                                          <a href="javascript:void(0)" ng-click="WidgetHome.openDetailsPage(event)">
                                              <h4 class="margin-bottom-zero text-primary ellipsis">{{event.data.title}}</h4>

@@ -15,17 +15,22 @@
             class="margin-zero text-primary">{{WidgetEvent.event.data.startDate
           |
           getDate}}</h1>
+        <h1>
       </div>
 
-      <div class="event-info pull-left margin-left-fifteen titleWidth70">
+      <div class="event-info pull-left margin-left-fifteen titleWidth80">
         <p class="ellipsis margin-zero">{{WidgetEvent.event.data.title}}</p>
 
         <p class="margin-zero"
-           ng-if="((WidgetEvent.event.data.endTime >= 0) && (!WidgetEvent.event.data.isAllDay))">
+           ng-if="((WidgetEvent.event.data.endTime >= 0) && (!WidgetEvent.event.data.isAllDay) && isSameDate(WidgetEvent.event))">
           {{WidgetEvent.event.data.startTime | date: "hh:mm a"}} - {{WidgetEvent.event.data.endTime | date: "hh:mm a"}}
           {{WidgetEvent.event.data.startTime && (WidgetEvent.event.data.startTime | getTimeZone) || ""}}</p>
+        <p class="margin-zero"
+           ng-if="!isSameDate(WidgetEvent.event)">
+          {{WidgetEvent.event.data.startTime | date: "MMM d, hh:mm a"}} - {{WidgetEvent.event.data.endTime | date: "MMM d, hh:mm a"}}
+          {{WidgetEvent.event.data.startTime && (WidgetEvent.event.data.startTime | getTimeZone) || ""}}</p>
           <p class="margin-zero"
-             ng-if="WidgetEvent.event.data.isAllDay">
+             ng-if="WidgetEvent.event.data.isAllDay && isSameDate(WidgetEvent.event)">
               All Day</p>
         <a class="text-primary" href="javascript:void(0)" ng-click="WidgetEvent.addEventsToCalendar(WidgetEvent.event)">Add to Calendar</a>
       </div>
