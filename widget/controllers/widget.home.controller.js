@@ -190,6 +190,8 @@
                             pattern.end_condition = 'for';
                             pattern.rfor = result[i].data.repeat.endAfter;
                         }
+                        var difference = result[i].data.endDate - result[i].data.startDate;
+                        var differenceTime = result[i].data.endTime - result[i].data.startTime;
 
                         //use recurring.js from https://www.npmjs.com/package/recurring-date
                         var r = new RecurringDate(pattern);
@@ -199,11 +201,16 @@
                             var temp_result = JSON.parse(JSON.stringify(result[i]));
                             temp_result.data.startDate = Date.parse(dates[j]);
                             temp_result.data.startTime = result[i].data.startTime;
-                            if (temp_result.data.startDate >= +new Date(eventStartDate) && temp_result.data.startDate <= +new Date(eventRecEndDate))
+                            temp_result.data.endDate = temp_result.data.startDate + difference;
+                            temp_result.data.endTime = temp_result.data.startTime + differenceTime;
+                            
+                            if (temp_result.data.startDate >= +new Date(eventStartDate) && temp_result.data.startDate <= +new Date(eventRecEndDate)||
+                            (temp_result.data.endDate >= +new Date(eventStartDate) && temp_result.data.endDate <= +new Date(eventRecEndDate)) ||
+                            (+new Date(eventStartDate) >= temp_result.data.startDate && +new Date(eventRecEndDate) <= temp_result.data.endDate))
                                 if (AllEvent) {
                                   repeat_results.push(temp_result);
                                 }
-                                else if (temp_result.data.startDate >= +new Date(eventStartDate)) {
+                                else if (temp_result.data.startDate >= +new Date(eventStartDate) || temp_result.data.endDate >= +new Date(eventStartDate)) {
                                   repeat_results.push(temp_result);
                                 }
                             }
@@ -333,10 +340,13 @@
             };
 
             $rootScope.isSameDate = function (event) {
-                var startDate = new Date(event.data.startDate).setHours(0,0,0,0);
-                var endDate = new Date(event.data.endDate).setHours(0,0,0,0);
-          
-                return startDate === endDate;
+                if(event.data) {
+                    var startDate = new Date(event.data.startDate).setHours(0,0,0,0);
+                    var endDate = new Date(event.data.endDate).setHours(0,0,0,0);
+                    
+                    return startDate === endDate;
+                }
+                return true;
             }
 
             $scope.dateToShow = function (event) {
