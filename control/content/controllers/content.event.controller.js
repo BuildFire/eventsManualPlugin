@@ -305,33 +305,29 @@
           if (ContentEvent.event.data.repeat) {
             if (ContentEvent.event.data.repeat.startDate != ContentEvent.event.lastSavedStartDate) {
               //   ContentEvent.event.data.repeat.startDate = +new Date(ContentEvent.event.data.repeat.startDate);
+              if(!ContentEvent.event.data.repeat.days)
+                ContentEvent.event.data.repeat.days = {};
+
               switch (ContentEvent.event.data.repeat.startDate.getDay()) {
                 case 0:
-                  ContentEvent.event.data.repeat.days = {};
                   ContentEvent.event.data.repeat.days.sunday = true;
                   break;
                 case 1:
-                  ContentEvent.event.data.repeat.days = {};
                   ContentEvent.event.data.repeat.days.monday = true;
                   break;
                 case 2:
-                  ContentEvent.event.data.repeat.days = {};
                   ContentEvent.event.data.repeat.days.tuesday = true;
                   break;
                 case 3:
-                  ContentEvent.event.data.repeat.days = {};
                   ContentEvent.event.data.repeat.days.wednesday = true;
                   break;
                 case 4:
-                  ContentEvent.event.data.repeat.days = {};
                   ContentEvent.event.data.repeat.days.thursday = true;
                   break;
                 case 5:
-                  ContentEvent.event.data.repeat.days = {};
                   ContentEvent.event.data.repeat.days.friday = true;
                   break;
                 case 6:
-                  ContentEvent.event.data.repeat.days = {};
                   ContentEvent.event.data.repeat.days.saturday = true;
                   break;
               }

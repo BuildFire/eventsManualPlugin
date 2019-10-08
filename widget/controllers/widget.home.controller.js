@@ -122,6 +122,14 @@
             var expandRepeatingEvents = function (result, repeat_until, AllEvent) {
                 var repeat_results = [];
                 for (var i = 0; i < result.length; i++) {
+                    
+                    //set as all day event if overlapping on multiple days
+                    var startDate = new Date(result[i].data.startDate).setHours(0,0,0,0);
+                    var endDate = new Date(result[i].data.endDate).setHours(0,0,0,0);
+                    if(startDate != endDate)
+                        result[i].data.isAllDay = true;
+                    
+
                     if (result[i].data.repeat.isRepeating && result[i].data.repeat.repeatType) {
                         var repeat_unit = getRepeatUnit(result[i].data.repeat.repeatType);
                         if (repeat_unit === "w") {    //daily repeats do not specify day
@@ -182,6 +190,8 @@
                             pattern.end_condition = 'for';
                             pattern.rfor = result[i].data.repeat.endAfter;
                         }
+                        var difference = result[i].data.endDate - result[i].data.startDate;
+                        var differenceTime = result[i].data.endTime - result[i].data.startTime;
 
                         //use recurring.js from https://www.npmjs.com/package/recurring-date
                         var r = new RecurringDate(pattern);
@@ -191,21 +201,28 @@
                             var temp_result = JSON.parse(JSON.stringify(result[i]));
                             temp_result.data.startDate = Date.parse(dates[j]);
                             temp_result.data.startTime = result[i].data.startTime;
-                            if (temp_result.data.startDate >= +new Date(eventStartDate) && temp_result.data.startDate <= +new Date(eventRecEndDate))
+                            temp_result.data.endDate = temp_result.data.startDate + difference;
+                            temp_result.data.endTime = temp_result.data.startTime + differenceTime;
+                            
+                            if (temp_result.data.startDate >= +new Date(eventStartDate) && temp_result.data.startDate <= +new Date(eventRecEndDate)||
+                            (temp_result.data.endDate >= +new Date(eventStartDate) && temp_result.data.endDate <= +new Date(eventRecEndDate)) ||
+                            (+new Date(eventStartDate) >= temp_result.data.startDate && +new Date(eventRecEndDate) <= temp_result.data.endDate))
                                 if (AllEvent) {
                                   repeat_results.push(temp_result);
                                 }
-                                else if (temp_result.data.startDate >= +new Date(eventStartDate)) {
+                                else if (temp_result.data.startDate >= +new Date(eventStartDate) || temp_result.data.endDate >= +new Date(eventStartDate)) {
                                   repeat_results.push(temp_result);
                                 }
                             }
                     } else {
                       //save the result even if it is not repeating.
-                        if (result[i].data.startDate >= +new Date(eventStartDate) && result[i].data.startDate <= +new Date(eventRecEndDate))
+                        if ((result[i].data.startDate >= +new Date(eventStartDate) && result[i].data.startDate <= +new Date(eventRecEndDate)) ||
+                            (result[i].data.endDate >= +new Date(eventStartDate) && result[i].data.endDate <= +new Date(eventRecEndDate)) ||
+                            (+new Date(eventStartDate) >= result[i].data.startDate && +new Date(eventRecEndDate) <= result[i].data.endDate))
                             if (AllEvent) {
                                 repeat_results.push(result[i]);
                             }
-                            else if (result[i].data.startDate >= +new Date(eventStartDate)) {
+                            else if (result[i].data.startDate >= +new Date(eventStartDate) || result[i].data.endDate >= +new Date(eventStartDate)) {
                                 repeat_results.push(result[i]);
                             }
                     }
@@ -229,6 +246,7 @@
                 WidgetHome.NoDataFound = false;
                 Buildfire.spinner.show();
                 var successEvents = function (result) {
+                    Buildfire.spinner.hide();                    
                     if (!result.length) {
                         return true;
                     }
@@ -237,12 +255,10 @@
                     WidgetHome.allEvents = WidgetHome.allEvents.length? WidgetHome.allEvents.concat(resultRepeating) : resultRepeating;
                     $scope.$broadcast('refreshDatepickers');
                     if (resultRepeating || JSON.parse(localStorage.getItem("pluginLoadedFirst"))) {
-                        Buildfire.spinner.hide();
                         if (!WidgetHome.events) {
                           WidgetHome.events = [];
                         }
                         WidgetHome.events = WidgetHome.events.length ? WidgetHome.events.concat(resultRepeating) : resultRepeating;
-
                         WidgetHome.events.sort(function (a, b) {
                             if (a.data.startDate > b.data.startDate) {
                                 return 1;
@@ -313,13 +329,34 @@
                 var endDate = +new Date(endDate.toISOString());
                 var searchOptionsItems = {
                   filter: { "$or": [{"$and": [{"$json.startDate": {"$gte": startDate}}, {"$json.startDate":   {"$lt": endDate}}]},
-                                    {"$and": [{"$json.startDate": {"$lte": startDate }}, {"$json.repeat.isRepeating":true}]}]
+                                    {"$and": [{"$json.startDate": {"$lte": startDate }}, {"$json.repeat.isRepeating":true}]},
+                                    {"$and": [{"$json.endDate" : {"$gte": startDate}}]}
+                                ]
                   },
                   limit: _limit + 1,
                   skip: _skipItems
                 };
                 DataStore.search(searchOptionsItems, TAG_NAMES.EVENTS_MANUAL).then(successEvents, errorEvents);
             };
+
+            $rootScope.isSameDate = function (event) {
+                if(event.data) {
+                    var startDate = new Date(event.data.startDate).setHours(0,0,0,0);
+                    var endDate = new Date(event.data.endDate).setHours(0,0,0,0);
+                    
+                    return startDate === endDate;
+                }
+                return true;
+            }
+
+            $scope.dateToShow = function (event) {
+                var currentDateStart = new Date(eventStartDate).setHours(0,0,0,0);
+                var currentDateEnd = new Date(eventRecEndDate).setHours(0,0,0,0);
+
+                if (currentDateStart === currentDateEnd)
+                    return new Date(eventStartDate);
+                else return new Date(event.data.startDate);
+            }
 
             /**
              * init() function invocation to fetch previously saved user's data from datastore.
@@ -485,9 +522,11 @@
             $scope.getDayClass = function (date, mode) {
                 var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
                 var currentDay;
+                var currentEndDay;
                 for (var i = 0; i < WidgetHome.allEvents.length; i++) {
                     currentDay = new Date(WidgetHome.allEvents[i].data.startDate).setHours(0, 0, 0, 0);
-                    if (dayToCheck === currentDay) {
+                    currentEndDay = new Date(WidgetHome.allEvents[i].data.endDate).setHours(0, 0, 0, 0);
+                    if ((dayToCheck >= currentDay) && (dayToCheck <= currentEndDay)) {
                        return 'eventDate avoid-clicks-none';
                     }
                 }
