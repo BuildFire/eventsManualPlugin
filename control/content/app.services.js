@@ -149,24 +149,24 @@
           var deferred = $q.defer();
           var longitude = longLats.split(",")[0];
           var latitude = longLats.split(",")[1];
-          console.log(longitude, latitude);
+          var geocoder = new google.maps.Geocoder();
+
           var valid = (inRange(-90, latitude, 90) && inRange(-180, longitude, 180));
           if (valid) {
-            $http.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&key=" + GOOGLE_KEYS.API_KEY)
-              .then(function (response) {
-                // this callback will be called asynchronously
-                // when the response is available
-                console.log(response);
-                if(response.data && response.data.results && response.data.results.length) {
-                  deferred.resolve(response.data.results[0]);
-                } else {
+            geocoder.geocode({
+              location: new google.maps.LatLng(latitude, longitude)
+            }, (results, status) => {
+              if (status == 'OK') {
+                if (results.length) {
+                  deferred.resolve(results[0]);
+                }
+                else {
                   deferred.resolve(true);
                 }
-              }, function (error) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
-                deferred.reject(error);
-              });
+              } else {
+                deferred.reject(new Error('Geocode was not successful for the following reason: ' + status));
+              }
+            })
           }
           else {
             deferred.resolve(null);
