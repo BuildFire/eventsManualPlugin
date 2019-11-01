@@ -39,7 +39,25 @@
     <script src="controllers/widget.event.controller.js"
             type="application/javascript"></script>
     <link rel="stylesheet" href="assets/css/style.css">
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBdhPtd93zNB7sXm_sjseo9gZgtwgxRUWM"></script>
+    <script>
+        function setGoogleMapsScript(key) {
+            const docHead = document.getElementsByTagName('head');
+            let scriptEl = document.createElement('script');
+            scriptEl.id = "googleScript";
+            scriptEl.src = "https://maps.googleapis.com/maps/api/js?key=" + key;
+            docHead[0].appendChild(scriptEl);
+        };
+        
+        var isMapReady = false;
+        
+        function mapReady(){
+            isMapReady = true;
+        }
+
+        buildfire.getContext((error, context) => {
+            setGoogleMapsScript(context.apiKeys.googleMapKey);
+        });
+    </script>
 
     <script src="../../../scripts/angular/angular-animate.min.js"></script>
     <link rel="stylesheet" href="../../../styles/transitionAnimation.css">

@@ -36,7 +36,7 @@
       COORDINATES: "Coordinates"
     })
     .constant('GOOGLE_KEYS', {
-      API_KEY: 'AIzaSyBdhPtd93zNB7sXm_sjseo9gZgtwgxRUWM'
+      API_KEY: ""
     })
     .constant('PAGINATION', {
       eventsCount: 10
