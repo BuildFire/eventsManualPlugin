@@ -1,5 +1,5 @@
 describe('Unit : eventsManualPlugin content Enums', function () {
-  var TAG_NAMES, STATUS_CODE, STATUS_MESSAGES, LAYOUTS, PAGINATION, ADDRESS_TYPE,GOOGLE_KEYS;
+  var TAG_NAMES, STATUS_CODE, STATUS_MESSAGES, LAYOUTS, PAGINATION, ADDRESS_TYPE;
   var layouts = [
     {name: "Event_Item_1"},
     {name: "Event_Item_2"},
@@ -9,14 +9,13 @@ describe('Unit : eventsManualPlugin content Enums', function () {
 
   beforeEach(module('eventsManualPluginContent'));
 
-  beforeEach(inject(function (_TAG_NAMES_, _STATUS_CODE_, _STATUS_MESSAGES_, _LAYOUTS_, _PAGINATION_, _ADDRESS_TYPE_,_GOOGLE_KEYS_) {
+  beforeEach(inject(function (_TAG_NAMES_, _STATUS_CODE_, _STATUS_MESSAGES_, _LAYOUTS_, _PAGINATION_, _ADDRESS_TYPE_) {
     TAG_NAMES = _TAG_NAMES_;
     STATUS_CODE = _STATUS_CODE_;
     STATUS_MESSAGES = _STATUS_MESSAGES_;
     LAYOUTS = _LAYOUTS_;
     PAGINATION = _PAGINATION_;
     ADDRESS_TYPE = _ADDRESS_TYPE_;
-    GOOGLE_KEYS = _GOOGLE_KEYS_;
   }));
 
   describe('Enum : TAG_NAMES', function () {
@@ -105,9 +104,4 @@ describe('Unit : eventsManualPlugin content Enums', function () {
     });
   });
 
-  describe('Enum : GOOGLE_KEYS', function () {
-    it('GOOGLE_KEYS should exist and be an object', function () {
-      expect(typeof GOOGLE_KEYS).toEqual('object');
-    });
-  });
 });

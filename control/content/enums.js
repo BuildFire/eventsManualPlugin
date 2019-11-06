@@ -35,9 +35,6 @@
       LOCATION: 'Location',
       COORDINATES: "Coordinates"
     })
-    .constant('GOOGLE_KEYS', {
-      API_KEY: ""
-    })
     .constant('PAGINATION', {
       eventsCount: 10
     });

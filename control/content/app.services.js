@@ -139,7 +139,7 @@
         }
       }
     }])
-    .factory("Utils", ['$http', 'GOOGLE_KEYS', '$q', function ($http, GOOGLE_KEYS, $q) {
+    .factory("Utils", ['$http', '$q', function ($http, $q) {
       function inRange(min, number, max) {
         return ( !isNaN(number) && (number >= min) && (number <= max) );
       }
@@ -156,13 +156,9 @@
             geocoder.geocode({
               location: new google.maps.LatLng(latitude, longitude)
             }, (results, status) => {
+              
               if (status == 'OK') {
-                if (results.length) {
-                  deferred.resolve(results[0]);
-                }
-                else {
-                  deferred.resolve(true);
-                }
+                deferred.resolve(results.length ? results[0]: true)
               } else {
                 deferred.reject(new Error('Geocode was not successful for the following reason: ' + status));
               }
