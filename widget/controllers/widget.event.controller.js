@@ -305,10 +305,15 @@
         WidgetEvent.onAddressClick = function (long, lat) {
           buildfire.getContext(function (err, context) {
             if (context) {
-              if (context.device && context.device.platform.toLowerCase() == 'ios')
-                window.open("maps://maps.apple.com?q=" + lat + "," + long);
-              else
+              if (context.device && context.device.platform.toLowerCase() === 'ios') {
+                buildfire.navigation.openWindow("maps://maps.apple.com?q=" + lat + "," + long);
+              }
+              else if (context.device && context.device.platform.toLowerCase() === 'android') {
+                buildfire.navigation.openWindow(`http://maps.google.com/maps?daddr=${lat},${long}`, '_system');
+              }
+              else {
                 window.open("http://maps.google.com/maps?daddr=" + lat + "," + long);
+              }
             }
           });
         };
