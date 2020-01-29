@@ -171,6 +171,7 @@
               }
               if (event.data.description) {
                 eventDescr = event.data.description.replace(/<[^>]*>?/g, '');  //dépouiller les caractères spéciaux
+                eventDescr = decodeHtmlCharCodes(eventDescr);
               } else {
                 eventDescr = "";
               }
@@ -188,6 +189,13 @@
                 }
               }
             }
+
+            function decodeHtmlCharCodes(str) { 
+              return str.replace(/(&#(\d+);)/g, function(match, capture, charCode) {
+                return String.fromCharCode(charCode);
+              });
+            };
+
             buildfire.device.calendar.addEvent(
               {
                 title: eventTitle
