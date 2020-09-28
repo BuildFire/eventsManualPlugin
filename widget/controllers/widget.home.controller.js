@@ -372,6 +372,14 @@
                       WidgetHome.data.design.itemDetailsLayout = LAYOUTS.itemDetailsLayout[0].name;
                     }
                     currentLayout = WidgetHome.data.design.itemDetailsLayout;
+                    if (
+                      buildfire && 
+                      buildfire.getContext() &&
+                      buildfire.getContext().device &&
+                      buildfire.getContext().device.platform !== 'web'
+                    ) {
+                      WidgetHome.loadMore();
+                    }
                 }, error = function (err) {
                     if (err && err.code !== STATUS_CODE.NOT_FOUND) {
                         console.error('Error while getting data', err);
