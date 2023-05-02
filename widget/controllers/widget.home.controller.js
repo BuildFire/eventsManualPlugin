@@ -471,7 +471,10 @@
                     eventEndDate = eventStartDate;
                 }
                 if (WidgetHome.getAddedEventToLocalStorage(event.id) != -1) {
-                    alert("Event already added in calendar");
+                    buildfire.dialog.alert({
+                        title: "  ",
+                        message: "Event already added in calendar",
+                    });
                 }
                 console.log("inCal3:", eventEndDate, event, eventStartDate);
                 if (buildfire.device && buildfire.device.calendar && WidgetHome.getAddedEventToLocalStorage(event.id) == -1) {
@@ -505,7 +508,10 @@
                                 WidgetHome.swiped[i] = false;
                                 console.log('worked ' + JSON.stringify(result));
                                 WidgetHome.setAddedEventToLocalStorage(event.id);
-                                alert("Event added to calendar");
+                                buildfire.dialog.alert({
+                                    title: "  ",
+                                    message: "Event added to calendar",
+                                });
                                 $scope.$digest();
                             }
                         }

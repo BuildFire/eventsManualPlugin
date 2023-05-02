@@ -153,7 +153,10 @@
             eventEndDate = new Date(event.data.startDate + 3600000);  //add hour to start date to derive end date
           }
           if (WidgetEvent.getAddedEventToLocalStorage(event.id) != -1) {
-            alert("Event already added in calendar");
+            buildfire.dialog.alert({
+              title: ' ',
+              message: "Event already added in calendar",
+            });
           }
           console.log("inCal3:", eventEndDate, event);
           if (buildfire.device && buildfire.device.calendar && WidgetEvent.getAddedEventToLocalStorage(event.id) == -1) {
@@ -225,7 +228,10 @@
                 else {
                   console.log('worked ' + JSON.stringify(result));
                   WidgetEvent.setAddedEventToLocalStorage(event.id);
-                  alert("Event added to calendar");
+                  buildfire.dialog.alert({
+                    title: " ",
+                    message: "Event added to calendar",
+                  });
                   $scope.$digest();
                 }
               }
