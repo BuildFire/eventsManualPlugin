@@ -229,7 +229,7 @@
                   console.log('worked ' + JSON.stringify(result));
                   WidgetEvent.setAddedEventToLocalStorage(event.id);
                   buildfire.dialog.alert({
-                    title: " ",
+                    title: ' ',
                     message: "Event added to calendar",
                   });
                   $scope.$digest();

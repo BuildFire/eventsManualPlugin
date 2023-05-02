@@ -472,7 +472,7 @@
                 }
                 if (WidgetHome.getAddedEventToLocalStorage(event.id) != -1) {
                     buildfire.dialog.alert({
-                        title: "  ",
+                        title: '  ',
                         message: "Event already added in calendar",
                     });
                 }
