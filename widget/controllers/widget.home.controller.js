@@ -358,6 +358,26 @@
                 else return new Date(event.data.startDate);
             }
 
+            $scope.startTimeToShow = function (event) {
+                const currentDateStart = new Date(eventStartDate).setHours(0,0,0,0);
+                const _eventStartDate = new Date(event.data.startDate).setHours(0,0,0,0);
+                if (currentDateStart === _eventStartDate) {
+                    return new Date(event.data.startDate);
+                } else {
+                    return new Date(eventStartDate);
+                }
+            }
+
+            $scope.endTimeToShow = function (event) {
+                const currentDateEnd = new Date(eventRecEndDate).setHours(0,0,0,0);
+                const _eventEndDate = new Date(event.data.endDate).setHours(0,0,0,0);
+                if (currentDateEnd === _eventEndDate) {
+                    return new Date(event.data.endDate);
+                } else {
+                    return new Date(eventRecEndDate);
+                }
+            }
+
             /**
              * init() function invocation to fetch previously saved user's data from datastore.
              */

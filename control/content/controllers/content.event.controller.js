@@ -301,6 +301,10 @@
             ContentEvent.event.data.timezone = "";
             ContentEvent.event.data.timeDisplay = "USER";
             ContentEvent.displayTiming = "USER"
+            ContentEvent.event.data.startDate = new Date(ContentEvent.event.data.startDate).setHours(0, 0, 0, 0);
+            ContentEvent.event.data.endDate = new Date(ContentEvent.event.data.endDate).setHours(23, 59, 0, 0);
+            ContentEvent.event.data.startTime = ContentEvent.event.data.startDate;
+            ContentEvent.event.data.endTime = ContentEvent.event.data.endDate;
           }
           if (ContentEvent.event.data.repeat) {
             if (ContentEvent.event.data.repeat.startDate != ContentEvent.event.lastSavedStartDate) {
