@@ -359,6 +359,9 @@
             }
 
             $scope.startTimeToShow = function (event) {
+                const defaultStartDate = configureDate.getFullYear() + "-" + moment(configureDate).format("MM") + "-" + WidgetHome.getFirstDateOfMonth(configureDate) + "T00:00:00" + moment(new Date()).format("Z");
+                if (defaultStartDate === eventStartDate) return new Date(event.data.startDate);
+
                 const currentDateStart = new Date(eventStartDate).setHours(0,0,0,0);
                 const _eventStartDate = new Date(event.data.startDate).setHours(0,0,0,0);
                 if (currentDateStart === _eventStartDate) {
