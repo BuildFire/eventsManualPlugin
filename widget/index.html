@@ -92,11 +92,16 @@
                                          <a href="javascript:void(0)" ng-click="WidgetHome.openDetailsPage(event)">
                                              <h4 class="margin-bottom-zero text-primary ellipsis">{{event.data.title}}</h4>
                                          </a>
-                                         <p class="margin-zero ellipsis" ng-if="event.data.endTime && !event.data.isAllDay">
-                                             {{event.data.startTime | date: "hh:mm a"}} - {{event.data.endTime | date: "hh:mm a"}}
+                                         <p class="margin-zero ellipsis" ng-if="event.data.endTime && (!event.data.isAllDay || !isSameDate(event))">
+                                            <span ng-if="isSameDate(event)">
+                                                {{event.data.startTime | date: "hh:mm a"}} - {{event.data.endTime | date: "hh:mm a"}}
+                                            </span>
+                                            <span ng-if="!isSameDate(event)">
+                                                 {{startTimeToShow(event) | date: "hh:mm a"}} - {{endTimeToShow(event) | date: "hh:mm a"}}
+                                            </span>
                                              {{event.data.startTime && (event.data.startTime | getTimeZone) || ""}}
                                          </p>
-                                         <p class="margin-zero ellipsis" ng-if="event.data.isAllDay">All Day</p>
+                                         <p class="margin-zero ellipsis" ng-if="event.data.isAllDay && isSameDate(event)">All Day</p>
                                      </div>
                                 </div>
                             </div>

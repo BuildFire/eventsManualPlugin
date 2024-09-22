@@ -26,12 +26,16 @@
             {{WidgetEvent.event.data.title}}</p>
 
           <p class="margin-bottom-zero ellipsis titleBarTextAndIcons"
-             ng-if="((WidgetEvent.event.data.endTime >= 0) && (!WidgetEvent.event.data.isAllDay))">
+            ng-if="((WidgetEvent.event.data.endTime >= 0) && (!WidgetEvent.event.data.isAllDay) && isSameDate(WidgetEvent.event))">
             {{WidgetEvent.event.data.startTime | date: "hh:mm a"}} - {{WidgetEvent.event.data.endTime | date: "hh:mm a"}}
             {{WidgetEvent.event.data.startTime && (WidgetEvent.event.data.startTime | getTimeZone) || ""}}</p>
           <p class="margin-bottom-zero ellipsis titleBarTextAndIcons"
-             ng-if="WidgetEvent.event.data.isAllDay">
-            All Day</p>
+            ng-if="!isSameDate(WidgetEvent.event)">
+            {{WidgetEvent.event.data.startTime | date: "MMM d, hh:mm a"}} - {{WidgetEvent.event.data.endTime | date: "MMM d, hh:mm a"}}
+            {{WidgetEvent.event.data.startTime && (WidgetEvent.event.data.startTime | getTimeZone) || ""}}</p>
+          <p class="margin-bottom-zero ellipsis titleBarTextAndIcons"
+             ng-if="WidgetEvent.event.data.isAllDay && isSameDate(WidgetEvent.event)">
+              All Day</p>
         </div>
       </div>
     </div>
