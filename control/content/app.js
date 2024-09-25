@@ -206,8 +206,42 @@
         }
       };
     })
-    .run(['Location', '$rootScope', function (Location, $rootScope) {
-      // Handler to receive message from widget
+    .service('ScriptLoaderService', ['$q', function ($q) {
+      this.loadScript = function () {
+        const { apiKeys } = buildfire.getContext();
+        const { googleMapKey } = apiKeys;
+        const url = ` https://maps.googleapis.com/maps/api/js?v=3.exp&key=${googleMapKey}&libraries=places`;
+
+        const deferred = $q.defer();
+
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = url;
+
+        script.onload = function () {
+          console.info(`Successfully loaded script: ${url}`);
+          deferred.resolve();
+        };
+
+        script.onerror = function () {
+          console.error(`Failed to load script: ${url}`);
+          deferred.reject('Failed to load script.');
+        };
+
+        document.head.appendChild(script);
+        return deferred.promise;
+      };
+    }])
+    .run(['Location', '$rootScope','ScriptLoaderService', function (Location, $rootScope, ScriptLoaderService) {
+
+      ScriptLoaderService.loadScript()
+        .then(() => {
+          console.info("Successfully loaded Google's Maps SDK.");
+        })
+        .catch(() => {
+          console.error("Failed to load Google Maps SDK.");
+        });
+
       buildfire.messaging.onReceivedMessage = function (msg) {
         switch (msg.type) {
           case 'OpenItem':

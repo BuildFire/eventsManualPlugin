@@ -22,5 +22,8 @@
 
   },
   "features" : [{"name" : "Calendar"}],
+  "usesApiKeys": [
+    { "name": "googleMapKey" }
+  ],
   "languages" : ["en"]
 }
