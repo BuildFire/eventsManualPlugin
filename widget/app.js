@@ -123,7 +123,7 @@
         }
       };
     }])
-    .directive("googleMap", function () {
+    .directive("googleMap", ['ScriptLoaderService',function (ScriptLoaderService) {
       return {
         template: "<div></div>",
         replace: true,
@@ -133,48 +133,65 @@
             if (newValue) {
               scope.coordinates = newValue;
               if (scope.coordinates.length) {
-                var map = new google.maps.Map(elem[0], {
-                  center: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
-                  zoomControl: false,
-                  streetViewControl: false,
-                  mapTypeControl: false,
-                  zoom: 15,
-                  mapTypeId: google.maps.MapTypeId.ROADMAP
-                });
-                var marker = new google.maps.Marker({
-                  position: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
-                  map: map
-                });
-                var styleOptions = {
-                  name: "Report Error Hide Style"
-                };
-                var MAP_STYLE = [
-                  {
-                    stylers: [
-                      {visibility: "on"}
-                    ]
-                  }];
-                var mapType = new google.maps.StyledMapType(MAP_STYLE, styleOptions);
-                map.mapTypes.set("Report Error Hide Style", mapType);
-                map.setMapTypeId("Report Error Hide Style");
+                ScriptLoaderService.loadScript()
+                  .then(() => {
+                    var map = new google.maps.Map(elem[0], {
+                      center: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
+                      zoomControl: false,
+                      streetViewControl: false,
+                      mapTypeControl: false,
+                      zoom: 15,
+                      mapTypeId: google.maps.MapTypeId.ROADMAP
+                    });
+                    var marker = new google.maps.Marker({
+                      position: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
+                      map: map
+                    });
+                    var styleOptions = {
+                      name: "Report Error Hide Style"
+                    };
+                    var MAP_STYLE = [
+                      {
+                        stylers: [
+                          {visibility: "on"}
+                        ]
+                      }];
+                    var mapType = new google.maps.StyledMapType(MAP_STYLE, styleOptions);
+                    map.mapTypes.set("Report Error Hide Style", mapType);
+                    map.setMapTypeId("Report Error Hide Style");
 
-                marker.addListener('click', function () {
+                    marker.addListener('click', function () {
 
-                  buildfire.getContext(function (err, context) {
-                    if (context) {
-                      if (context.device && context.device.platform.toLowerCase() == 'ios')
-                        window.open("maps://maps.apple.com?q=" + scope.coordinates[1] + "," + scope.coordinates[0]);
-                      else
-                        window.open("http://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
-                    }
+                      buildfire.getContext(function (err, context) {
+                        if (context) {
+                          if (context.device && context.device.platform.toLowerCase() == 'ios')
+                            window.open("maps://maps.apple.com?q=" + scope.coordinates[1] + "," + scope.coordinates[0]);
+                          else
+                            window.open("http://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
+                        }
+                      });
+                    });
+                  })
+                  .catch(() => {
+                    console.error("Failed to load Google Maps SDK.");
+                    buildfire.dialog.alert({
+                      title: 'Error',
+                      message: 'Failed to load Google Maps API.',
+                    });
                   });
-                });
               }
             }
           }, true);
+          window.gm_authFailure = function () {
+            console.error("Invalid Google Maps API key.");
+            buildfire.dialog.alert({
+              title: 'Error',
+              message: 'Failed to load Google Maps API.',
+            });
+          };
         }
       }
-    })
+    }])
     .directive("loadImage", ['Buildfire', function (Buildfire) {
       return {
         restrict: 'A',
@@ -211,7 +228,41 @@
         }
       };
     }])
-    .run(['Location', '$location', '$rootScope', function (Location, $location, $rootScope) {
+    .service('ScriptLoaderService', ['$q', function ($q) {
+      this.loadScript = function () {
+        const {apiKeys} = buildfire.getContext();
+        const {googleMapKey} = apiKeys;
+
+        const url = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${googleMapKey}`;
+
+        const deferred = $q.defer();
+
+        // Check if the script is already in the document
+        const existingScript = document.getElementById('googleMapsScript');
+        if (existingScript) {
+          // If the script is already in the document, remove it
+          existingScript.parentNode.removeChild(existingScript);
+        }
+
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = url;
+
+        script.onload = function () {
+          console.info(`Successfully loaded script: ${url}`);
+          deferred.resolve();
+        };
+
+        script.onerror = function () {
+          console.error(`Failed to load script: ${url}`);
+          deferred.reject('Failed to load script.');
+        };
+
+        document.head.appendChild(script);
+        return deferred.promise;
+      };
+    }])
+    .run(['Location', '$location', '$rootScope', 'ScriptLoaderService', function (Location, $location, $rootScope,ScriptLoaderService) {
 
       buildfire.messaging.onReceivedMessage = function (msg) {
         console.log('$location--------------------------------------------', $location, msg);

@@ -122,13 +122,13 @@
             var expandRepeatingEvents = function (result, repeat_until, AllEvent) {
                 var repeat_results = [];
                 for (var i = 0; i < result.length; i++) {
-                    
+
                     //set as all day event if overlapping on multiple days
                     var startDate = new Date(result[i].data.startDate).setHours(0,0,0,0);
                     var endDate = new Date(result[i].data.endDate).setHours(0,0,0,0);
                     if(startDate != endDate)
                         result[i].data.isAllDay = true;
-                    
+
 
                     if (result[i].data.repeat.isRepeating && result[i].data.repeat.repeatType) {
                         var repeat_unit = getRepeatUnit(result[i].data.repeat.repeatType);
@@ -203,7 +203,7 @@
                             temp_result.data.startTime = result[i].data.startTime;
                             temp_result.data.endDate = temp_result.data.startDate + difference;
                             temp_result.data.endTime = temp_result.data.startTime + differenceTime;
-                            
+
                             if (temp_result.data.startDate >= +new Date(eventStartDate) && temp_result.data.startDate <= +new Date(eventRecEndDate)||
                             (temp_result.data.endDate >= +new Date(eventStartDate) && temp_result.data.endDate <= +new Date(eventRecEndDate)) ||
                             (+new Date(eventStartDate) >= temp_result.data.startDate && +new Date(eventRecEndDate) <= temp_result.data.endDate))
@@ -246,7 +246,7 @@
                 WidgetHome.NoDataFound = false;
                 Buildfire.spinner.show();
                 var successEvents = function (result) {
-                    Buildfire.spinner.hide();                    
+                    Buildfire.spinner.hide();
                     if (!result.length) {
                         return true;
                     }
@@ -343,7 +343,7 @@
                 if(event.data) {
                     var startDate = new Date(event.data.startDate).setHours(0,0,0,0);
                     var endDate = new Date(event.data.endDate).setHours(0,0,0,0);
-                    
+
                     return startDate === endDate;
                 }
                 return true;
@@ -396,7 +396,7 @@
                     }
                     currentLayout = WidgetHome.data.design.itemDetailsLayout;
                     if (
-                      buildfire && 
+                      buildfire &&
                       buildfire.getContext() &&
                       buildfire.getContext().device &&
                       buildfire.getContext().device.platform !== 'web'
