@@ -1,7 +1,7 @@
 'use strict';
 
 (function (angular, buildfire, window) {
-  angular.module('eventsManualPluginWidget', ['ngRoute', 'ngTouch', 'ui.bootstrap', 'infinite-scroll', 'ngAnimate'])
+  angular.module('eventsManualPluginWidget', ['ngRoute', 'ngTouch', 'ui.bootstrap', 'infinite-scroll', 'ngAnimate','utils'])
     .config(['$routeProvider', '$compileProvider', function ($routeProvider, $compileProvider) {
 
       /**
@@ -123,7 +123,7 @@
         }
       };
     }])
-    .directive("googleMap", ['ScriptLoaderService',function (ScriptLoaderService) {
+    .directive("googleMap", ['ScriptLoaderService','VersionCheckService',function (ScriptLoaderService,VersionCheckService) {
       return {
         template: "<div></div>",
         replace: true,
@@ -135,17 +135,23 @@
               if (scope.coordinates.length) {
                 ScriptLoaderService.loadScript()
                   .then(() => {
-                    var map = new google.maps.Map(elem[0], {
+                    const options =  {
                       center: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
-                      zoomControl: false,
                       streetViewControl: false,
                       mapTypeControl: false,
                       zoom: 15,
-                      mapTypeId: google.maps.MapTypeId.ROADMAP
-                    });
-                    var marker = new google.maps.Marker({
+                      mapTypeId: google.maps.MapTypeId.ROADMAP,
+                      mapId: 'widgetMap'
+                    }
+                    if (VersionCheckService.isCameraControlVersion()) {
+                      options.cameraControl = false;
+                    } else {
+                      options.zoomControl = false;
+                    }
+                    var map = new google.maps.Map(elem[0],options);
+                    var marker = new google.maps.marker.AdvancedMarkerElement({
                       position: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
-                      map: map
+                      map: map,
                     });
                     var styleOptions = {
                       name: "Report Error Hide Style"
@@ -233,7 +239,7 @@
         const {apiKeys} = buildfire.getContext();
         const {googleMapKey} = apiKeys;
 
-        const url = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${googleMapKey}`;
+        const url = `https://maps.googleapis.com/maps/api/js?v=weekly&key=${googleMapKey}&libraries=marker`;
 
         const deferred = $q.defer();
 
