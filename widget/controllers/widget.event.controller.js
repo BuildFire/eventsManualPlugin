@@ -286,16 +286,29 @@
               if (!WidgetEvent.data.design.itemDetailsLayout) {
                 WidgetEvent.data.design.itemDetailsLayout = LAYOUTS.itemDetailsLayout[0].name;
               }
-              if(WidgetEvent.data.design.itemDetailsBgImage){
+              if (WidgetEvent.data.design.itemDetailsBgImage) {
                 $rootScope.backgroundImage = WidgetEvent.data.design.itemDetailsBgImage;
               }
               else
               {
                 $rootScope.backgroundImage = "";
               }
+              
               getEventDetails();
-            }
-            , error = function (err) {
+              
+              if (WidgetEvent.event && WidgetEvent.event.data && WidgetEvent.event.data.description) {
+                buildfire.dynamic.expressions.evaluate({ expression: WidgetEvent.event.data.description }, function (err, result) {
+                  if (err) {
+                    console.error('Error evaluating description expression', err);
+                  } else {
+                    WidgetEvent.event.data.description = result.evaluatedExpression;
+                    $scope.$digest();
+                    buildfire.dynamicBlocks.execute();
+                  }
+                });
+              }
+            },
+            error = function (err) {
               console.error('Error while getting data', err);
             };
           DataStore.get(TAG_NAMES.EVENTS_MANUAL_INFO).then(success, error);
